@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #0e0e0e;
+  color: #e0e0e0;
+}
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+.sidebar li ul {
+  margin-left: 15px;
+  border-left: 1px solid #333;
+  padding-left: 10px;
+}
+.sidebar a {
+  display: block;
+  color: #ccc;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.sidebar a:hover {
+  background: #00bfa520;
+  color: #00bfa5;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100vh;
+  background: #181818;
+  border-right: 1px solid #333;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.sidebar h2 {
+  color: #00bfa5;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+.content {
+  margin-left: 320px;
+  padding: 40px;
+  max-width: 900px;
+} 
+a {
+  color: orange;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  background: #00bfa520;
+  color: #00bfa5;
+}
+section {
+  margin-bottom: 80px;
+}
+h1, h2 {
+  color: #00bfa5;
+}
+figure {
+  margin: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+figcaption {
+  background: #b58900; /* color título Zig */
+  color: #fff;
+  padding: 4px 10px;
+  font-weight: bold;
+}
+
+.code-block pre {
+  background: #1e1e1e;
+  color: #c5c8c6;
+  margin: 0;
+  padding: 8px 10px;
+}
+
+.shell-block figcaption {
+  background: #444;
+}
+
+.shell-block pre {
+  background: #000;
+  color: #ddd;
+  margin: 0;
+  padding: 8px 10px;
+}
+
