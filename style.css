@@ -29,6 +29,26 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  width: 320px;
+  height: 100vh;
+  background: #181818;
+  border-right: 1px solid #333;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70vw;
+    max-width: 260px;
+  }
+}
+/*
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 80vw;
   max-width: 320px;
   height: 100vh;
@@ -37,7 +57,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-}
+}*/
 .sidebar h2 {
   color: #00bfa5;
   font-size: 1.2em;
