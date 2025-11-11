@@ -26,22 +26,19 @@ body {
   color: #00bfa5;
 }
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 320px;
-  height: 100vh;
-  background: #181818;
-  border-right: 1px solid #333;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
+  width: 100%;
+  max-width: none;
+  position: relative;
+  height: auto;
 }
-
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .sidebar {
-    width: 70vw;
-    max-width: 260px;
+    position: fixed;
+    width: 320px;
+    height: 100vh;
+  }
+  .main-content {
+    margin-left: 320px;
   }
 }
 /*
