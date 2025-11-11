@@ -145,7 +145,7 @@ elf/            hooks.rs           structures/
           <p>For triggering locally use <code>make tests</code> this downloads some binaries and launch the test system <code>cargo test</code></p>
           <p>Don't use --release, always is more convinient do the tests without aplying the optimizations, that could ignore some type of errors. Actually the github CI is configured to do cargo test and also cargo test --release to check both modes.</p>
           <p>Every git push or pull-request will trigger the CI in gibhut to perform all the tests in Linux, Windows and Mac. In in the case of PR is mandatory, in the case of a git push is only informative.</p>
-          <p>PR also triggers a coverate analysis of the tests, which is currently only 32%</p>
+          <p>PR also triggers a coverage analysis of the tests, which is currently only 32%</p>
           <p><img src="pics/tests.png" width="120%"></p>
         </section>
 
