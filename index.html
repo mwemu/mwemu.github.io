@@ -434,19 +434,73 @@ Entry point pointing to .text 0x401000
               <figcaption>Shell</figcaption>
               <pre><code>
               ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337
-     Finished `release` profile [optimized] target(s) in 0.08s
-     Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
-static elf64 detected.
-Entry point pointing to .text 0x401000
---- console ---
-=&gt;r rax
-	rax: 0x123 291
-=&gt;r rbx
-	rbx: 0x1337 4919
+        Finished `release` profile [optimized] target(s) in 0.08s
+        Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
+        static elf64 detected.
+        Entry point pointing to .text 0x401000
+        --- console ---
+        =&gt;r rax
+            rax: 0x123 291
+        =&gt;r rbx
+            rbx: 0x1337 4919
               </code></pre>
             </figure>
           </p>
         </section>
+
+        <section id="regtrace">
+          <h2>Trace Registers</h2>
+          <p>Use option -R &lt;registers to trace&gt; to trace some registers</p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -R rax,rsp
+               ...
+            57 0x4010a2: rcr   al,1
+                58 rax: 0x82f61001 2197164033
+                58 rsp: 0x7fffffffe270
+            58 0x4010a4: rcr   ax,1
+                59 rax: 0x82f60800 2197161984
+                59 rsp: 0x7fffffffe270
+            59 0x4010a7: rcr   eax,1
+                60 rax: 0xc17b0400 3246064640
+                60 rsp: 0x7fffffffe270
+            60 0x4010a9: rcr   rax,1
+                61 rax: 0x60bd8200 1623032320
+                61 rsp: 0x7fffffffe270
+            61 0x4010ac: rcr   al,cl
+                62 rax: 0x60bd8200 1623032320
+                62 rsp: 0x7fffffffe270
+            62 0x4010ae: rcr   ax,cl
+                63 rax: 0x60bd8200 1623032320
+                63 rsp: 0x7fffffffe270
+            63 0x4010b1: rcr   eax,cl
+                64 rax: 0x60bd8200 1623032320
+                64 rsp: 0x7fffffffe270
+            64 0x4010b3: rcr   rax,cl
+                65 rax: 0x60bd8200 1623032320
+                65 rsp: 0x7fffffffe270
+            65 0x4010b6: mov   eax,90909090h ; 0x90909090
+                66 rax: 0x90909090 2425393296
+                66 rsp: 0x7fffffffe270
+            66 0x4010bb: mov   edx,90909090h ; 0x90909090
+                67 rax: 0x90909090 2425393296
+                67 rsp: 0x7fffffffe270
+            67 0x4010c0: mov   ecx,0 ; 0x0
+                68 rax: 0x90909090 2425393296
+                68 rsp: 0x7fffffffe270
+            68 0x4010c5: shrd  eax,edx,cl
+                69 rax: 0x90909090 2425393296
+                69 rsp: 0x7fffffffe270
+            69 0x4010c8: ret ; ret-addr: 0x0 ret-value: 0x90909090
+              </code></pre>
+            </figure>
+          </p>
+          <p>You can trace one or multiple registers at same time with -R option but with no spaces between registers.</p>
+        </section>
+
+<li><a href="#memtrace">trace memory</a></li>
+
 </div>
 </body>
 </html>
