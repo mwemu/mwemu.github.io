@@ -41,6 +41,17 @@ body {
     margin-left: 320px;
   }
 }
+.main-content {
+  margin-left: 0;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    margin-left: 320px;
+    width: calc(100% - 320px);
+  }
+}
 /*
 .sidebar {
   position: fixed;
