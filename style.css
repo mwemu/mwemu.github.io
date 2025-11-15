@@ -3,6 +3,7 @@ body {
   font-family: "Segoe UI", sans-serif;
   background: #0e0e0e;
   color: #e0e0e0;
+  height: 100%;
 }
 .sidebar ul {
   list-style: none;
@@ -38,9 +39,14 @@ body {
     width: 320px;
     height: 100vh;
     overflow-y: auto;
+    top: 0;
+    left: 0;
   }
   .main-content {
     margin-left: 320px;
+    width: calc(100% - 320px);
+    height: 100vh;
+    overflow-y: auto;
   }
 }
 .main-content {
@@ -125,4 +131,33 @@ figcaption {
   margin: 0;
   padding: 8px 10px;
 }
+
+.sidebar::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover,
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Firefox */
+.sidebar,
+.main-content {
+  scrollbar-width: thin;
+  scrollbar-color: #333 #111;
+}
+
 
