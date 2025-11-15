@@ -41,9 +41,9 @@
                 <li><a href="#stacktrace">trace stack</a></li>
                 <li><a href="#console">interactive console</a></li>
                 <ul>
-                    <li><a href="#help">help</a></li>
-                    <li><a href="#maps">maps</a></li>
-                    <li><a href="#search">search</a></li>
+                    <li><a href="#help">help command</a></li>
+                    <li><a href="#maps">maps command</a></li>
+                    <li><a href="#search">search command</a></li>
                     <li><a href="#ldr">view LDR</a></li>
                     <li><a href="#dt">view structures</a></li>
                     <li><a href="#view">view data</a></li>
@@ -549,7 +549,7 @@ Entry point pointing to .text 0x401000
 
         <section id="strtrace">
           <h2>Trace String</h2>
-          <p>having the address of the string to trace, use -s to trace it</p>
+          <p>having the address of the string to trace, use -s &lt;addr&gt; to trace it</p>
           <p>
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
@@ -582,21 +582,188 @@ Entry point pointing to .text 0x401000
 
         <section id="calltrace">
           <h2>Trace Function Calls</h2>
-          <p></p>
+          <p>Following the call paths can be useful when combining emulation with static analysis to see where we are coming from.</p>
           <p>
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
+               ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin --call
               </code></pre>
             </figure>
           </p>
-          <p><img src="pics/strtrace.png" width="80%"></p>
-          <p>Doing full verbose of millions of instructions is slower than non verbose mode, so let's enable the verbose mode only when it's needed.</p>
+          <p><img src="pics/calltrace.png" width="80%"></p>
+          <p>In this case, it is more convinient not to use verbose mode.</p>
         </section>
 
+        <section id="console">
+          <h2>Interactive Console</h2>
+          <p>With the option -c &lt;num&gt; mwemu stops the emulation when will reached that num of emulated instructions, then spawn a console.</p>
+          <p>For instance, we don't want to emulate 102063765 instructions in verbose mode, It's faster not using verbose mode. The -c option will enable verbose mode and tracers 100 instructions before reaching that number, so when console is spawned we have some previous context.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
+            dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
+            PE64 header detected.
+            loading memory maps
+            dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
+            dll_path: maps/maps64//kernelbase.dll dll: kernelbase.dll
+            dll_path: maps/maps64//iphlpapi.dll dll: iphlpapi.dll
+            dll_path: maps/maps64//ws2_32.dll dll: ws2_32.dll
+            dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
+            dll_path: maps/maps64//comctl32.dll dll: comctl32.dll
+            dll_path: maps/maps64//winhttp.dll dll: winhttp.dll
+            dll_path: maps/maps64//wininet.dll dll: wininet.dll
+            dll_path: maps/maps64//dnsapi.dll dll: dnsapi.dll
+            dll_path: maps/maps64//shell32.dll dll: shell32.dll
+            dll_path: maps/maps64//shlwapi.dll dll: shlwapi.dll
+            dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
+            dll_path: maps/maps64//user32.dll dll: user32.dll
+            dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
+            dll_path: maps/maps64//oleaut32.dll dll: oleaut32.dll
+            dll_path: maps/maps64//gdi32.dll dll: gdi32.dll
+            dll_path: maps/maps64//shell32.dll dll: shell32.dll
+            dll_path: maps/maps64//version.dll dll: version.dll
+            dll_path: maps/maps64//ole32.dll dll: ole32.dll
+            IAT Bound.
+            Delay load binding started ...
+            delay load bound!
+            entry point at 0x14072ce04
+            base: 0x140000000
+            102063740 0x14072d2ac: jne   000000014072D2A4h taken
+            102063741 0x14072d2a4: xor   [rax],dl
+                mem_trace: pos = 102063741 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cb value = 0x59 name = 'exe64win_enigma593000'
+                mem_trace: pos = 102063741 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cb value = 0x54 name = 'exe64win_enigma593000'
+            102063742 0x14072d2a6: inc   rax
+            102063743 0x14072d2a9: dec   rcx
+            102063744 0x14072d2ac: jne   000000014072D2A4h taken
+            102063745 0x14072d2a4: xor   [rax],dl
+                mem_trace: pos = 102063745 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cc value = 0x44 name = 'exe64win_enigma593000'
+                mem_trace: pos = 102063745 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cc value = 0x49 name = 'exe64win_enigma593000'
+            102063746 0x14072d2a6: inc   rax
+            102063747 0x14072d2a9: dec   rcx
+            102063748 0x14072d2ac: jne   000000014072D2A4h taken
+            102063749 0x14072d2a4: xor   [rax],dl
+                mem_trace: pos = 102063749 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cd value = 0x42 name = 'exe64win_enigma593000'
+                mem_trace: pos = 102063749 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cd value = 0x4f name = 'exe64win_enigma593000'
+            102063750 0x14072d2a6: inc   rax
+            102063751 0x14072d2a9: dec   rcx
+            102063752 0x14072d2ac: jne   000000014072D2A4h taken
+            102063753 0x14072d2a4: xor   [rax],dl
+                mem_trace: pos = 102063753 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4ce value = 0x43 name = 'exe64win_enigma593000'
+                mem_trace: pos = 102063753 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4ce value = 0x4e name = 'exe64win_enigma593000'
+            102063754 0x14072d2a6: inc   rax
+            102063755 0x14072d2a9: dec   rcx
+            102063756 0x14072d2ac: jne   000000014072D2A4h not taken
+            102063757 0x14072d2b2: jmp   000000014072D2BBh
+                mem_trace: pos = 102063758 rip = 14072d2bb op = read bits = 32 address = 0x14000303c value = 0x80 name = 'exe64win_enigma3000'
+            102063758 0x14072d2bb: mov   edi,[rsi+3Ch] ; 0x80
+                mem_trace: pos = 102063759 rip = 14072d2be op = read bits = 32 address = 0x140003110 value = 0x571000 name = 'exe64win_enigma3000'
+            102063759 0x14072d2be: mov   edi,[rdi+rsi+90h] ; 0x571000
+            102063760 0x14072d2c5: add   rdi,rsi
+            102063761 0x14072d2c8: cmp   dword ptr [rdi+0Ch],0
+                mem_trace: pos = 102063761 rip = 14072d2c8 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
+                cmp: 0x5722ac &gt; 0x0
+            102063762 0x14072d2cc: je    000000014072D370h not taken
+                mem_trace: pos = 102063763 rip = 14072d2d2 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
+            102063763 0x14072d2d2: mov   ecx,[rdi+0Ch] ; 0x5722ac
+            102063764 0x14072d2d5: add   rcx,rsi
+            -------
+            102063765 0x14072d2d8: call  qword ptr [rbp+5960B4h]
+            --- console ---
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+        <section id="help">
+          <h2>Help Command</h2>
+          <p>press h to see the available commands:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               =&gt;h
+            --- help ---
+            q ...................... quit
+            cls .................... clear screen
+            h ...................... help
+            s ...................... stack
+            v ...................... vars
+            sv ..................... set verbose level 0, 1 or 2
+            r ...................... register show all
+            r reg .................. show reg
+            rc ..................... register change
+            f ...................... show all flags
+            fc ..................... clear all flags
+            fz ..................... toggle flag zero
+            fs ..................... toggle flag sign
+            c ...................... continue
+            b ...................... breakpoint list
+            ba ..................... breakpoint on address
+            bi ..................... breakpoint on instruction number
+            bmr .................... breakpoint on read memory
+            bmw .................... breakpoint on write memory
+            bmx .................... breakpoint on execute memory
+            bcmp ................... break on next cmp or test
+            bc ..................... clear breakpoint
+            n ...................... next instruction
+            eip .................... change eip
+            rip .................... change rip
+            push ................... push dword to the stack
+            pop .................... pop dword from stack
+            fpu .................... fpu view
+            md5 .................... check the md5 of a memory map
+            seh .................... view SEH
+            veh .................... view vectored execption pointer
+            m ...................... memory maps
+            ms ..................... memory filtered by keyword string
+            ma ..................... memory allocs
+            mc ..................... memory create map
+            mn ..................... memory name of an address
+            ml ..................... memory load file content to map
+            mr ..................... memory read, speficy ie: dword ptr [esi]
+            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+            mwb .................... memory write bytes, input spaced bytes
+            md ..................... memory dump
+            mrd .................... memory read dwords
+            mrq .................... memory read qwords
+            mds .................... memory dump string
+            mdw .................... memory dump wide string
+            mdd .................... memory dump to disk
+            mdda ................... memory dump all allocations to disk
+            mt ..................... memory test
+            r2 [addr] .............. spawn radare2 console if it's isntalled
+            ss ..................... search string
+            sb ..................... search bytes
+            sba .................... search bytes in all the maps
+            ssa .................... search string in all the maps
+            ll ..................... linked list walk
+            d ...................... dissasemble
+            dt ..................... dump structure
+            pos .................... print current position
+            enter .................. step into
+            tr ..................... trace reg
+            trc .................... trace regs clear
+            ldr .................... show ldr linked list
+            iat .................... find api name in all iat's
+            iatx ................... addr to api name
+            iatd ................... dump the iat of specific module
+            dump ................... dump current state to disk
+
+            ---
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>In this case, it is more convinient not to use verbose mode.</p>
+        </section>
 
 </div>
 </body>
 </html>
+
+
 
