@@ -159,5 +159,12 @@ figcaption {
   scrollbar-width: thin;
   scrollbar-color: #333 #111;
 }
+* {
+  scrollbar-width: thin;
+}
+:root {
+  color-scheme: dark;
+  scrollbar-gutter: stable both-edges;
+}
 
 

@@ -580,6 +580,22 @@ Entry point pointing to .text 0x401000
           <p><img src="pics/strtrace2.png" width="80%"></p>
         </section>
 
+        <section id="calltrace">
+          <h2>Trace Function Calls</h2>
+          <p></p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
+              </code></pre>
+            </figure>
+          </p>
+          <p><img src="pics/strtrace.png" width="80%"></p>
+          <p>Doing full verbose of millions of instructions is slower than non verbose mode, so let's enable the verbose mode only when it's needed.</p>
+        </section>
+
+
 </div>
 </body>
 </html>
