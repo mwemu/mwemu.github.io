@@ -42,13 +42,16 @@
                 <li><a href="#console">interactive console</a></li>
                 <ul>
                     <li><a href="#helpcmd">help command</a></li>
+                    <li><a href="#regcmd">registers command</a></li>
                     <li><a href="#mapscmd">maps command</a></li>
                     <li><a href="#mncmd">get map from addr</a></li>
                     <li><a href="#searchcmd">search command</a></li>
-                    <li><a href="#ldr">view LDR</a></li>
-                    <li><a href="#dt">view structures</a></li>
-                    <li><a href="#view">view data</a></li>
-                    <li><a href="#r2">radare2 command</a></li>
+                    <li><a href="#bpcmd">break point commands</a></li>
+                    <li><a href="#ldrcmd">view LDR</a></li>
+                    <li><a href="#dtcmd">view structures</a></li>
+                    <li><a href="#viewcmd">view data</a></li>
+                    <li><a href="#dumpcmd">dump maps to disk</a></li>
+                    <li><a href="#r2cmd">radare2 command</a></li>
                 </ul>
             </ul>
         </li>
@@ -760,6 +763,55 @@ Entry point pointing to .text 0x401000
           </p>
         </section>
 
+        <section id="regcmd">
+          <h2>Register Commands</h2>
+          <p>Use r for viewing all the registers, or r [reg] to see specific register.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+
+            =&gt;r rsp
+                rsp: 0x329f40
+            =&gt;r
+                rax: 0x0 0
+                rbx: 0x0 0
+                rcx: 0x0 0
+                rdx: 0x2f 47
+                rsi: 0x0 0
+                rdi: 0x0 0
+                rsp: 0x329f40
+                rbp: 0x329ff8
+                rip: 0x3c006e
+                r8 : 0x0 0
+                r9 : 0x0 0
+                r10: 0x0 0
+                r11: 0x0 0
+                r12: 0x0 0
+                r13: 0x0 0
+                r14: 0x0 0
+                r15: 0x0 0
+              </code></pre>
+            </figure>
+          </p>
+          <p>
+            <figure class="shell-block">
+                <figcaption>Shell</figcaption>
+                <pre><code>
+            =&gt;rc rax
+            command not found, type h
+            =&gt;rc
+            register name=&gt;rax
+            value=&gt;0x1337
+            =&gt;r rax
+                rax: 0x1337 4919
+            =&gt;
+                </code></pre>
+            </figure>
+          </p>
+          <p>you can use 64bits and 32bits registers only, 16/8bits is not allowed for now ("r ax" or "r al")</p>
+        </section>
+
         <section id="mapscmd">
           <h2>Maps Command</h2>
           <p>press m to list all the memory maps and addresses.</p>
@@ -819,6 +871,58 @@ Entry point pointing to .text 0x401000
           </p>
           <p>Note that mwemu commands dont accept parameters direcly, first type the command + enter then the parameter will prompted.</p>
           <p>except for the r2 command that needs an address to spawn radare2, ie:  r2 0x140000008</p>
+        </section>
+
+        <section id="searchcmd">
+          <h2>Search Commands</h2>
+          <p>There are four commands to search.</p>
+          <ul>
+              <li><p>use command ss for search a string in a specific map.</p></li>
+              <li><p>use command sb for search a sequence of spaced bytes in a specific map.</p></li>
+              <li><p>use command ssa for search a string in all the maps.</p></li>
+              <li><p>use command sba for search a sequence of spaced bytes in all the maps.</p></li>
+          </ul>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;ssa  (search string in all the maps)
+            string=&gt;http://something.com/
+            found at 0x329ec8 'http://something.com/'
+            found at 0x329fc8 'http://something.com/'
+            map not found
+
+            =&gt;mds (display string on an address)
+            address=&gt;0x329ec8
+            0x329ec8: 'http://something.com/'
+            =&gt;mds
+            address=&gt;0x329fc8
+            0x329fc8: 'http://something.com/'
+            =&gt; 
+
+            =&gt;mn (which map is that address?)
+            address=&gt;0x329ec8
+            map: stack 0x22a000-0x32c000 (1056768)
+            =&gt;mn
+            address=&gt;0x329fc8
+            map: stack 0x22a000-0x32c000 (1056768)
+            =&gt;
+
+            =&gt;ss (search string on specific address)
+            map name=&gt;stack
+            string=&gt;http://something.com/
+            found 0x329ec8 'http://something.com/'
+            found 0x329fc8 'http://something.com/'
+
+            =&gt;sb (search spaced bytes on specific address, ie searching hexlified "http://")
+            map name=&gt;stack
+            spaced bytes=&gt;68 74 74 70 3a 2f 2f
+            found at 0x329ec8
+            found at 0x329fc8
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
         </section>
 
 </div>
