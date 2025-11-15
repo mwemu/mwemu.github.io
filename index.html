@@ -43,6 +43,7 @@
                 <ul>
                     <li><a href="#helpcmd">help command</a></li>
                     <li><a href="#mapscmd">maps command</a></li>
+                    <li><a href="#mncmd">get map from addr</a></li>
                     <li><a href="#searchcmd">search command</a></li>
                     <li><a href="#ldr">view LDR</a></li>
                     <li><a href="#dt">view structures</a></li>
@@ -603,7 +604,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
+            ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
             dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
             PE64 header detected.
             loading memory maps
@@ -685,7 +686,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               =&gt;h
+            =&gt;h
             --- help ---
             q ...................... quit
             cls .................... clear screen
@@ -752,18 +753,76 @@ Entry point pointing to .text 0x401000
             iatx ................... addr to api name
             iatd ................... dump the iat of specific module
             dump ................... dump current state to disk
-
             ---
             =&gt;
               </code></pre>
             </figure>
           </p>
-          <p>In this case, it is more convinient not to use verbose mode.</p>
+        </section>
+
+        <section id="mapscmd">
+          <h2>Maps Command</h2>
+          <p>press m to list all the memory maps and addresses.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;m
+            --- maps ---
+            oleaut32.data       0x7ff001dc7000 - 0x7ff001dca000 (12288)
+            ldr                 0x7ff000000000 - 0x7ff0000000b4 (180)
+            ntdll.pe            0x7ff000003000 - 0x7ff000004000 (4096)
+            kernelbase.text     0x7ff0002b6000 - 0x7ff0003c8000 (1122304)
+            ws2_32.didat        0x7ff00060f000 - 0x7ff000610000 (4096)
+            advapi32.pe         0x7ff000623000 - 0x7ff000624000 (4096)
+            winhttp.text        0x7ff000960000 - 0x7ff000a0f000 (716800)
+            iphlpapi.text       0x7ff00057f000 - 0x7ff0005a8000 (167936)
+            version.rsrc        0x7ff001e0c000 - 0x7ff001e0d000 (4096)
+            dnsapi.rdata        0x7ff000d6d000 - 0x7ff000d8f000 (139264)
+            kernelbase.rsrc     0x7ff000555000 - 0x7ff000556000 (4096)
+            comctl32.dll.ldr    0x7fe00000a000 - 0x7fe00000a940 (2368)
+            shell32.rsrc        0x7ff0012d8000 - 0x7ff001b1d000 (8671232)
+            advapi32.reloc      0x7ff0006cb000 - 0x7ff0006cd000 (8192)
+            advapi32.rdata      0x7ff00068a000 - 0x7ff0006bf000 (217088)
+            wininet.rsrc        0x7ff000cbe000 - 0x7ff000cd7000 (102400)
+            wininet.didat       0x7ff000cbd000 - 0x7ff000cbe000 (4096)
+            dnsapi.didat        0x7ff000d99000 - 0x7ff000d9a000 (4096)
+            ole32.pdata         0x7ff001f38000 - 0x7ff001f47000 (61440)
+            exe64win_enigma3000 0x140003000 - 0x140593000 (5832704)
+            user32.rsrc         0x7ff001c30000 - 0x7ff001d12000 (925696)
+            comctl32.pdata      0x7ff0008f9000 - 0x7ff00090f000 (90112)
+            oleaut32.text       0x7ff001d14000 - 0x7ff001da1000 (577536)
+            kernelbase.data     0x7ff000540000 - 0x7ff000545000 (20480)
+            winhttp.pdata       0x7ff000a3c000 - 0x7ff000a46000 (40960)
+            ws2_32.rdata        0x7ff0005fd000 - 0x7ff00060a000 (53248)
+            ...
+              </code></pre>
+            </figure>
+          </p>
+          <p>We can see map name, start address, end address and size in bytes.</p>
+          <p></p>
+        </section>
+
+        <section id="mncmd">
+          <h2>Get Map details from Address</h2>
+          <p>if the code is using an address and you want more details, use command mn.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;mn
+            address=&gt;0x140000008
+            map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>Note that mwemu commands dont accept parameters direcly, first type the command + enter then the parameter will prompted.</p>
+          <p>except for the r2 command that needs an address to spawn radare2, ie:  r2 0x140000008</p>
         </section>
 
 </div>
 </body>
 </html>
-
 
 
