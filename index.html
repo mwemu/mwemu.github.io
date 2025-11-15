@@ -36,6 +36,7 @@
                 <li><a href="#initreg">initialize registers</a></li>
                 <li><a href="#regtrace">trace registers</a></li>
                 <li><a href="#memtrace">trace memory</a></li>
+                <li><a href="#strtrace">trace string</a></li>
                 <li><a href="#calltrace">trace calls</a></li>
                 <li><a href="#stacktrace">trace stack</a></li>
                 <li><a href="#console">interactive console</a></li>
@@ -180,6 +181,25 @@ elf/            hooks.rs           structures/
       <h1>MWEMU commandline tool</h1>
       <p>The commandline is a quick way of using mwemu, and there are many features like register/memory/call/string tracing or capturing emulation moments.</p>
       <p>If the packer is simple probably can be full-emulated using the commandline tool, but if you need more control use pymwemu and for total control libmwemu.</p>
+      <p>In rust you can compile and exec together with cargo run, use --release mode for faster execution, example:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f file -vv -c 100
+              </code></pre>
+            </figure>
+          </p>
+        <p>This is equivalent of doing:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo build --release
+               ❯❯❯ target/release/mwemu -6 -f file -vv -c 100
+              </code></pre>
+            </figure>
+          </p>
     </section>
 
         <section id="cmdline_install">
@@ -500,7 +520,65 @@ Entry point pointing to .text 0x401000
           <p>You can trace one or multiple registers at same time with -R option but with no spaces between registers.</p>
         </section>
 
-<li><a href="#memtrace">trace memory</a></li>
+        <section id="memtrace">
+          <h2>Trace Memory</h2>
+          <p>There are 2 ways of tracing memory:</p>
+          <ul>
+              <li><p>-m for tracing all the memory read and writes. (optionally -S moment enable the tracer from specific moment)</p></li>
+              <li><p>-i 'dword ptr [eax + 0x8]' inspect mode allows many expressions but not all the combinations.</p></li>
+          </ul>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -c 494253 -S 490000
+              </code></pre>
+            </figure>
+          </p>
+          <p><img src="pics/memtrace.png" width="120%"></p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -i 'qword ptr [rsp + 0x8]'
+              </code></pre>
+            </figure>
+          </p>
+          <p><img src="pics/inspect.png" width="120%"></p>
+        </section>
+
+        <section id="strtrace">
+          <h2>Trace String</h2>
+          <p>having the address of the string to trace, use -s to trace it</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
+              </code></pre>
+            </figure>
+          </p>
+          <p><img src="pics/strtrace.png" width="120%"></p>
+          <p>Doing full verbose of millions of instructions is slower than non verbose mode, so let's enable the verbose mode only when it's needed.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8 -V 191
+              </code></pre>
+            </figure>
+          </p>
+          <p>Other option is using tracers with no verbose mode.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8
+              </code></pre>
+            </figure>
+          </p>
+          <p><img src="pics/strtrace2.png" width="120%"></p>
+        </section>
 
 </div>
 </body>
