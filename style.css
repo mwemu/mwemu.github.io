@@ -30,6 +30,7 @@ body {
   max-width: none;
   position: relative;
   height: auto;
+  overflow-y: auto;
 }
 @media (min-width: 768px) {
   .sidebar {
