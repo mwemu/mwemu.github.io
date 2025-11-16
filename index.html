@@ -47,6 +47,7 @@
                     <li><a href="#mncmd">get map from addr</a></li>
                     <li><a href="#searchcmd">search command</a></li>
                     <li><a href="#bpcmd">break point commands</a></li>
+                    <li><a href="#svcmd">change verbosity</a></li>
                     <li><a href="#ldrcmd">view LDR</a></li>
                     <li><a href="#dtcmd">view structures</a></li>
                     <li><a href="#viewcmd">view data</a></li>
@@ -925,6 +926,137 @@ Entry point pointing to .text 0x401000
           </p>
         </section>
 
+        <section id="bpcmd">
+          <h2>Breakpoint Commands</h2>
+          <p>There are four types of breakpoints, but only one breakpoint can be set for each type at once.</p>
+          <ul>
+              <li><p>break on address, the next time this address is reached the emulation will stop there.</p></li>
+              <li><p>break on instruction, when the emulator reach that number of instructions emulated in total, will stop there.</p></li>
+              <li><p>break on memory read, next time this address is readed by any assembly instruction (not api or syscall) the emulator will break there.</p></li>
+              <li><p>break on memory write, next write to this address (doesn't matter if is a 1-byte write or any amount) will stop the emulation.</p></li>
+              <li><p>break on next cmp or test instruction, this will stop the emulator on next cmp or test instruction.</p></li>
+          </ul>
+          <p>Use command "b" to see the state of the 4 types of breakpoints.There are four commands to search.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;b
+            break on address: []
+            break on instruction: []
+            break on memory read: []
+            break on memory write: []
+              </code></pre>
+            </figure>
+          </p>
+          <p>Use these commands to set the breakpoints:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            b ...................... breakpoint list
+            ba ..................... breakpoint on address
+            bi ..................... breakpoint on instruction number
+            bmr .................... breakpoint on read memory
+            bmw .................... breakpoint on write memory
+            bmx .................... breakpoint on execute memory
+            bcmp ................... break on next cmp or test instruction
+              </code></pre>
+            </figure>
+          </p>
+          <p>Some examples:</p>
+          <p><img src="pics/bpcmp.png" width="80%"></p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            --- console ---
+            =&gt;bi
+            instruction number=&gt;100
+            =&gt;c
+            18 0x3c006a: jne   short 00000000003C004Ah taken
+            19 0x3c004a: mov   rax,[rbp-8] ; 0x329f10
+            20 0x3c004e: movzx edx,byte ptr [rax]
+            21 0x3c0051: mov   rax,[rbp-10h] ; 0x329e10
+            22 0x3c0055: mov   [rax],dl ; 0x68
+            23 0x3c0057: add   qword ptr [rbp-8],1
+            24 0x3c005c: add   qword ptr [rbp-10h],1
+            25 0x3c0061: mov   rax,[rbp-8] ; 0x329f11
+            ...
+            96 0x3c0065: movzx eax,byte ptr [rax]
+            97 0x3c0068: test  al,al
+            98 0x3c006a: jne   short 00000000003C004Ah taken
+            99 0x3c004a: mov   rax,[rbp-8] ; 0x329f18
+            -------
+            100 0x3c004e: movzx edx,byte ptr [rax]   (this instruction is the next to be emulated, it was not emulated yet)
+            --- console ---
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+        <section id="svcmd">
+          <h2>Change Verbosity</h2>
+          <p>If you type the "sv" command, mwemu will ask you for the new verbosity level number, these are the possible verbose levels:</p>
+          <ul>
+              <li><p>0: It's like not using any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p></li>
+              <li><p>1: It's like using -v for viewing also some messages like, polymorfic code detected etc.</p></li>
+              <li><p>2: It's like using -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.</p></li>
+              <li><p>3: It's like using -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep movzx" will print one line for every step of the rep loop.</p></li>
+          </ul>
+          <p>For instance, we want to emulate quiclky the first 200 insturctions, and then enable the verbosity, this could be dont with -V, but let's do it from the console with "sv" command:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
+            ...
+            200 0x3c004e: movzx edx,byte ptr [rax]    (instruction 200 is not emulated yet, it's the next instruction to be emulated)
+            --- console ---
+            =&gt;sv
+            verbose level=&gt;3
+            =&gt; [enter for emulating instruction 200]
+            =&gt; c  (continue emulating now with maximum verbosity) 
+            ...
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+        <section id="ldrcmd">
+          <h2>View LDR</h2>
+          <p>The LDR is a triple circular liked list that cointains all the linked modules (not only DLL, also EXE)</p>
+          <p>MWEMU provides several commands to view and query the LDR.</p>
+          <ul>
+              <li><p>"ldr" command is the way of viewing the LDR contents.</p></li>
+              <li><p>"iat" comamnd allows to find an specified api name in all the iat's of every linked module.</p></li>
+              <li><p>"iatx" If we have an address and we want to know which api name is, this command does the address to name query.</p></li>
+              <li><p>"iatd" command dump the full IAT of a specified module.</p></li>
+          </ul>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            --- console ---
+            =&gt;ldr
+            0x7fe000000000 loader.exe flink:7fe000004000 blink:7fe00000f000 base:7ff001b7e000 pe_hdr:f8 5045
+            0x7fe000004000 ntdll.dll flink:7fe000005000 blink:7fe000000000 base:7ff000003000 pe_hdr:e8 5045
+            0x7fe000005000 kernel32.dll flink:7fe000006000 blink:7fe000004000 base:7ff0001f8000 pe_hdr:f0 5045
+            0x7fe000006000 kernelbase.dll flink:7fe000007000 blink:7fe000005000 base:7ff0002b5000 pe_hdr:f0 5045
+            0x7fe000007000 iphlpapi.dll flink:7fe000008000 blink:7fe000006000 base:7ff00057e000 pe_hdr:f8 5045
+            0x7fe000008000 ws2_32.dll flink:7fe000009000 blink:7fe000007000 base:7ff0005b8000 pe_hdr:f0 5045
+            0x7fe000009000 advapi32.dll flink:7fe00000a000 blink:7fe000008000 base:7ff000623000 pe_hdr:100 5045
+            0x7fe00000a000 comctl32.dll flink:7fe00000b000 blink:7fe000009000 base:7ff0006cd000 pe_hdr:f0 5045
+            0x7fe00000b000 winhttp.dll flink:7fe00000c000 blink:7fe00000a000 base:7ff00095f000 pe_hdr:f8 5045
+            0x7fe00000c000 wininet.dll flink:7fe00000d000 blink:7fe00000b000 base:7ff000a4f000 pe_hdr:f0 5045
+            0x7fe00000d000 dnsapi.dll flink:7fe00000e000 blink:7fe00000c000 base:7ff000cd9000 pe_hdr:f8 5045
+            0x7fe00000e000 shell32.dll flink:7fe00000f000 blink:7fe00000d000 base:7ff000da4000 pe_hdr:f0 5045
+            0x7fe00000f000 shlwapi.dll flink:7fe000000000 blink:7fe00000e000 base:7ff001b2c000 pe_hdr:f0 5045
+              </code></pre>
+            </figure>
+          </p>
+        </section>
 </div>
 </body>
 </html>
