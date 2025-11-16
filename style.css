@@ -168,7 +168,6 @@ figcaption {
 }
 
 /* --- FIX PARA MÓVIL --- */
-/*
 @media (max-width: 767px) {
   .content,
   .main-content {
@@ -183,22 +182,5 @@ figcaption {
     max-width: none !important;
     position: relative !important;
     height: auto !important;
-  }
-}
-*/
-@media (max-width: 767px) {
-  .content,
-  .main-content {
-    overflow-x: auto;     /* permite scroll horizontal */
-    -webkit-overflow-scrolling: touch;  /* scroll suave en iOS */
-  }
-
-  pre,
-  code,
-  figure,
-  .code-block,
-  .shell-block {
-    overflow-x: auto;      /* cada bloque puede scrollearse */
-    white-space: pre;      /* evita romper líneas */
   }
 }
