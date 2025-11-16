@@ -60,8 +60,10 @@
             <a href="#pymwemu">MWEMU from python scripts</a>
             <ul>
                 <li><a href="#pyinstall">pymwemu instalation</a></li>
-                <li><a href="#pyfirststeps">first steps</a></li>
+                <li><a href="#pyconfigure">instantiate and configure emulator</a></li>
+                <li><a href="#pymaps">loading maps</a></li>
                 <li><a href="#pyload">loading ELF PE or shellcodes</a></li>
+                <li><a href="#pybuffers">creating buffers</a></li>
                 <li><a href="#pycontext">prepare context</a></li>
                 <li><a href="#pyemu">start emulation</a></li>
             </ul>
@@ -1387,8 +1389,8 @@ Entry point pointing to .text 0x401000
           </p>
         </section>
 
-        <section id="pyfirststeps">
-          <h2>first steps</h2>
+        <section id="pyconfigure">
+          <h2>Instantiate and Configure the Emulator</h2>
           <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
           <p>Then there are some initial configurations you can do detailed later.</p>
           <p>
@@ -1398,6 +1400,7 @@ Entry point pointing to .text 0x401000
             &gt;&gt;&gt; import pymwemu
             Initialized logging
             &gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
+            &gt;&gt;&gt; # then there are some initial configurations, for instance:
             &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
             &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
             &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
@@ -1407,36 +1410,98 @@ Entry point pointing to .text 0x401000
               </code></pre>
             </figure>
           </p>
+          <p>All the configurations possible:</p>
+          <ul>
+                <li><p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p></li>
+                <li><p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p></li>
+                <li><p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() / bytearray()</p></li>
+                <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> use this if you need to add extra modules</p></li>
+          </ul>
+        </section>
+
+        <section id="pymaps">
+          <h2>Loading Maps</h2>
+          <p>In most of cases you will need to load all the Windows OS simulation part, to have all the PEB+TEB+LDR linkedlist and WinAPI infra.</p>
+          <p>For doing this you can use <code>emu.load_maps(folder:str)</code></p>
+          <p>If you are going to emulate pure assembly, with no api calls, and no access to windows structures, you don't need to load the maps.</p>
+          <p>So does if you are emulating linux elf64 or shellcodes (remember, elf64 is not well suported for now)</p>
+          <p>Example:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Python Console</figcaption>
+              <pre><code>
+            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
+            loading memory maps
+            dll_path: /home/sha0/src/mwemu/maps/maps64//ntdll.dll dll: ntdll.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//kernel32.dll dll: kernel32.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//kernelbase.dll dll: kernelbase.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//iphlpapi.dll dll: iphlpapi.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//ws2_32.dll dll: ws2_32.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//advapi32.dll dll: advapi32.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//comctl32.dll dll: comctl32.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//winhttp.dll dll: winhttp.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//wininet.dll dll: wininet.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//dnsapi.dll dll: dnsapi.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//shell32.dll dll: shell32.dll
+            dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
+            &gt;&gt;&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>Note that this need to have the maps, so git clone the repo:</p>
+          <p>
+              <figure class="shell-block">
+                <figcaption>Shell</figcaption>
+                <pre><code>
+                git clone https://github.com/sha0coder/mwemu.git 
+                </code></pre>
+            </figure>
+          </p>
         </section>
 
         <section id="pyload">
           <h2>loading ELF, PE, or shellcodes</h2>
           <p></p>
           <ul>
-              <li><p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p></li>
               <li><p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p></li>
               <li><p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() / bytearray()</p></li>
-              <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code></p></li>
           </ul>
-          <p>It's necesary loading the maps (load_maps), only if you need the windows simulation, for instance an exe that is calling APIs like most of exe's do even windows shellcodes also need ldr and winpi. But for pure assembly or linux shellcodes (elf64 is not totally suported, and elf32 is not used nowadays)</p>
 
           <p>Example:</p>
           <p>
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
               <pre><code>
-            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps32/') # or maps64 for emulating 64bits. If its linux64 shellcode maps are not needed.
             &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
-            &gt;&gt;&gt;
-            &gt;&gt;&gt;
             &gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
         </section>
 
-                <li><a href="#pycontext">prepare context</a></li>
-                <li><a href="#pyemu">start emulation</a></li>
+        <section id="pybuffers">
+          <h2>Creating Buffers</h2>
+          <p>You can load sections from disk to the emulator's virtual memory, and also can allocate buffers.</p>
+          <ul>
+              <li><p><code>emu.alloc(name:str, size:int) -&gt; int</code> allocate an space.</p></li>
+              <li><p><code>emu.alloc_at(name:str, addr:int, size: int)</code> this allows you to reserve a buffer in a specific position.</p></li>
+               <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> you can load extra sections from disk to specific addresses.</p></li>
+          </ul>
+
+          <p>Example:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Python Console</figcaption>
+              <pre><code>
+            &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
+            &gt;&gt;&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+
+
 
         <section id="libmwemu">
           <h2>MWEMU for Rust apps</h2>
