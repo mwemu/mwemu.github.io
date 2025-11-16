@@ -853,6 +853,30 @@ Entry point pointing to .text 0x401000
             </figure>
           </p>
           <p>We can see map name, start address, end address and size in bytes.</p>
+          <p>Other memory related commands:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            m ...................... memory maps
+            ms ..................... memory filtered by keyword string
+            ma ..................... memory allocs
+            mc ..................... memory create map
+            mn ..................... memory name of an address
+            ml ..................... memory load file content to map
+            mr ..................... memory read, speficy ie: dword ptr [esi]
+            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+            mwb .................... memory write bytes, input spaced bytes
+            md ..................... memory dump
+            mrd .................... memory read dwords
+            mrq .................... memory read qwords
+            mds .................... memory dump string
+            mdw .................... memory dump wide string
+            mdd .................... memory dump to disk
+            mdda ................... memory dump all allocations to disk
+            mt ..................... memory test
+              </code></pre>
+            </figure>
           <p></p>
         </section>
 
@@ -961,6 +985,7 @@ Entry point pointing to .text 0x401000
             bmw .................... breakpoint on write memory
             bmx .................... breakpoint on execute memory
             bcmp ................... break on next cmp or test instruction
+            bc ..................... clear breakpoint
               </code></pre>
             </figure>
           </p>
@@ -1030,8 +1055,8 @@ Entry point pointing to .text 0x401000
           <p>MWEMU provides several commands to view and query the LDR.</p>
           <ul>
               <li><p>"ldr" command is the way of viewing the LDR contents.</p></li>
-              <li><p>"iat" comamnd allows to find an specified api name in all the iat's of every linked module.</p></li>
-              <li><p>"iatx" If we have an address and we want to know which api name is, this command does the address to name query.</p></li>
+              <li><p>"iat" comamnd allows to find an specified api name in all the IAT's of every linked module.</p></li>
+              <li><p>"iatx" If we have an address and we want to know which API name is, this command does the address to name query.</p></li>
               <li><p>"iatd" command dump the full IAT of a specified module.</p></li>
           </ul>
           <p>
@@ -1057,8 +1082,257 @@ Entry point pointing to .text 0x401000
             </figure>
           </p>
         </section>
+
+        <section id="dtcmd">
+          <h2>View Structures</h2>
+          <p>The windows debugger windbg has a unique feature that is dt command to see information about structures, is quite useful and uniq.</p>
+          <p>MWEMU implements a similar dt command but for specific structures, that could be useful in some situations.</p>
+          <p>Let's use dt to inspect PEB structure.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;dt
+            structure=&gt;peb
+            address=&gt;0x7ffdf000
+            PEB {
+                reserved1: [
+                    0x0,
+                    0x0,
+                ],
+                being_debugged: 0x0,
+                reserved2: 0x0,
+                reserved3: [
+                    0xffffffff,
+                    0x400000,
+                ],
+                ldr: 0x77647880,
+                process_parameters: 0x2c1118,
+                reserved4: [
+                    0x0,
+                    0x2c0000,
+                    0x77647380,
+                ],
+                alt_thunk_list_ptr: 0x0,
+                reserved5: 0x0,
+                reserved6: 0x6,
+                reserved7: 0x773cd568,
+                reserved8: 0x0,
+                alt_thunk_list_ptr_32: 0x0,
+                reserved9: [
+                    0x0,
+            ...
+              </code></pre>
+            </figure>
+          </p>
+          <p>Let's use dt to inspect PEB_LDR_DATA structure.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;dt
+            structure=&gt;PEB_LDR_DATA
+            address=&gt;0x77647880
+            PebLdrData {
+                length: 0x30,
+                initializated: 0x1,
+                sshandle: 0x0,
+                in_load_order_module_list: ListEntry {
+                    flink: 0x2c18b8,
+                    blink: 0x2cff48,
+                },
+                in_memory_order_module_list: ListEntry {
+                    flink: 0x2c18c0,
+                    blink: 0x2cff50,
+                },
+                in_initialization_order_module_list: ListEntry {
+                    flink: 0x2c1958,
+                    blink: 0x2d00d0,
+                },
+                entry_in_progress: ListEntry {
+                    flink: 0x0,
+                    blink: 0x0,
+                },
+            }
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>Let's use dt to inspect LDR_DATA_TABLE_ENTRY structure, that represents one LDR entry in the linked list of a specific linked module.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            =&gt;dt
+            structure=&gt;LDR_DATA_TABLE_ENTRY
+            address=&gt;0x2c18c0
+            LdrDataTableEntry {
+                reserved1: [
+                    0x2c1950,
+                    0x77647894,
+                ],
+                in_memory_order_module_links: ListEntry {
+                    flink: 0x0,
+                    blink: 0x0,
+                },
+                reserved2: [
+                    0x0,
+                    0x400000,
+                ],
+                dll_base: 0x4014e0,
+                entry_point: 0x1d000,
+                reserved3: 0x40003e,
+                full_dll_name: 0x2c1716,
+                reserved4: [
+                    0x0,
+                    0x0,
+                    0x0,
+                    0x0,
+                    0x0,
+                    0x0,
+                    0x0,
+                    0x0,
+                ],
+                reserved5: [
+                    0x17440012,
+                    0x4000002c,
+                    0xffff0000,
+                ],
+                checksum: 0x1d6cffff,
+                reserved6: 0xa640002c,
+                time_date_stamp: 0xcdf27764,
+            }
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>Example: a malware is hiding something in an exception.</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            3307726 0x4f9673: push  ebp
+            3307727 0x4f9674: push  edx
+            3307728 0x4f9675: push  eax
+            3307729 0x4f9676: push  ecx
+            3307730 0x4f9677: push  ecx
+            3307731 0x4f9678: push  4F96F4h
+            3307732 0x4f967d: push  dword ptr fs:[0]
+            Reading SEH 0x0
+            -------
+            3307733 0x4f9684: mov   eax,[51068Ch]
+            --- console ---
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>Let's inspect exception structures:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            --- console ---
+            =&gt;r esp
+                    esp: 0x22de98
+            =&gt;dt
+            structure=&gt;cppeh_record
+            address=&gt;0x22de98
+            CppEhRecord {
+                old_esp: 0x0,
+                exc_ptr: 0x4f96f4,
+                next: 0xfffffffe,
+                exception_handler: 0xfffffffe,
+                scope_table: PScopeTableEntry {
+                    enclosing_level: 0x278,
+                    filter_func: 0x51068c,
+                    handler_func: 0x288,
+                },
+                try_level: 0x288,
+            }
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+          <p>And here we have the error routine 0x4f96f4 and the filter 0x51068c.</p>
+        </section>
+
+        <section id="viewcmd">
+          <h2>View Data</h2>
+          <p>There are multiple commands to view data, but currently I'm using the "r2 addr" command which is better bot for code and data. Note that r2 command executes the radare2 and transfer the memory map of the selected address, and sync radare2 with mwemu, but this command needs to have installed radare2 in the path, for instance from the git. More details on <a href="#r2cmd">radare2</a> chapter. It worth to install radare2.</p>
+
+
+          <p>Commands for displaying information:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            mr ..................... memory read, speficy ie: dword ptr [esi]
+            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+            mwb .................... memory write bytes, input spaced bytes
+            md ..................... memory dump
+            mrd .................... memory read dwords
+            mrq .................... memory read qwords
+            mds .................... memory dump string
+            mdw .................... memory dump wide string
+            mdd .................... memory dump to disk
+            mdda ................... memory dump all allocations to disk
+            mt ..................... memory test
+              </code></pre>
+            </figure>
+          </p>
+          <p>Example with md command:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            --- console ---
+            =&gt;md
+            address=&gt;0x329ec8
+            0x329ec8: 68 74 74 70 3a 2f 2f 73 6f 6d 65 74 68 69 6e 67     http://something
+            0x329ed8: 2e 63 6f 6d 2f 00 00 00 00 00 00 00 00 00 00 00     .com/...........
+            0x329ee8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            0x329ef8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            0x329f08: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            0x329f18: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            0x329f28: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            0x329f38: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+            =&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+        <section id="r2cmd">
+          <h2>Radare2 Command</h2>
+          <p>This command gives alot of power to MWEMU because we can use radare2 from inside of a MWEMU emualtion moment.</p>
+
+          <p>Note that this executes another program (also free software) named radare2 that has to be installed and accesible from the path.</p>
+          <p><img src="pics/radare2.png" width=20%></p>
+          <p>The instalation is simple I will explan it later.</p>
+          <p>Spawning radare over a data address:</p>
+          <p><img src="pics/r2_px.png" width=80%></p>
+          <p>Using q to return form r2 prompt to mwemu prompt and spawn radare again with a code address:</p>
+          <p><img src="pics/r2_code.png" width=80%></p>
+          <p>Radare are recognizing functions and decompiling them with the multiple decompilers, even we can use decai for AI based decompiled in python etc.</p>
+          <p>More info specific of radare commands check the r2book: <a href="https://book.rada.re/" target="_blank">https://book.rada.re/</a></p>
+          <p>Regarding the radare2 installation:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+              ❯❯❯ git clone https://github.com/radareorg/radare2.git
+              ❯❯❯ cd radare2
+              ❯❯❯ sys/install.sh
+              </code></pre>
+            </figure>
+          </p>
+          <p>The install.sh script does all the installation, It will prompt sudo to copy binaries to folders that are on the path.</p>
+          <p>If radare2 is in the path, It would be possible to trigger it from mwemu r2 command.</p>
+        </section>
 </div>
 </body>
 </html>
+
+
 
 
