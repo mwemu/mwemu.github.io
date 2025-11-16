@@ -1389,7 +1389,8 @@ Entry point pointing to .text 0x401000
 
         <section id="pyfirststeps">
           <h2>first steps</h2>
-          <p></p>
+          <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
+          <p>Then there are some initial configurations you can do detailed later.</p>
           <p>
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
@@ -1400,49 +1401,49 @@ Entry point pointing to .text 0x401000
             &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
             &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
             &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
-            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps32/') # or maps64 for emulating 64bits. If its linux64 shellcode maps are not needed.
             loading memory maps
-            &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
             &gt;&gt;&gt;
-            &gt;&gt;&gt;
-            &gt;&gt;&gt;
-
-
-              </code></pre>
-            </figure>
-          </p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
-            ❯❯❯ pip install --upgrade pip
-            ❯❯❯ pip3 install --upgrade pip
-            ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-            ❯❯❯ pip install pymwemu
-            ❯❯❯ pip3 install pymwemu
-              </code></pre>
-            </figure>
-          </p>
-          <p>To verify the installation we can import the module in python console</p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
-            ❯❯❯ python3
-            Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
-            Type "help", "copyright", "credits" or "license" for more information.
-            &gt;&gt;&gt; import pymwemu
-            Initialized logging
             &gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
         </section>
 
+        <section id="pyload">
+          <h2>loading ELF, PE, or shellcodes</h2>
+          <p></p>
+          <ul>
+              <li><p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p></li>
+              <li><p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p></li>
+              <li><p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() / bytearray()</p></li>
+              <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code></p></li>
+          </ul>
+          <p>It's necesary loading the maps (load_maps), only if you need the windows simulation, for instance an exe that is calling APIs like most of exe's do even windows shellcodes also need ldr and winpi. But for pure assembly or linux shellcodes (elf64 is not totally suported, and elf32 is not used nowadays)</p>
 
-                <li><a href="#pyinstance">instance emu object</a></li>
-                <li><a href="#pyload">loading ELF PE or shellcodes</a></li>
+          <p>Example:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Python Console</figcaption>
+              <pre><code>
+            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps32/') # or maps64 for emulating 64bits. If its linux64 shellcode maps are not needed.
+            &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
+            &gt;&gt;&gt;
+            &gt;&gt;&gt;
+            &gt;&gt;&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
                 <li><a href="#pycontext">prepare context</a></li>
                 <li><a href="#pyemu">start emulation</a></li>
+
+        <section id="libmwemu">
+          <h2>MWEMU for Rust apps</h2>
+          <p>All is implemented in libmwemu, mwemu is just a flags parser that uses libmwemu, same with pyhon bindings on pymwemu, so having said that, from rust you can use all the power of MWEMU, and most of the objects are public so you have a good control of the emulator.</p>
+          <p><a href="https://docs.rs/libmwemu/0.23.0/libmwemu/" target="_blank">https://docs.rs/libmwemu/0.23.0/libmwemu/</a></p>
+          <p><a href="https://crates.io/crates/libmwemu" target="_blank">https://crates.io/crates/libmwemu</a></p>
+        </section>
 
 </div>
 </body>
