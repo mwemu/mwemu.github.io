@@ -57,17 +57,17 @@
             </ul>
         </li>
         <li>
-            <a href="#pymwemu">Python3</a>
+            <a href="#pymwemu">MWEMU from python scripts</a>
             <ul>
                 <li><a href="#pyinstall">pymwemu instalation</a></li>
-                <li><a href="#pyinstance">instance emu object</a></li>
+                <li><a href="#pyfirststeps">first steps</a></li>
                 <li><a href="#pyload">loading ELF PE or shellcodes</a></li>
                 <li><a href="#pycontext">prepare context</a></li>
                 <li><a href="#pyemu">start emulation</a></li>
             </ul>
         </li>
         <li>
-            <a href="#libmwemu">Rust</a>
+            <a href="#libmwemu">MWEMU from Rust apps</a>
             <ul>
                 <li><a href="#crateinstall">rust crate instalation</a></li>
                 <li><a href="#crateinstance">instance emu object</a></li>
@@ -688,7 +688,7 @@ Entry point pointing to .text 0x401000
           <p>press h to see the available commands:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;h
             --- help ---
@@ -769,7 +769,7 @@ Entry point pointing to .text 0x401000
           <p>Use r for viewing all the registers, or r [reg] to see specific register.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
 
             =&gt;r rsp
@@ -797,7 +797,7 @@ Entry point pointing to .text 0x401000
           </p>
           <p>
             <figure class="shell-block">
-                <figcaption>Shell</figcaption>
+                <figcaption>mwemu console</figcaption>
                 <pre><code>
             =&gt;rc rax
             command not found, type h
@@ -818,7 +818,7 @@ Entry point pointing to .text 0x401000
           <p>press m to list all the memory maps and addresses.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;m
             --- maps ---
@@ -856,7 +856,7 @@ Entry point pointing to .text 0x401000
           <p>Other memory related commands:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             m ...................... memory maps
             ms ..................... memory filtered by keyword string
@@ -885,7 +885,7 @@ Entry point pointing to .text 0x401000
           <p>if the code is using an address and you want more details, use command mn.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;mn
             address=&gt;0x140000008
@@ -909,7 +909,7 @@ Entry point pointing to .text 0x401000
           </ul>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;ssa  (search string in all the maps)
             string=&gt;http://something.com/
@@ -963,7 +963,7 @@ Entry point pointing to .text 0x401000
           <p>Use command "b" to see the state of the 4 types of breakpoints.There are four commands to search.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;b
             break on address: []
@@ -976,7 +976,7 @@ Entry point pointing to .text 0x401000
           <p>Use these commands to set the breakpoints:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             b ...................... breakpoint list
             ba ..................... breakpoint on address
@@ -993,7 +993,7 @@ Entry point pointing to .text 0x401000
           <p><img src="pics/bpcmp.png" width="80%"></p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             --- console ---
             =&gt;bi
@@ -1033,7 +1033,7 @@ Entry point pointing to .text 0x401000
           <p>For instance, we want to emulate quiclky the first 200 insturctions, and then enable the verbosity, this could be dont with -V, but let's do it from the console with "sv" command:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
             ...
@@ -1061,7 +1061,7 @@ Entry point pointing to .text 0x401000
           </ul>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             --- console ---
             =&gt;ldr
@@ -1090,7 +1090,7 @@ Entry point pointing to .text 0x401000
           <p>Let's use dt to inspect PEB structure.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;dt
             structure=&gt;peb
@@ -1128,7 +1128,7 @@ Entry point pointing to .text 0x401000
           <p>Let's use dt to inspect PEB_LDR_DATA structure.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;dt
             structure=&gt;PEB_LDR_DATA
@@ -1161,7 +1161,7 @@ Entry point pointing to .text 0x401000
           <p>Let's use dt to inspect LDR_DATA_TABLE_ENTRY structure, that represents one LDR entry in the linked list of a specific linked module.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             =&gt;dt
             structure=&gt;LDR_DATA_TABLE_ENTRY
@@ -1209,7 +1209,7 @@ Entry point pointing to .text 0x401000
           <p>Example: a malware is hiding something in an exception.</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             3307726 0x4f9673: push  ebp
             3307727 0x4f9674: push  edx
@@ -1229,7 +1229,7 @@ Entry point pointing to .text 0x401000
           <p>Let's inspect exception structures:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             --- console ---
             =&gt;r esp
@@ -1264,7 +1264,7 @@ Entry point pointing to .text 0x401000
           <p>Commands for displaying information:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             mr ..................... memory read, speficy ie: dword ptr [esi]
             mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
@@ -1283,7 +1283,7 @@ Entry point pointing to .text 0x401000
           <p>Example with md command:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
             --- console ---
             =&gt;md
@@ -1318,7 +1318,7 @@ Entry point pointing to .text 0x401000
           <p>Regarding the radare2 installation:</p>
           <p>
             <figure class="shell-block">
-              <figcaption>Shell</figcaption>
+              <figcaption>mwemu console</figcaption>
               <pre><code>
               ❯❯❯ git clone https://github.com/radareorg/radare2.git
               ❯❯❯ cd radare2
@@ -1329,6 +1329,121 @@ Entry point pointing to .text 0x401000
           <p>The install.sh script does all the installation, It will prompt sudo to copy binaries to folders that are on the path.</p>
           <p>If radare2 is in the path, It would be possible to trigger it from mwemu r2 command.</p>
         </section>
+
+        <section id="pymwemu">
+          <h1>MWEMU from python scripts</h1>
+          <p>This is probably the most practical use-case of MWEMU, using the pymwemu python module.</p>
+        </section>
+
+        <section id="pyinstall">
+          <h2>pymwemu Instalation</h2>
+          <p>They easiest way to install this is using pip, the package is published at pypi <a href="https://pypi.org/project/pymwemu/" target="_blank">https://pypi.org/project/pymwemu/</a></p>
+          <p>For using latest version use git, but it's more tricky to install, because you need rust, cargo and maturin.</p>
+          <p>It's precompiled for linux 64bits, so in linux in theory you don't need to install rust first.</p>
+          <p>In linux you just do:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>mwemu console</figcaption>
+              <pre><code>
+            ❯❯❯ pip3 install pymwemu --break-system-packages
+              </code></pre>
+            </figure>
+          </p>
+          <p>In mac, windows or if the pip requires it, install first rust.</p>
+          <p>Install rust from rustup, make sure cargo is on the path, and do pip or pip3:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>mwemu console</figcaption>
+              <pre><code>
+            ❯❯❯ pip install --upgrade pip
+            ❯❯❯ pip3 install --upgrade pip
+            ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            ❯❯❯ pip install pymwemu
+            ❯❯❯ pip3 install pymwemu
+              </code></pre>
+            </figure>
+          </p>
+          <p>In mac, if there is a problem with !tapi-tbd the solution is:</p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            ❯❯❯ sudo xcode-select --switch /Library/Developer/CommandLineTools
+              </code></pre>
+            </figure>
+          </p>
+          <p>To verify the installation we can import the module in python console.</p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            ❯❯❯ python3
+            Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
+            Type "help", "copyright", "credits" or "license" for more information.
+            &gt;&gt;&gt; import pymwemu
+            Initialized logging
+            &gt;&gt;&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+        <section id="pyfirststeps">
+          <h2>first steps</h2>
+          <p></p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Python Console</figcaption>
+              <pre><code>
+            &gt;&gt;&gt; import pymwemu
+            Initialized logging
+            &gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
+            &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
+            &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
+            &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
+            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps32/') # or maps64 for emulating 64bits. If its linux64 shellcode maps are not needed.
+            loading memory maps
+            &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
+            &gt;&gt;&gt;
+            &gt;&gt;&gt;
+            &gt;&gt;&gt;
+
+
+              </code></pre>
+            </figure>
+          </p>
+          <p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            ❯❯❯ pip install --upgrade pip
+            ❯❯❯ pip3 install --upgrade pip
+            ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            ❯❯❯ pip install pymwemu
+            ❯❯❯ pip3 install pymwemu
+              </code></pre>
+            </figure>
+          </p>
+          <p>To verify the installation we can import the module in python console</p>
+            <figure class="shell-block">
+              <figcaption>Shell</figcaption>
+              <pre><code>
+            ❯❯❯ python3
+            Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
+            Type "help", "copyright", "credits" or "license" for more information.
+            &gt;&gt;&gt; import pymwemu
+            Initialized logging
+            &gt;&gt;&gt;
+              </code></pre>
+            </figure>
+          </p>
+        </section>
+
+
+                <li><a href="#pyinstance">instance emu object</a></li>
+                <li><a href="#pyload">loading ELF PE or shellcodes</a></li>
+                <li><a href="#pycontext">prepare context</a></li>
+                <li><a href="#pyemu">start emulation</a></li>
+
 </div>
 </body>
 </html>

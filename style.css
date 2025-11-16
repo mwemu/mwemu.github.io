@@ -167,4 +167,20 @@ figcaption {
   scrollbar-gutter: stable both-edges;
 }
 
+/* --- FIX PARA MÓVIL --- */
+@media (max-width: 767px) {
+  .content,
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 20px;      
+    box-sizing: border-box;
+  }
 
+  .sidebar {
+    width: 100% !important;
+    max-width: none !important;
+    position: relative !important;
+    height: auto !important;
+  }
+}
