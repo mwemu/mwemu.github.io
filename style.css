@@ -156,6 +156,10 @@ figcaption {
   color: #ddd;
   margin: 0;
   padding: 8px 10px;
+
+  overflow-x: auto;        /* permite deslizar horizontal */
+  white-space: pre;        /* NO partir líneas */
+  -webkit-overflow-scrolling: touch; /* scroll suave en iPhone */
 }
 
 .sidebar::-webkit-scrollbar,
