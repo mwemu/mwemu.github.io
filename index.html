@@ -464,16 +464,16 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-              ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337
-        Finished `release` profile [optimized] target(s) in 0.08s
-        Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
-        static elf64 detected.
-        Entry point pointing to .text 0x401000
-        --- console ---
-        =&gt;r rax
-            rax: 0x123 291
-        =&gt;r rbx
-            rbx: 0x1337 4919
+❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337
+Finished `release` profile [optimized] target(s) in 0.08s
+Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
+static elf64 detected.
+Entry point pointing to .text 0x401000
+--- console ---
+=&gt;r rax
+rax: 0x123 291
+=&gt;r rbx
+rbx: 0x1337 4919
               </code></pre>
             </figure>
           </p>
@@ -485,45 +485,45 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -R rax,rsp
-               ...
-            57 0x4010a2: rcr   al,1
-                58 rax: 0x82f61001 2197164033
-                58 rsp: 0x7fffffffe270
-            58 0x4010a4: rcr   ax,1
-                59 rax: 0x82f60800 2197161984
-                59 rsp: 0x7fffffffe270
-            59 0x4010a7: rcr   eax,1
-                60 rax: 0xc17b0400 3246064640
-                60 rsp: 0x7fffffffe270
-            60 0x4010a9: rcr   rax,1
-                61 rax: 0x60bd8200 1623032320
-                61 rsp: 0x7fffffffe270
-            61 0x4010ac: rcr   al,cl
-                62 rax: 0x60bd8200 1623032320
-                62 rsp: 0x7fffffffe270
-            62 0x4010ae: rcr   ax,cl
-                63 rax: 0x60bd8200 1623032320
-                63 rsp: 0x7fffffffe270
-            63 0x4010b1: rcr   eax,cl
-                64 rax: 0x60bd8200 1623032320
-                64 rsp: 0x7fffffffe270
-            64 0x4010b3: rcr   rax,cl
-                65 rax: 0x60bd8200 1623032320
-                65 rsp: 0x7fffffffe270
-            65 0x4010b6: mov   eax,90909090h ; 0x90909090
-                66 rax: 0x90909090 2425393296
-                66 rsp: 0x7fffffffe270
-            66 0x4010bb: mov   edx,90909090h ; 0x90909090
-                67 rax: 0x90909090 2425393296
-                67 rsp: 0x7fffffffe270
-            67 0x4010c0: mov   ecx,0 ; 0x0
-                68 rax: 0x90909090 2425393296
-                68 rsp: 0x7fffffffe270
-            68 0x4010c5: shrd  eax,edx,cl
-                69 rax: 0x90909090 2425393296
-                69 rsp: 0x7fffffffe270
-            69 0x4010c8: ret ; ret-addr: 0x0 ret-value: 0x90909090
+❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -R rax,rsp
+...
+57 0x4010a2: rcr   al,1
+58 rax: 0x82f61001 2197164033
+58 rsp: 0x7fffffffe270
+58 0x4010a4: rcr   ax,1
+59 rax: 0x82f60800 2197161984
+59 rsp: 0x7fffffffe270
+59 0x4010a7: rcr   eax,1
+60 rax: 0xc17b0400 3246064640
+60 rsp: 0x7fffffffe270
+60 0x4010a9: rcr   rax,1
+61 rax: 0x60bd8200 1623032320
+61 rsp: 0x7fffffffe270
+61 0x4010ac: rcr   al,cl
+62 rax: 0x60bd8200 1623032320
+62 rsp: 0x7fffffffe270
+62 0x4010ae: rcr   ax,cl
+63 rax: 0x60bd8200 1623032320
+63 rsp: 0x7fffffffe270
+63 0x4010b1: rcr   eax,cl
+64 rax: 0x60bd8200 1623032320
+64 rsp: 0x7fffffffe270
+64 0x4010b3: rcr   rax,cl
+65 rax: 0x60bd8200 1623032320
+65 rsp: 0x7fffffffe270
+65 0x4010b6: mov   eax,90909090h ; 0x90909090
+66 rax: 0x90909090 2425393296
+66 rsp: 0x7fffffffe270
+66 0x4010bb: mov   edx,90909090h ; 0x90909090
+67 rax: 0x90909090 2425393296
+67 rsp: 0x7fffffffe270
+67 0x4010c0: mov   ecx,0 ; 0x0
+68 rax: 0x90909090 2425393296
+68 rsp: 0x7fffffffe270
+68 0x4010c5: shrd  eax,edx,cl
+69 rax: 0x90909090 2425393296
+69 rsp: 0x7fffffffe270
+69 0x4010c8: ret ; ret-addr: 0x0 ret-value: 0x90909090
               </code></pre>
             </figure>
           </p>
@@ -541,7 +541,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -c 494253 -S 490000
+❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -c 494253 -S 490000
               </code></pre>
             </figure>
           </p>
@@ -550,7 +550,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -i 'qword ptr [rsp + 0x8]'
+❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -i 'qword ptr [rsp + 0x8]'
               </code></pre>
             </figure>
           </p>
@@ -564,7 +564,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
+❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
               </code></pre>
             </figure>
           </p>
@@ -574,7 +574,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8 -V 191
+❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8 -V 191
               </code></pre>
             </figure>
           </p>
@@ -583,7 +583,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8
+❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8
               </code></pre>
             </figure>
           </p>
@@ -597,7 +597,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-               ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin --call
+❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin --call
               </code></pre>
             </figure>
           </p>
@@ -613,76 +613,76 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-            ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
-            dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
-            PE64 header detected.
-            loading memory maps
-            dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
-            dll_path: maps/maps64//kernelbase.dll dll: kernelbase.dll
-            dll_path: maps/maps64//iphlpapi.dll dll: iphlpapi.dll
-            dll_path: maps/maps64//ws2_32.dll dll: ws2_32.dll
-            dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
-            dll_path: maps/maps64//comctl32.dll dll: comctl32.dll
-            dll_path: maps/maps64//winhttp.dll dll: winhttp.dll
-            dll_path: maps/maps64//wininet.dll dll: wininet.dll
-            dll_path: maps/maps64//dnsapi.dll dll: dnsapi.dll
-            dll_path: maps/maps64//shell32.dll dll: shell32.dll
-            dll_path: maps/maps64//shlwapi.dll dll: shlwapi.dll
-            dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
-            dll_path: maps/maps64//user32.dll dll: user32.dll
-            dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
-            dll_path: maps/maps64//oleaut32.dll dll: oleaut32.dll
-            dll_path: maps/maps64//gdi32.dll dll: gdi32.dll
-            dll_path: maps/maps64//shell32.dll dll: shell32.dll
-            dll_path: maps/maps64//version.dll dll: version.dll
-            dll_path: maps/maps64//ole32.dll dll: ole32.dll
-            IAT Bound.
-            Delay load binding started ...
-            delay load bound!
-            entry point at 0x14072ce04
-            base: 0x140000000
-            102063740 0x14072d2ac: jne   000000014072D2A4h taken
-            102063741 0x14072d2a4: xor   [rax],dl
-                mem_trace: pos = 102063741 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cb value = 0x59 name = 'exe64win_enigma593000'
-                mem_trace: pos = 102063741 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cb value = 0x54 name = 'exe64win_enigma593000'
-            102063742 0x14072d2a6: inc   rax
-            102063743 0x14072d2a9: dec   rcx
-            102063744 0x14072d2ac: jne   000000014072D2A4h taken
-            102063745 0x14072d2a4: xor   [rax],dl
-                mem_trace: pos = 102063745 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cc value = 0x44 name = 'exe64win_enigma593000'
-                mem_trace: pos = 102063745 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cc value = 0x49 name = 'exe64win_enigma593000'
-            102063746 0x14072d2a6: inc   rax
-            102063747 0x14072d2a9: dec   rcx
-            102063748 0x14072d2ac: jne   000000014072D2A4h taken
-            102063749 0x14072d2a4: xor   [rax],dl
-                mem_trace: pos = 102063749 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cd value = 0x42 name = 'exe64win_enigma593000'
-                mem_trace: pos = 102063749 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cd value = 0x4f name = 'exe64win_enigma593000'
-            102063750 0x14072d2a6: inc   rax
-            102063751 0x14072d2a9: dec   rcx
-            102063752 0x14072d2ac: jne   000000014072D2A4h taken
-            102063753 0x14072d2a4: xor   [rax],dl
-                mem_trace: pos = 102063753 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4ce value = 0x43 name = 'exe64win_enigma593000'
-                mem_trace: pos = 102063753 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4ce value = 0x4e name = 'exe64win_enigma593000'
-            102063754 0x14072d2a6: inc   rax
-            102063755 0x14072d2a9: dec   rcx
-            102063756 0x14072d2ac: jne   000000014072D2A4h not taken
-            102063757 0x14072d2b2: jmp   000000014072D2BBh
-                mem_trace: pos = 102063758 rip = 14072d2bb op = read bits = 32 address = 0x14000303c value = 0x80 name = 'exe64win_enigma3000'
-            102063758 0x14072d2bb: mov   edi,[rsi+3Ch] ; 0x80
-                mem_trace: pos = 102063759 rip = 14072d2be op = read bits = 32 address = 0x140003110 value = 0x571000 name = 'exe64win_enigma3000'
-            102063759 0x14072d2be: mov   edi,[rdi+rsi+90h] ; 0x571000
-            102063760 0x14072d2c5: add   rdi,rsi
-            102063761 0x14072d2c8: cmp   dword ptr [rdi+0Ch],0
-                mem_trace: pos = 102063761 rip = 14072d2c8 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
-                cmp: 0x5722ac &gt; 0x0
-            102063762 0x14072d2cc: je    000000014072D370h not taken
-                mem_trace: pos = 102063763 rip = 14072d2d2 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
-            102063763 0x14072d2d2: mov   ecx,[rdi+0Ch] ; 0x5722ac
-            102063764 0x14072d2d5: add   rcx,rsi
-            -------
-            102063765 0x14072d2d8: call  qword ptr [rbp+5960B4h]
-            --- console ---
-            =&gt;
+❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
+dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
+PE64 header detected.
+loading memory maps
+dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
+dll_path: maps/maps64//kernelbase.dll dll: kernelbase.dll
+dll_path: maps/maps64//iphlpapi.dll dll: iphlpapi.dll
+dll_path: maps/maps64//ws2_32.dll dll: ws2_32.dll
+dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
+dll_path: maps/maps64//comctl32.dll dll: comctl32.dll
+dll_path: maps/maps64//winhttp.dll dll: winhttp.dll
+dll_path: maps/maps64//wininet.dll dll: wininet.dll
+dll_path: maps/maps64//dnsapi.dll dll: dnsapi.dll
+dll_path: maps/maps64//shell32.dll dll: shell32.dll
+dll_path: maps/maps64//shlwapi.dll dll: shlwapi.dll
+dll_path: maps/maps64//kernel32.dll dll: kernel32.dll
+dll_path: maps/maps64//user32.dll dll: user32.dll
+dll_path: maps/maps64//advapi32.dll dll: advapi32.dll
+dll_path: maps/maps64//oleaut32.dll dll: oleaut32.dll
+dll_path: maps/maps64//gdi32.dll dll: gdi32.dll
+dll_path: maps/maps64//shell32.dll dll: shell32.dll
+dll_path: maps/maps64//version.dll dll: version.dll
+dll_path: maps/maps64//ole32.dll dll: ole32.dll
+IAT Bound.
+Delay load binding started ...
+delay load bound!
+entry point at 0x14072ce04
+base: 0x140000000
+102063740 0x14072d2ac: jne   000000014072D2A4h taken
+102063741 0x14072d2a4: xor   [rax],dl
+mem_trace: pos = 102063741 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cb value = 0x59 name = 'exe64win_enigma593000'
+mem_trace: pos = 102063741 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cb value = 0x54 name = 'exe64win_enigma593000'
+102063742 0x14072d2a6: inc   rax
+102063743 0x14072d2a9: dec   rcx
+102063744 0x14072d2ac: jne   000000014072D2A4h taken
+102063745 0x14072d2a4: xor   [rax],dl
+mem_trace: pos = 102063745 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cc value = 0x44 name = 'exe64win_enigma593000'
+mem_trace: pos = 102063745 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cc value = 0x49 name = 'exe64win_enigma593000'
+102063746 0x14072d2a6: inc   rax
+102063747 0x14072d2a9: dec   rcx
+102063748 0x14072d2ac: jne   000000014072D2A4h taken
+102063749 0x14072d2a4: xor   [rax],dl
+mem_trace: pos = 102063749 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4cd value = 0x42 name = 'exe64win_enigma593000'
+mem_trace: pos = 102063749 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4cd value = 0x4f name = 'exe64win_enigma593000'
+102063750 0x14072d2a6: inc   rax
+102063751 0x14072d2a9: dec   rcx
+102063752 0x14072d2ac: jne   000000014072D2A4h taken
+102063753 0x14072d2a4: xor   [rax],dl
+mem_trace: pos = 102063753 rip = 14072d2a4 op = read bits = 8 address = 0x14072d4ce value = 0x43 name = 'exe64win_enigma593000'
+mem_trace: pos = 102063753 rip = 14072d2a4 op = write bits = 8 address = 0x14072d4ce value = 0x4e name = 'exe64win_enigma593000'
+102063754 0x14072d2a6: inc   rax
+102063755 0x14072d2a9: dec   rcx
+102063756 0x14072d2ac: jne   000000014072D2A4h not taken
+102063757 0x14072d2b2: jmp   000000014072D2BBh
+mem_trace: pos = 102063758 rip = 14072d2bb op = read bits = 32 address = 0x14000303c value = 0x80 name = 'exe64win_enigma3000'
+102063758 0x14072d2bb: mov   edi,[rsi+3Ch] ; 0x80
+mem_trace: pos = 102063759 rip = 14072d2be op = read bits = 32 address = 0x140003110 value = 0x571000 name = 'exe64win_enigma3000'
+102063759 0x14072d2be: mov   edi,[rdi+rsi+90h] ; 0x571000
+102063760 0x14072d2c5: add   rdi,rsi
+102063761 0x14072d2c8: cmp   dword ptr [rdi+0Ch],0
+mem_trace: pos = 102063761 rip = 14072d2c8 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
+cmp: 0x5722ac &gt; 0x0
+102063762 0x14072d2cc: je    000000014072D370h not taken
+mem_trace: pos = 102063763 rip = 14072d2d2 op = read bits = 32 address = 0x14057400c value = 0x5722ac name = 'exe64win_enigma3000'
+102063763 0x14072d2d2: mov   ecx,[rdi+0Ch] ; 0x5722ac
+102063764 0x14072d2d5: add   rcx,rsi
+-------
+102063765 0x14072d2d8: call  qword ptr [rbp+5960B4h]
+--- console ---
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -695,75 +695,75 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;h
-            --- help ---
-            q ...................... quit
-            cls .................... clear screen
-            h ...................... help
-            s ...................... stack
-            v ...................... vars
-            sv ..................... set verbose level 0, 1 or 2
-            r ...................... register show all
-            r reg .................. show reg
-            rc ..................... register change
-            f ...................... show all flags
-            fc ..................... clear all flags
-            fz ..................... toggle flag zero
-            fs ..................... toggle flag sign
-            c ...................... continue
-            b ...................... breakpoint list
-            ba ..................... breakpoint on address
-            bi ..................... breakpoint on instruction number
-            bmr .................... breakpoint on read memory
-            bmw .................... breakpoint on write memory
-            bmx .................... breakpoint on execute memory
-            bcmp ................... break on next cmp or test
-            bc ..................... clear breakpoint
-            n ...................... next instruction
-            eip .................... change eip
-            rip .................... change rip
-            push ................... push dword to the stack
-            pop .................... pop dword from stack
-            fpu .................... fpu view
-            md5 .................... check the md5 of a memory map
-            seh .................... view SEH
-            veh .................... view vectored execption pointer
-            m ...................... memory maps
-            ms ..................... memory filtered by keyword string
-            ma ..................... memory allocs
-            mc ..................... memory create map
-            mn ..................... memory name of an address
-            ml ..................... memory load file content to map
-            mr ..................... memory read, speficy ie: dword ptr [esi]
-            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
-            mwb .................... memory write bytes, input spaced bytes
-            md ..................... memory dump
-            mrd .................... memory read dwords
-            mrq .................... memory read qwords
-            mds .................... memory dump string
-            mdw .................... memory dump wide string
-            mdd .................... memory dump to disk
-            mdda ................... memory dump all allocations to disk
-            mt ..................... memory test
-            r2 [addr] .............. spawn radare2 console if it's isntalled
-            ss ..................... search string
-            sb ..................... search bytes
-            sba .................... search bytes in all the maps
-            ssa .................... search string in all the maps
-            ll ..................... linked list walk
-            d ...................... dissasemble
-            dt ..................... dump structure
-            pos .................... print current position
-            enter .................. step into
-            tr ..................... trace reg
-            trc .................... trace regs clear
-            ldr .................... show ldr linked list
-            iat .................... find api name in all iat's
-            iatx ................... addr to api name
-            iatd ................... dump the iat of specific module
-            dump ................... dump current state to disk
-            ---
-            =&gt;
+=&gt;h
+--- help ---
+q ...................... quit
+cls .................... clear screen
+h ...................... help
+s ...................... stack
+v ...................... vars
+sv ..................... set verbose level 0, 1 or 2
+r ...................... register show all
+r reg .................. show reg
+rc ..................... register change
+f ...................... show all flags
+fc ..................... clear all flags
+fz ..................... toggle flag zero
+fs ..................... toggle flag sign
+c ...................... continue
+b ...................... breakpoint list
+ba ..................... breakpoint on address
+bi ..................... breakpoint on instruction number
+bmr .................... breakpoint on read memory
+bmw .................... breakpoint on write memory
+bmx .................... breakpoint on execute memory
+bcmp ................... break on next cmp or test
+bc ..................... clear breakpoint
+n ...................... next instruction
+eip .................... change eip
+rip .................... change rip
+push ................... push dword to the stack
+pop .................... pop dword from stack
+fpu .................... fpu view
+md5 .................... check the md5 of a memory map
+seh .................... view SEH
+veh .................... view vectored execption pointer
+m ...................... memory maps
+ms ..................... memory filtered by keyword string
+ma ..................... memory allocs
+mc ..................... memory create map
+mn ..................... memory name of an address
+ml ..................... memory load file content to map
+mr ..................... memory read, speficy ie: dword ptr [esi]
+mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+mwb .................... memory write bytes, input spaced bytes
+md ..................... memory dump
+mrd .................... memory read dwords
+mrq .................... memory read qwords
+mds .................... memory dump string
+mdw .................... memory dump wide string
+mdd .................... memory dump to disk
+mdda ................... memory dump all allocations to disk
+mt ..................... memory test
+r2 [addr] .............. spawn radare2 console if it's isntalled
+ss ..................... search string
+sb ..................... search bytes
+sba .................... search bytes in all the maps
+ssa .................... search string in all the maps
+ll ..................... linked list walk
+d ...................... dissasemble
+dt ..................... dump structure
+pos .................... print current position
+enter .................. step into
+tr ..................... trace reg
+trc .................... trace regs clear
+ldr .................... show ldr linked list
+iat .................... find api name in all iat's
+iatx ................... addr to api name
+iatd ................... dump the iat of specific module
+dump ................... dump current state to disk
+---
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -776,27 +776,26 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-
-            =&gt;r rsp
-                rsp: 0x329f40
-            =&gt;r
-                rax: 0x0 0
-                rbx: 0x0 0
-                rcx: 0x0 0
-                rdx: 0x2f 47
-                rsi: 0x0 0
-                rdi: 0x0 0
-                rsp: 0x329f40
-                rbp: 0x329ff8
-                rip: 0x3c006e
-                r8 : 0x0 0
-                r9 : 0x0 0
-                r10: 0x0 0
-                r11: 0x0 0
-                r12: 0x0 0
-                r13: 0x0 0
-                r14: 0x0 0
-                r15: 0x0 0
+=&gt;r rsp
+    rsp: 0x329f40
+=&gt;r
+    rax: 0x0 0
+    rbx: 0x0 0
+    rcx: 0x0 0
+    rdx: 0x2f 47
+    rsi: 0x0 0
+    rdi: 0x0 0
+    rsp: 0x329f40
+    rbp: 0x329ff8
+    rip: 0x3c006e
+    r8 : 0x0 0
+    r9 : 0x0 0
+    r10: 0x0 0
+    r11: 0x0 0
+    r12: 0x0 0
+    r13: 0x0 0
+    r14: 0x0 0
+    r15: 0x0 0
               </code></pre>
             </figure>
           </p>
@@ -804,14 +803,14 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
                 <figcaption>mwemu console</figcaption>
                 <pre><code>
-            =&gt;rc rax
-            command not found, type h
-            =&gt;rc
-            register name=&gt;rax
-            value=&gt;0x1337
-            =&gt;r rax
-                rax: 0x1337 4919
-            =&gt;
+=&gt;rc rax
+command not found, type h
+=&gt;rc
+register name=&gt;rax
+value=&gt;0x1337
+=&gt;r rax
+    rax: 0x1337 4919
+=&gt;
                 </code></pre>
             </figure>
           </p>
@@ -825,35 +824,35 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;m
-            --- maps ---
-            oleaut32.data       0x7ff001dc7000 - 0x7ff001dca000 (12288)
-            ldr                 0x7ff000000000 - 0x7ff0000000b4 (180)
-            ntdll.pe            0x7ff000003000 - 0x7ff000004000 (4096)
-            kernelbase.text     0x7ff0002b6000 - 0x7ff0003c8000 (1122304)
-            ws2_32.didat        0x7ff00060f000 - 0x7ff000610000 (4096)
-            advapi32.pe         0x7ff000623000 - 0x7ff000624000 (4096)
-            winhttp.text        0x7ff000960000 - 0x7ff000a0f000 (716800)
-            iphlpapi.text       0x7ff00057f000 - 0x7ff0005a8000 (167936)
-            version.rsrc        0x7ff001e0c000 - 0x7ff001e0d000 (4096)
-            dnsapi.rdata        0x7ff000d6d000 - 0x7ff000d8f000 (139264)
-            kernelbase.rsrc     0x7ff000555000 - 0x7ff000556000 (4096)
-            comctl32.dll.ldr    0x7fe00000a000 - 0x7fe00000a940 (2368)
-            shell32.rsrc        0x7ff0012d8000 - 0x7ff001b1d000 (8671232)
-            advapi32.reloc      0x7ff0006cb000 - 0x7ff0006cd000 (8192)
-            advapi32.rdata      0x7ff00068a000 - 0x7ff0006bf000 (217088)
-            wininet.rsrc        0x7ff000cbe000 - 0x7ff000cd7000 (102400)
-            wininet.didat       0x7ff000cbd000 - 0x7ff000cbe000 (4096)
-            dnsapi.didat        0x7ff000d99000 - 0x7ff000d9a000 (4096)
-            ole32.pdata         0x7ff001f38000 - 0x7ff001f47000 (61440)
-            exe64win_enigma3000 0x140003000 - 0x140593000 (5832704)
-            user32.rsrc         0x7ff001c30000 - 0x7ff001d12000 (925696)
-            comctl32.pdata      0x7ff0008f9000 - 0x7ff00090f000 (90112)
-            oleaut32.text       0x7ff001d14000 - 0x7ff001da1000 (577536)
-            kernelbase.data     0x7ff000540000 - 0x7ff000545000 (20480)
-            winhttp.pdata       0x7ff000a3c000 - 0x7ff000a46000 (40960)
-            ws2_32.rdata        0x7ff0005fd000 - 0x7ff00060a000 (53248)
-            ...
+=&gt;m
+--- maps ---
+oleaut32.data       0x7ff001dc7000 - 0x7ff001dca000 (12288)
+ldr                 0x7ff000000000 - 0x7ff0000000b4 (180)
+ntdll.pe            0x7ff000003000 - 0x7ff000004000 (4096)
+kernelbase.text     0x7ff0002b6000 - 0x7ff0003c8000 (1122304)
+ws2_32.didat        0x7ff00060f000 - 0x7ff000610000 (4096)
+advapi32.pe         0x7ff000623000 - 0x7ff000624000 (4096)
+winhttp.text        0x7ff000960000 - 0x7ff000a0f000 (716800)
+iphlpapi.text       0x7ff00057f000 - 0x7ff0005a8000 (167936)
+version.rsrc        0x7ff001e0c000 - 0x7ff001e0d000 (4096)
+dnsapi.rdata        0x7ff000d6d000 - 0x7ff000d8f000 (139264)
+kernelbase.rsrc     0x7ff000555000 - 0x7ff000556000 (4096)
+comctl32.dll.ldr    0x7fe00000a000 - 0x7fe00000a940 (2368)
+shell32.rsrc        0x7ff0012d8000 - 0x7ff001b1d000 (8671232)
+advapi32.reloc      0x7ff0006cb000 - 0x7ff0006cd000 (8192)
+advapi32.rdata      0x7ff00068a000 - 0x7ff0006bf000 (217088)
+wininet.rsrc        0x7ff000cbe000 - 0x7ff000cd7000 (102400)
+wininet.didat       0x7ff000cbd000 - 0x7ff000cbe000 (4096)
+dnsapi.didat        0x7ff000d99000 - 0x7ff000d9a000 (4096)
+ole32.pdata         0x7ff001f38000 - 0x7ff001f47000 (61440)
+exe64win_enigma3000 0x140003000 - 0x140593000 (5832704)
+user32.rsrc         0x7ff001c30000 - 0x7ff001d12000 (925696)
+comctl32.pdata      0x7ff0008f9000 - 0x7ff00090f000 (90112)
+oleaut32.text       0x7ff001d14000 - 0x7ff001da1000 (577536)
+kernelbase.data     0x7ff000540000 - 0x7ff000545000 (20480)
+winhttp.pdata       0x7ff000a3c000 - 0x7ff000a46000 (40960)
+ws2_32.rdata        0x7ff0005fd000 - 0x7ff00060a000 (53248)
+...
               </code></pre>
             </figure>
           </p>
@@ -863,23 +862,23 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            m ...................... memory maps
-            ms ..................... memory filtered by keyword string
-            ma ..................... memory allocs
-            mc ..................... memory create map
-            mn ..................... memory name of an address
-            ml ..................... memory load file content to map
-            mr ..................... memory read, speficy ie: dword ptr [esi]
-            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
-            mwb .................... memory write bytes, input spaced bytes
-            md ..................... memory dump
-            mrd .................... memory read dwords
-            mrq .................... memory read qwords
-            mds .................... memory dump string
-            mdw .................... memory dump wide string
-            mdd .................... memory dump to disk
-            mdda ................... memory dump all allocations to disk
-            mt ..................... memory test
+m ...................... memory maps
+ms ..................... memory filtered by keyword string
+ma ..................... memory allocs
+mc ..................... memory create map
+mn ..................... memory name of an address
+ml ..................... memory load file content to map
+mr ..................... memory read, speficy ie: dword ptr [esi]
+mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+mwb .................... memory write bytes, input spaced bytes
+md ..................... memory dump
+mrd .................... memory read dwords
+mrq .................... memory read qwords
+mds .................... memory dump string
+mdw .................... memory dump wide string
+mdd .................... memory dump to disk
+mdda ................... memory dump all allocations to disk
+mt ..................... memory test
               </code></pre>
             </figure>
           <p></p>
@@ -892,10 +891,10 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;mn
-            address=&gt;0x140000008
-            map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
-            =&gt;
+=&gt;mn
+address=&gt;0x140000008
+map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -916,40 +915,40 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;ssa  (search string in all the maps)
-            string=&gt;http://something.com/
-            found at 0x329ec8 'http://something.com/'
-            found at 0x329fc8 'http://something.com/'
-            map not found
+=&gt;ssa  (search string in all the maps)
+string=&gt;http://something.com/
+found at 0x329ec8 'http://something.com/'
+found at 0x329fc8 'http://something.com/'
+map not found
 
-            =&gt;mds (display string on an address)
-            address=&gt;0x329ec8
-            0x329ec8: 'http://something.com/'
-            =&gt;mds
-            address=&gt;0x329fc8
-            0x329fc8: 'http://something.com/'
-            =&gt; 
+=&gt;mds (display string on an address)
+address=&gt;0x329ec8
+0x329ec8: 'http://something.com/'
+=&gt;mds
+address=&gt;0x329fc8
+0x329fc8: 'http://something.com/'
+=&gt; 
 
-            =&gt;mn (which map is that address?)
-            address=&gt;0x329ec8
-            map: stack 0x22a000-0x32c000 (1056768)
-            =&gt;mn
-            address=&gt;0x329fc8
-            map: stack 0x22a000-0x32c000 (1056768)
-            =&gt;
+=&gt;mn (which map is that address?)
+address=&gt;0x329ec8
+map: stack 0x22a000-0x32c000 (1056768)
+=&gt;mn
+address=&gt;0x329fc8
+map: stack 0x22a000-0x32c000 (1056768)
+=&gt;
 
-            =&gt;ss (search string on specific address)
-            map name=&gt;stack
-            string=&gt;http://something.com/
-            found 0x329ec8 'http://something.com/'
-            found 0x329fc8 'http://something.com/'
+=&gt;ss (search string on specific address)
+map name=&gt;stack
+string=&gt;http://something.com/
+found 0x329ec8 'http://something.com/'
+found 0x329fc8 'http://something.com/'
 
-            =&gt;sb (search spaced bytes on specific address, ie searching hexlified "http://")
-            map name=&gt;stack
-            spaced bytes=&gt;68 74 74 70 3a 2f 2f
-            found at 0x329ec8
-            found at 0x329fc8
-            =&gt;
+=&gt;sb (search spaced bytes on specific address, ie searching hexlified "http://")
+map name=&gt;stack
+spaced bytes=&gt;68 74 74 70 3a 2f 2f
+found at 0x329ec8
+found at 0x329fc8
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -970,11 +969,11 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;b
-            break on address: []
-            break on instruction: []
-            break on memory read: []
-            break on memory write: []
+=&gt;b
+break on address: []
+break on instruction: []
+break on memory read: []
+break on memory write: []
               </code></pre>
             </figure>
           </p>
@@ -983,14 +982,14 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            b ...................... breakpoint list
-            ba ..................... breakpoint on address
-            bi ..................... breakpoint on instruction number
-            bmr .................... breakpoint on read memory
-            bmw .................... breakpoint on write memory
-            bmx .................... breakpoint on execute memory
-            bcmp ................... break on next cmp or test instruction
-            bc ..................... clear breakpoint
+b ...................... breakpoint list
+ba ..................... breakpoint on address
+bi ..................... breakpoint on instruction number
+bmr .................... breakpoint on read memory
+bmw .................... breakpoint on write memory
+bmx .................... breakpoint on execute memory
+bcmp ................... break on next cmp or test instruction
+bc ..................... clear breakpoint
               </code></pre>
             </figure>
           </p>
@@ -1000,27 +999,27 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            --- console ---
-            =&gt;bi
-            instruction number=&gt;100
-            =&gt;c
-            18 0x3c006a: jne   short 00000000003C004Ah taken
-            19 0x3c004a: mov   rax,[rbp-8] ; 0x329f10
-            20 0x3c004e: movzx edx,byte ptr [rax]
-            21 0x3c0051: mov   rax,[rbp-10h] ; 0x329e10
-            22 0x3c0055: mov   [rax],dl ; 0x68
-            23 0x3c0057: add   qword ptr [rbp-8],1
-            24 0x3c005c: add   qword ptr [rbp-10h],1
-            25 0x3c0061: mov   rax,[rbp-8] ; 0x329f11
-            ...
-            96 0x3c0065: movzx eax,byte ptr [rax]
-            97 0x3c0068: test  al,al
-            98 0x3c006a: jne   short 00000000003C004Ah taken
-            99 0x3c004a: mov   rax,[rbp-8] ; 0x329f18
-            -------
-            100 0x3c004e: movzx edx,byte ptr [rax]   (this instruction is the next to be emulated, it was not emulated yet)
-            --- console ---
-            =&gt;
+--- console ---
+=&gt;bi
+instruction number=&gt;100
+=&gt;c
+18 0x3c006a: jne   short 00000000003C004Ah taken
+19 0x3c004a: mov   rax,[rbp-8] ; 0x329f10
+20 0x3c004e: movzx edx,byte ptr [rax]
+21 0x3c0051: mov   rax,[rbp-10h] ; 0x329e10
+22 0x3c0055: mov   [rax],dl ; 0x68
+23 0x3c0057: add   qword ptr [rbp-8],1
+24 0x3c005c: add   qword ptr [rbp-10h],1
+25 0x3c0061: mov   rax,[rbp-8] ; 0x329f11
+...
+96 0x3c0065: movzx eax,byte ptr [rax]
+97 0x3c0068: test  al,al
+98 0x3c006a: jne   short 00000000003C004Ah taken
+99 0x3c004a: mov   rax,[rbp-8] ; 0x329f18
+-------
+100 0x3c004e: movzx edx,byte ptr [rax]   (this instruction is the next to be emulated, it was not emulated yet)
+--- console ---
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1040,15 +1039,15 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
-            ...
-            200 0x3c004e: movzx edx,byte ptr [rax]    (instruction 200 is not emulated yet, it's the next instruction to be emulated)
-            --- console ---
-            =&gt;sv
-            verbose level=&gt;3
-            =&gt; [enter for emulating instruction 200]
-            =&gt; c  (continue emulating now with maximum verbosity) 
-            ...
+~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
+...
+200 0x3c004e: movzx edx,byte ptr [rax]    (instruction 200 is not emulated yet, it's the next instruction to be emulated)
+--- console ---
+=&gt;sv
+verbose level=&gt;3
+=&gt; [enter for emulating instruction 200]
+=&gt; c  (continue emulating now with maximum verbosity) 
+...
               </code></pre>
             </figure>
           </p>
@@ -1068,21 +1067,21 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            --- console ---
-            =&gt;ldr
-            0x7fe000000000 loader.exe flink:7fe000004000 blink:7fe00000f000 base:7ff001b7e000 pe_hdr:f8 5045
-            0x7fe000004000 ntdll.dll flink:7fe000005000 blink:7fe000000000 base:7ff000003000 pe_hdr:e8 5045
-            0x7fe000005000 kernel32.dll flink:7fe000006000 blink:7fe000004000 base:7ff0001f8000 pe_hdr:f0 5045
-            0x7fe000006000 kernelbase.dll flink:7fe000007000 blink:7fe000005000 base:7ff0002b5000 pe_hdr:f0 5045
-            0x7fe000007000 iphlpapi.dll flink:7fe000008000 blink:7fe000006000 base:7ff00057e000 pe_hdr:f8 5045
-            0x7fe000008000 ws2_32.dll flink:7fe000009000 blink:7fe000007000 base:7ff0005b8000 pe_hdr:f0 5045
-            0x7fe000009000 advapi32.dll flink:7fe00000a000 blink:7fe000008000 base:7ff000623000 pe_hdr:100 5045
-            0x7fe00000a000 comctl32.dll flink:7fe00000b000 blink:7fe000009000 base:7ff0006cd000 pe_hdr:f0 5045
-            0x7fe00000b000 winhttp.dll flink:7fe00000c000 blink:7fe00000a000 base:7ff00095f000 pe_hdr:f8 5045
-            0x7fe00000c000 wininet.dll flink:7fe00000d000 blink:7fe00000b000 base:7ff000a4f000 pe_hdr:f0 5045
-            0x7fe00000d000 dnsapi.dll flink:7fe00000e000 blink:7fe00000c000 base:7ff000cd9000 pe_hdr:f8 5045
-            0x7fe00000e000 shell32.dll flink:7fe00000f000 blink:7fe00000d000 base:7ff000da4000 pe_hdr:f0 5045
-            0x7fe00000f000 shlwapi.dll flink:7fe000000000 blink:7fe00000e000 base:7ff001b2c000 pe_hdr:f0 5045
+--- console ---
+=&gt;ldr
+0x7fe000000000 loader.exe flink:7fe000004000 blink:7fe00000f000 base:7ff001b7e000 pe_hdr:f8 5045
+0x7fe000004000 ntdll.dll flink:7fe000005000 blink:7fe000000000 base:7ff000003000 pe_hdr:e8 5045
+0x7fe000005000 kernel32.dll flink:7fe000006000 blink:7fe000004000 base:7ff0001f8000 pe_hdr:f0 5045
+0x7fe000006000 kernelbase.dll flink:7fe000007000 blink:7fe000005000 base:7ff0002b5000 pe_hdr:f0 5045
+0x7fe000007000 iphlpapi.dll flink:7fe000008000 blink:7fe000006000 base:7ff00057e000 pe_hdr:f8 5045
+0x7fe000008000 ws2_32.dll flink:7fe000009000 blink:7fe000007000 base:7ff0005b8000 pe_hdr:f0 5045
+0x7fe000009000 advapi32.dll flink:7fe00000a000 blink:7fe000008000 base:7ff000623000 pe_hdr:100 5045
+0x7fe00000a000 comctl32.dll flink:7fe00000b000 blink:7fe000009000 base:7ff0006cd000 pe_hdr:f0 5045
+0x7fe00000b000 winhttp.dll flink:7fe00000c000 blink:7fe00000a000 base:7ff00095f000 pe_hdr:f8 5045
+0x7fe00000c000 wininet.dll flink:7fe00000d000 blink:7fe00000b000 base:7ff000a4f000 pe_hdr:f0 5045
+0x7fe00000d000 dnsapi.dll flink:7fe00000e000 blink:7fe00000c000 base:7ff000cd9000 pe_hdr:f8 5045
+0x7fe00000e000 shell32.dll flink:7fe00000f000 blink:7fe00000d000 base:7ff000da4000 pe_hdr:f0 5045
+0x7fe00000f000 shlwapi.dll flink:7fe000000000 blink:7fe00000e000 base:7ff001b2c000 pe_hdr:f0 5045
               </code></pre>
             </figure>
           </p>
@@ -1097,36 +1096,36 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;dt
-            structure=&gt;peb
-            address=&gt;0x7ffdf000
-            PEB {
-                reserved1: [
-                    0x0,
-                    0x0,
-                ],
-                being_debugged: 0x0,
-                reserved2: 0x0,
-                reserved3: [
-                    0xffffffff,
-                    0x400000,
-                ],
-                ldr: 0x77647880,
-                process_parameters: 0x2c1118,
-                reserved4: [
-                    0x0,
-                    0x2c0000,
-                    0x77647380,
-                ],
-                alt_thunk_list_ptr: 0x0,
-                reserved5: 0x0,
-                reserved6: 0x6,
-                reserved7: 0x773cd568,
-                reserved8: 0x0,
-                alt_thunk_list_ptr_32: 0x0,
-                reserved9: [
-                    0x0,
-            ...
+=&gt;dt
+structure=&gt;peb
+address=&gt;0x7ffdf000
+PEB {
+    reserved1: [
+        0x0,
+        0x0,
+    ],
+    being_debugged: 0x0,
+    reserved2: 0x0,
+    reserved3: [
+        0xffffffff,
+        0x400000,
+    ],
+    ldr: 0x77647880,
+    process_parameters: 0x2c1118,
+    reserved4: [
+        0x0,
+        0x2c0000,
+        0x77647380,
+    ],
+    alt_thunk_list_ptr: 0x0,
+    reserved5: 0x0,
+    reserved6: 0x6,
+    reserved7: 0x773cd568,
+    reserved8: 0x0,
+    alt_thunk_list_ptr_32: 0x0,
+    reserved9: [
+        0x0,
+...
               </code></pre>
             </figure>
           </p>
@@ -1135,31 +1134,31 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;dt
-            structure=&gt;PEB_LDR_DATA
-            address=&gt;0x77647880
-            PebLdrData {
-                length: 0x30,
-                initializated: 0x1,
-                sshandle: 0x0,
-                in_load_order_module_list: ListEntry {
-                    flink: 0x2c18b8,
-                    blink: 0x2cff48,
-                },
-                in_memory_order_module_list: ListEntry {
-                    flink: 0x2c18c0,
-                    blink: 0x2cff50,
-                },
-                in_initialization_order_module_list: ListEntry {
-                    flink: 0x2c1958,
-                    blink: 0x2d00d0,
-                },
-                entry_in_progress: ListEntry {
-                    flink: 0x0,
-                    blink: 0x0,
-                },
-            }
-            =&gt;
+=&gt;dt
+structure=&gt;PEB_LDR_DATA
+address=&gt;0x77647880
+PebLdrData {
+    length: 0x30,
+    initializated: 0x1,
+    sshandle: 0x0,
+    in_load_order_module_list: ListEntry {
+        flink: 0x2c18b8,
+        blink: 0x2cff48,
+    },
+    in_memory_order_module_list: ListEntry {
+        flink: 0x2c18c0,
+        blink: 0x2cff50,
+    },
+    in_initialization_order_module_list: ListEntry {
+        flink: 0x2c1958,
+        blink: 0x2d00d0,
+    },
+    entry_in_progress: ListEntry {
+        flink: 0x0,
+        blink: 0x0,
+    },
+}
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1168,46 +1167,46 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            =&gt;dt
-            structure=&gt;LDR_DATA_TABLE_ENTRY
-            address=&gt;0x2c18c0
-            LdrDataTableEntry {
-                reserved1: [
-                    0x2c1950,
-                    0x77647894,
-                ],
-                in_memory_order_module_links: ListEntry {
-                    flink: 0x0,
-                    blink: 0x0,
-                },
-                reserved2: [
-                    0x0,
-                    0x400000,
-                ],
-                dll_base: 0x4014e0,
-                entry_point: 0x1d000,
-                reserved3: 0x40003e,
-                full_dll_name: 0x2c1716,
-                reserved4: [
-                    0x0,
-                    0x0,
-                    0x0,
-                    0x0,
-                    0x0,
-                    0x0,
-                    0x0,
-                    0x0,
-                ],
-                reserved5: [
-                    0x17440012,
-                    0x4000002c,
-                    0xffff0000,
-                ],
-                checksum: 0x1d6cffff,
-                reserved6: 0xa640002c,
-                time_date_stamp: 0xcdf27764,
-            }
-            =&gt;
+=&gt;dt
+structure=&gt;LDR_DATA_TABLE_ENTRY
+address=&gt;0x2c18c0
+LdrDataTableEntry {
+    reserved1: [
+        0x2c1950,
+        0x77647894,
+    ],
+    in_memory_order_module_links: ListEntry {
+        flink: 0x0,
+        blink: 0x0,
+    },
+    reserved2: [
+        0x0,
+        0x400000,
+    ],
+    dll_base: 0x4014e0,
+    entry_point: 0x1d000,
+    reserved3: 0x40003e,
+    full_dll_name: 0x2c1716,
+    reserved4: [
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+        0x0,
+    ],
+    reserved5: [
+        0x17440012,
+        0x4000002c,
+        0xffff0000,
+    ],
+    checksum: 0x1d6cffff,
+    reserved6: 0xa640002c,
+    time_date_stamp: 0xcdf27764,
+}
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1216,18 +1215,18 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            3307726 0x4f9673: push  ebp
-            3307727 0x4f9674: push  edx
-            3307728 0x4f9675: push  eax
-            3307729 0x4f9676: push  ecx
-            3307730 0x4f9677: push  ecx
-            3307731 0x4f9678: push  4F96F4h
-            3307732 0x4f967d: push  dword ptr fs:[0]
-            Reading SEH 0x0
-            -------
-            3307733 0x4f9684: mov   eax,[51068Ch]
-            --- console ---
-            =&gt;
+3307726 0x4f9673: push  ebp
+3307727 0x4f9674: push  edx
+3307728 0x4f9675: push  eax
+3307729 0x4f9676: push  ecx
+3307730 0x4f9677: push  ecx
+3307731 0x4f9678: push  4F96F4h
+3307732 0x4f967d: push  dword ptr fs:[0]
+Reading SEH 0x0
+-------
+3307733 0x4f9684: mov   eax,[51068Ch]
+--- console ---
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1236,25 +1235,25 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            --- console ---
-            =&gt;r esp
-                    esp: 0x22de98
-            =&gt;dt
-            structure=&gt;cppeh_record
-            address=&gt;0x22de98
-            CppEhRecord {
-                old_esp: 0x0,
-                exc_ptr: 0x4f96f4,
-                next: 0xfffffffe,
-                exception_handler: 0xfffffffe,
-                scope_table: PScopeTableEntry {
-                    enclosing_level: 0x278,
-                    filter_func: 0x51068c,
-                    handler_func: 0x288,
-                },
-                try_level: 0x288,
-            }
-            =&gt;
+--- console ---
+=&gt;r esp
+        esp: 0x22de98
+=&gt;dt
+structure=&gt;cppeh_record
+address=&gt;0x22de98
+CppEhRecord {
+    old_esp: 0x0,
+    exc_ptr: 0x4f96f4,
+    next: 0xfffffffe,
+    exception_handler: 0xfffffffe,
+    scope_table: PScopeTableEntry {
+        enclosing_level: 0x278,
+        filter_func: 0x51068c,
+        handler_func: 0x288,
+    },
+    try_level: 0x288,
+}
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1271,17 +1270,17 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            mr ..................... memory read, speficy ie: dword ptr [esi]
-            mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
-            mwb .................... memory write bytes, input spaced bytes
-            md ..................... memory dump
-            mrd .................... memory read dwords
-            mrq .................... memory read qwords
-            mds .................... memory dump string
-            mdw .................... memory dump wide string
-            mdd .................... memory dump to disk
-            mdda ................... memory dump all allocations to disk
-            mt ..................... memory test
+mr ..................... memory read, speficy ie: dword ptr [esi]
+mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
+mwb .................... memory write bytes, input spaced bytes
+md ..................... memory dump
+mrd .................... memory read dwords
+mrq .................... memory read qwords
+mds .................... memory dump string
+mdw .................... memory dump wide string
+mdd .................... memory dump to disk
+mdda ................... memory dump all allocations to disk
+mt ..................... memory test
               </code></pre>
             </figure>
           </p>
@@ -1290,18 +1289,18 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            --- console ---
-            =&gt;md
-            address=&gt;0x329ec8
-            0x329ec8: 68 74 74 70 3a 2f 2f 73 6f 6d 65 74 68 69 6e 67     http://something
-            0x329ed8: 2e 63 6f 6d 2f 00 00 00 00 00 00 00 00 00 00 00     .com/...........
-            0x329ee8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            0x329ef8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            0x329f08: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            0x329f18: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            0x329f28: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            0x329f38: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
-            =&gt;
+--- console ---
+=&gt;md
+address=&gt;0x329ec8
+0x329ec8: 68 74 74 70 3a 2f 2f 73 6f 6d 65 74 68 69 6e 67     http://something
+0x329ed8: 2e 63 6f 6d 2f 00 00 00 00 00 00 00 00 00 00 00     .com/...........
+0x329ee8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+0x329ef8: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+0x329f08: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+0x329f18: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+0x329f28: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+0x329f38: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
+=&gt;
               </code></pre>
             </figure>
           </p>
@@ -1325,9 +1324,9 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-              ❯❯❯ git clone https://github.com/radareorg/radare2.git
-              ❯❯❯ cd radare2
-              ❯❯❯ sys/install.sh
+❯❯❯ git clone https://github.com/radareorg/radare2.git
+❯❯❯ cd radare2
+❯❯❯ sys/install.sh
               </code></pre>
             </figure>
           </p>
@@ -1350,7 +1349,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            ❯❯❯ pip3 install pymwemu --break-system-packages
+❯❯❯ pip3 install pymwemu --break-system-packages
               </code></pre>
             </figure>
           </p>
@@ -1360,11 +1359,11 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>mwemu console</figcaption>
               <pre><code>
-            ❯❯❯ pip install --upgrade pip
-            ❯❯❯ pip3 install --upgrade pip
-            ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-            ❯❯❯ pip install pymwemu
-            ❯❯❯ pip3 install pymwemu
+❯❯❯ pip install --upgrade pip
+❯❯❯ pip3 install --upgrade pip
+❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+❯❯❯ pip install pymwemu
+❯❯❯ pip3 install pymwemu
               </code></pre>
             </figure>
           </p>
@@ -1373,7 +1372,7 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-            ❯❯❯ sudo xcode-select --switch /Library/Developer/CommandLineTools
+❯❯❯ sudo xcode-select --switch /Library/Developer/CommandLineTools
               </code></pre>
             </figure>
           </p>
@@ -1381,12 +1380,12 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Shell</figcaption>
               <pre><code>
-            ❯❯❯ python3
-            Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
-            Type "help", "copyright", "credits" or "license" for more information.
-            &gt;&gt;&gt; import pymwemu
-            Initialized logging
-            &gt;&gt;&gt;
+❯❯❯ python3
+Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import pymwemu
+Initialized logging
+&gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
@@ -1400,16 +1399,16 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
               <pre><code>
-            &gt;&gt;&gt; import pymwemu
-            Initialized logging
-            &gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
-            &gt;&gt;&gt; # then there are some initial configurations, for instance:
-            &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
-            &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
-            &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
-            loading memory maps
-            &gt;&gt;&gt;
-            &gt;&gt;&gt;
+&gt;&gt;&gt; import pymwemu
+Initialized logging
+&gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
+&gt;&gt;&gt; # then there are some initial configurations, for instance:
+&gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
+&gt;&gt;&gt; emu.enable_console()   # by default is disabled.
+&gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
+loading memory maps
+&gt;&gt;&gt;
+&gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
@@ -1433,21 +1432,21 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
               <pre><code>
-            &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
-            loading memory maps
-            dll_path: /home/sha0/src/mwemu/maps/maps64//ntdll.dll dll: ntdll.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//kernel32.dll dll: kernel32.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//kernelbase.dll dll: kernelbase.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//iphlpapi.dll dll: iphlpapi.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//ws2_32.dll dll: ws2_32.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//advapi32.dll dll: advapi32.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//comctl32.dll dll: comctl32.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//winhttp.dll dll: winhttp.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//wininet.dll dll: wininet.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//dnsapi.dll dll: dnsapi.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//shell32.dll dll: shell32.dll
-            dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
-            &gt;&gt;&gt;
+&gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
+loading memory maps
+dll_path: /home/sha0/src/mwemu/maps/maps64//ntdll.dll dll: ntdll.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//kernel32.dll dll: kernel32.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//kernelbase.dll dll: kernelbase.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//iphlpapi.dll dll: iphlpapi.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//ws2_32.dll dll: ws2_32.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//advapi32.dll dll: advapi32.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//comctl32.dll dll: comctl32.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//winhttp.dll dll: winhttp.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//wininet.dll dll: wininet.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//dnsapi.dll dll: dnsapi.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//shell32.dll dll: shell32.dll
+dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
+&gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
@@ -1456,7 +1455,7 @@ Entry point pointing to .text 0x401000
               <figure class="shell-block">
                 <figcaption>Shell</figcaption>
                 <pre><code>
-                git clone https://github.com/sha0coder/mwemu.git 
+❯❯❯ git clone https://github.com/sha0coder/mwemu.git 
                 </code></pre>
             </figure>
           </p>
@@ -1475,8 +1474,8 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
               <pre><code>
-            &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
-            &gt;&gt;&gt;
+&gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
+&gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
@@ -1496,8 +1495,8 @@ Entry point pointing to .text 0x401000
             <figure class="shell-block">
               <figcaption>Python Console</figcaption>
               <pre><code>
-            &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
-            &gt;&gt;&gt;
+&gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
+&gt;&gt;&gt;
               </code></pre>
             </figure>
           </p>
