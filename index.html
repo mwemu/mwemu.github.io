@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,126 +8,149 @@
   <link rel="icon" type="image/png" href="pics/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="sidebar">
     <h2>MWEMU Docs</h2>
     <ul>
-        <li>
-            <a href="#intro">1. MWEMU Intro</a>
-            <ul>
-                <li><a href="#whatis">1.1. what is mwemu</a></li>
-                <li><a href="#ways">1.2. three ways of using it</a></li>
-                <li><a href="#archs">1.3. architectures</a></li>
-                <li><a href="#internals">1.4. internals overview</a></li>
-                <li><a href="#test">1.5. test system</a></li>
-                <li><a href="#contrib">1.6. contributors</a></li>
-                <li><a href="#videos">1.7. videos</a></li>
-                <li><a href="#license">1.8. license</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#cmdline">2. Commandline</a>
-            <ul>
-                <li><a href="#cmdline_install">2.1. install</a></li>
-                <li><a href="#help">2.2. --help</a></li>
-                <li><a href="#fullemu">2.3. full emulation</a></li>
-                <li><a href="#moment">2.4. capturing a moment</a></li>
-                <li><a href="#verbosity">2.5. verbosity</a></li>
-                <li><a href="#log">2.6. logging</a></li>
-                <li><a href="#initreg">2.7. initialize registers</a></li>
-                <li><a href="#regtrace">2.8. trace registers</a></li>
-                <li><a href="#memtrace">2.9. trace memory</a></li>
-                <li><a href="#strtrace">2.10. trace string</a></li>
-                <li><a href="#calltrace">2.11. trace calls</a></li>
-                <li><a href="#stacktrace">2.12 trace stack</a></li>
-                <li><a href="#console">2.13. interactive console</a></li>
-                <ul>
-                    <li><a href="#helpcmd">2.13.1. help command</a></li>
-                    <li><a href="#regcmd">2.13.2. registers command</a></li>
-                    <li><a href="#mapscmd">2.13.3. maps command</a></li>
-                    <li><a href="#mncmd">2.13.4. get map from addr</a></li>
-                    <li><a href="#searchcmd">2.13.5. search command</a></li>
-                    <li><a href="#bpcmd">2.13.6. break point commands</a></li>
-                    <li><a href="#svcmd">2.13.7. change verbosity</a></li>
-                    <li><a href="#ldrcmd">2.13.8. view LDR</a></li>
-                    <li><a href="#dtcmd">2.13.9. view structures</a></li>
-                    <li><a href="#viewcmd">2.13.10. view data</a></li>
-                    <li><a href="#dumpcmd">2.13.11. dump maps to disk</a></li>
-                    <li><a href="#r2cmd">2.13.12. radare2 command</a></li>
-                </ul>
-            </ul>
-        </li>
-        <li>
-            <a href="#pymwemu">3. MWEMU from python scripts</a>
-            <ul>
-                <li><a href="#pyinstall">3.1. pymwemu instalation</a></li>
-                <li><a href="#pyconfigure">3.2. instantiate and configure emulator</a></li>
-                <li><a href="#pymaps">3.3. loading maps</a></li>
-                <li><a href="#pyload">3.4. loading ELF PE or shellcodes</a></li>
-                <li><a href="#pybuffers">3.5. creating buffers</a></li>
-                <li><a href="#pycontext">3.6. prepare context</a></li>
-                <li><a href="#pyemu">3.7. start emulation</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#libmwemu">4. MWEMU from Rust apps</a>
-            <ul>
-                <li><a href="#crateinstall">4.1. rust crate instalation</a></li>
-                <li><a href="#crateinstance">4.2. instance emu object</a></li>
-                <li><a href="#crateload">4.3. loading ELF PE or shellcodes</a></li>
-                <li><a href="#cratecontext">4.4. prepare context</a></li>
-                <li><a href="#crateemu">4.5. start emulation</a></li>
-            </ul>
-        </li>
+      <li>
+        <a href="#intro">1. MWEMU Intro</a>
+        <ul>
+          <li><a href="#whatis">1.1. what is mwemu</a></li>
+          <li><a href="#ways">1.2. three ways of using it</a></li>
+          <li><a href="#archs">1.3. architectures</a></li>
+          <li><a href="#internals">1.4. internals overview</a></li>
+          <li><a href="#test">1.5. test system</a></li>
+          <li><a href="#contrib">1.6. contributors</a></li>
+          <li><a href="#videos">1.7. videos</a></li>
+          <li><a href="#license">1.8. license</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#cmdline">2. Commandline</a>
+        <ul>
+          <li><a href="#cmdline_install">2.1. install</a></li>
+          <li><a href="#help">2.2. --help</a></li>
+          <li><a href="#fullemu">2.3. full emulation</a></li>
+          <li><a href="#moment">2.4. capturing a moment</a></li>
+          <li><a href="#verbosity">2.5. verbosity</a></li>
+          <li><a href="#log">2.6. logging</a></li>
+          <li><a href="#initreg">2.7. initialize registers</a></li>
+          <li><a href="#regtrace">2.8. trace registers</a></li>
+          <li><a href="#memtrace">2.9. trace memory</a></li>
+          <li><a href="#strtrace">2.10. trace string</a></li>
+          <li><a href="#calltrace">2.11. trace calls</a></li>
+          <li><a href="#stacktrace">2.12 trace stack</a></li>
+          <li><a href="#console">2.13. interactive console</a></li>
+          <ul>
+            <li><a href="#helpcmd">2.13.1. help command</a></li>
+            <li><a href="#regcmd">2.13.2. registers command</a></li>
+            <li><a href="#mapscmd">2.13.3. maps command</a></li>
+            <li><a href="#mncmd">2.13.4. get map from addr</a></li>
+            <li><a href="#searchcmd">2.13.5. search command</a></li>
+            <li><a href="#bpcmd">2.13.6. break point commands</a></li>
+            <li><a href="#svcmd">2.13.7. change verbosity</a></li>
+            <li><a href="#ldrcmd">2.13.8. view LDR</a></li>
+            <li><a href="#dtcmd">2.13.9. view structures</a></li>
+            <li><a href="#viewcmd">2.13.10. view data</a></li>
+            <li><a href="#dumpcmd">2.13.11. dump maps to disk</a></li>
+            <li><a href="#r2cmd">2.13.12. radare2 command</a></li>
+          </ul>
+        </ul>
+      </li>
+      <li>
+        <a href="#pymwemu">3. MWEMU from python scripts</a>
+        <ul>
+          <li><a href="#pyinstall">3.1. pymwemu instalation</a></li>
+          <li><a href="#pyconfigure">3.2. instantiate and configure emulator</a></li>
+          <li><a href="#pymaps">3.3. loading maps</a></li>
+          <li><a href="#pyload">3.4. loading ELF PE or shellcodes</a></li>
+          <li><a href="#pybuffers">3.5. creating buffers</a></li>
+          <li><a href="#pycontext">3.6. prepare context</a></li>
+          <li><a href="#pyemu">3.7. start emulation</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#libmwemu">4. MWEMU from Rust apps</a>
+        <ul>
+          <li><a href="#crateinstall">4.1. rust crate instalation</a></li>
+          <li><a href="#crateinstance">4.2. instance emu object</a></li>
+          <li><a href="#crateload">4.3. loading ELF PE or shellcodes</a></li>
+          <li><a href="#cratecontext">4.4. prepare context</a></li>
+          <li><a href="#crateemu">4.5. start emulation</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 
   <div class="content">
     <section id="intro">
       <h1>Intro</h1>
-      <p>Welcome to official MWEMU documentation, you can do scrolling down or using the direct links that are on the left.</p>
-      <p>Github repo: <a target="_blank" href="https://github.com/sha0coder/mwemu">https://github.com/sha0coder/mwemu</a></p>
+      <p>Welcome to official MWEMU documentation, you can do scrolling down or using the direct links that are on the
+        left.</p>
+      <p>Github repo: <a target="_blank"
+          href="https://github.com/sha0coder/mwemu">https://github.com/sha0coder/mwemu</a></p>
       <p><img src="pics/mwemu_logo.png" width="60%"></p>
     </section>
 
-        <section id="whatis">
-          <h2>What is MWEMU?</h2>
-          <p>MWEMU is a hardware emulator and Windows process simulator written in pure Rust from scratch, It was created by @sha0coder and It's open source. The contributors of this software have improved the quality of the project a lot, check <a href="#contrib"></a> to know them.<p>
-          <p>The implemented hardware is x86/x64, unlike other emulators also implemt some parts of the OS (mainly windows) because asm code soon or later is going to do system calls (WinAPI, linux syscalls, etc).</p>
-          <p>It resulted extremely useful for malware deobfuscation, but this don't replace reversing, I't needed a previous reversing to prepare well the emulation initial state, and emulate only small group of functions, like decryption, keygen etc. In some specific cases mwemu can do full-emulation, wihth simple packers, encoded shellcodes, etc.</p>
-          <p>The emulation and simulation is implemented from scratch, but the awesome Rust library iced-x86 is used to the translation from a bunch of bytes to instruction objects. I implemented more than 300 x86 instructions, flags, exceptions, some loaders PE32/PE64/ELF64/shellcode32/shellcode64 and many other stuff.</p>
-          <p>MWEMU is blazing fast and also is memory-safe thanks to the Rust magic compiler.</p>
-        </section>
+    <section id="whatis">
+      <h2>What is MWEMU?</h2>
+      <p>MWEMU is a hardware emulator and Windows process simulator written in pure Rust from scratch, It was created by
+        @sha0coder and It's open source. The contributors of this software have improved the quality of the project a
+        lot, check <a href="#contrib"></a> to know them.
+      <p>
+      <p>The implemented hardware is x86/x64, unlike other emulators also implemt some parts of the OS (mainly windows)
+        because asm code soon or later is going to do system calls (WinAPI, linux syscalls, etc).</p>
+      <p>It resulted extremely useful for malware deobfuscation, but this don't replace reversing, I't needed a previous
+        reversing to prepare well the emulation initial state, and emulate only small group of functions, like
+        decryption, keygen etc. In some specific cases mwemu can do full-emulation, wihth simple packers, encoded
+        shellcodes, etc.</p>
+      <p>The emulation and simulation is implemented from scratch, but the awesome Rust library iced-x86 is used to the
+        translation from a bunch of bytes to instruction objects. I implemented more than 300 x86 instructions, flags,
+        exceptions, some loaders PE32/PE64/ELF64/shellcode32/shellcode64 and many other stuff.</p>
+      <p>MWEMU is blazing fast and also is memory-safe thanks to the Rust magic compiler.</p>
+    </section>
 
-        <section id="ways">
-          <h2>The 3 ways of using MWEMU</h2>
-          <p>1. The first way is commandline, see <a href="#commandline">commandline</a> for more details, this is for trying full-emulation.</p>
-          <p>2. Second way is creating python scripts with pymwemu module, can be installed with pip or git.</p>
-          <p>pypi: <a target="_blank" href="https://pypi.org/project/pymwemu/">https://pypi.org/project/pymwemu/</a></p>
-          <p>If you need features or bug-fixes implemented recently use the git, will need to compile the full project and then the python bindings with maturin, more details in this section <a target="_blank" href="#pyinstall">pymwemu instalation</a></p>
-          <p>3. Third way is using the rust crate published in crates.io <a target="_blank" href="https://crates.io/crates/libmwemu">https://crates.io/crates/libmwemu</a> from a rust application.</p>
-        </section>
+    <section id="ways">
+      <h2>The 3 ways of using MWEMU</h2>
+      <p>1. The first way is commandline, see <a href="#commandline">commandline</a> for more details, this is for
+        trying full-emulation.</p>
+      <p>2. Second way is creating python scripts with pymwemu module, can be installed with pip or git.</p>
+      <p>pypi: <a target="_blank" href="https://pypi.org/project/pymwemu/">https://pypi.org/project/pymwemu/</a></p>
+      <p>If you need features or bug-fixes implemented recently use the git, will need to compile the full project and
+        then the python bindings with maturin, more details in this section <a target="_blank" href="#pyinstall">pymwemu
+          instalation</a></p>
+      <p>3. Third way is using the rust crate published in crates.io <a target="_blank"
+          href="https://crates.io/crates/libmwemu">https://crates.io/crates/libmwemu</a> from a rust application.</p>
+    </section>
 
-        <section id="archs">
-          <h2>Architectures</h2>
-          <p>You can run MWEMU from Windows, Linux and Mac (x86 and also m1)</p>
-          <p>But only can be emulated x86 code (32bits and 64bits) mainly for Windows, there is linux shellcode support even syscalls are implemented but regarding ELF only 64bits, only static compiled and quite basic support for now, but no problem with shellcodes.</p>
-          <p>libc can be emulated well despite it is plenty of ymm instructions, but the linker cannot be emulated totally so far, my plan is fully emulating the linker, in this case I don't need to implement the hole linking process (.got and .plt creation etc)</p>
-        </section>
+    <section id="archs">
+      <h2>Architectures</h2>
+      <p>You can run MWEMU from Windows, Linux and Mac (x86 and also m1)</p>
+      <p>But only can be emulated x86 code (32bits and 64bits) mainly for Windows, there is linux shellcode support even
+        syscalls are implemented but regarding ELF only 64bits, only static compiled and quite basic support for now,
+        but no problem with shellcodes.</p>
+      <p>libc can be emulated well despite it is plenty of ymm instructions, but the linker cannot be emulated totally
+        so far, my plan is fully emulating the linker, in this case I don't need to implement the hole linking process
+        (.got and .plt creation etc)</p>
+    </section>
 
-        <section id="internals">
-          <h2>A bit of internals</h2>
-          <p>For now, just a basic overview of the internals.</p>
-          <p><img src="pics/arch.png" width="120%"></p>
-          <p>In the past I named the project SCEMU, and was stored in 3 separated repos for mwemu (the commandline) pymwemu (pyhon module) and (libmwemu) the engine where all is implemented and also it's the Rust Crate module on crates.io.</p>
-          <p>Then it was renamed to MWEMU, because SCEMU is more specific to shellcode and because it's an italian bad word.</p>
-          <p>So, now it's one repo with a crates/ folder with the 3 crates.</p>
-          <p>The tests are implemented on crates/libmwemu/src/tests/ and are described lately.</p>
-          <p>Most of files were splitted in small files.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="internals">
+      <h2>A bit of internals</h2>
+      <p>For now, just a basic overview of the internals.</p>
+      <p><img src="pics/arch.png" width="120%"></p>
+      <p>In the past I named the project SCEMU, and was stored in 3 separated repos for mwemu (the commandline) pymwemu
+        (pyhon module) and (libmwemu) the engine where all is implemented and also it's the Rust Crate module on
+        crates.io.</p>
+      <p>Then it was renamed to MWEMU, because SCEMU is more specific to shellcode and because it's an italian bad word.
+      </p>
+      <p>So, now it's one repo with a crates/ folder with the 3 crates.</p>
+      <p>The tests are implemented on crates/libmwemu/src/tests/ and are described lately.</p>
+      <p>Most of files were splitted in small files.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ~/s/mwemu ❯❯❯ ls crates/libmwemu/src/
 banzai.rs       emu/               kuser_shared.rs
 breakpoint.rs   emu_context.rs     lib.rs   
@@ -143,136 +167,154 @@ syscall/        tests/             thread_context.rs
 threading.rs    tools/             tracing.rs
 utils.rs w      inapi/
               </code></pre>
-            </figure>
-          </p>
-          <p>emu/ contains emu methods and sub-bojects that are involved in the emulation itself.</p>
-          <p>In engine/ there are the implementation of all the instructions.</p>
-          <p>winapi/ contains the WinAPI implemntations divided in winapi32/ and winapi64/</p>
-          <p>there are other thigngs like contants.rs structures/ etc.</p>
-        </section>
+      </figure>
+      </p>
+      <p>emu/ contains emu methods and sub-bojects that are involved in the emulation itself.</p>
+      <p>In engine/ there are the implementation of all the instructions.</p>
+      <p>winapi/ contains the WinAPI implemntations divided in winapi32/ and winapi64/</p>
+      <p>there are other thigngs like contants.rs structures/ etc.</p>
+    </section>
 
-        <section id="test">
-          <h2>Test System</h2>
-          <p>For triggering locally use <code>make tests</code> this downloads some binaries and launch the test system <code>cargo test</code></p>
-          <p>Don't use --release, always is more convinient do the tests without aplying the optimizations, that could ignore some type of errors. Actually the github CI is configured to do cargo test and also cargo test --release to check both modes.</p>
-          <p>Every git push or pull-request will trigger the CI in gibhut to perform all the tests in Linux, Windows and Mac. In in the case of PR is mandatory, in the case of a git push is only informative.</p>
-          <p>PR also triggers a coverage analysis of the tests, which is currently only 32%</p>
-          <p><img src="pics/tests.png" width="120%"></p>
-        </section>
+    <section id="test">
+      <h2>Test System</h2>
+      <p>For triggering locally use <code>make tests</code> this downloads some binaries and launch the test system
+        <code>cargo test</code>
+      </p>
+      <p>Don't use --release, always is more convinient do the tests without aplying the optimizations, that could
+        ignore some type of errors. Actually the github CI is configured to do cargo test and also cargo test --release
+        to check both modes.</p>
+      <p>Every git push or pull-request will trigger the CI in gibhut to perform all the tests in Linux, Windows and
+        Mac. In in the case of PR is mandatory, in the case of a git push is only informative.</p>
+      <p>PR also triggers a coverage analysis of the tests, which is currently only 32%</p>
+      <p><img src="pics/tests.png" width="120%"></p>
+    </section>
 
-        <section id="contrib">
-          <h2>Project Contributtors</h2>
-          <p><a target="_blank" href="https://github.com/brandonros">Brandon Ros</a></p>
-          <p><a target="_blank" href="https://github.com/acheron2302">Archeron2302</a></p>
-          <p><a target="_blank" href="https://github.com/ElCapor">ElCapor</a></p>
-          <p>There are also other people that suggested intereting ideas and optimizations.</p>
-          <p>Regarding wit00 it's a github glitch for git pushing having a bad configuration in git config. (the bug was reported to github)</p>
-          <p>I'm <a target="_blank" href="https://github.com/sha0coder">@sha0coder</a> and I created this software to empower my reversing engineering works, and I'm sharing this because I think it's useful for some cases.</p>
-          <p>Some graphs:<a target="_blank" href="https://github.com/sha0coder/mwemu/graphs/contributors">https://github.com/sha0coder/mwemu/graphs/contributors</a>
-        </section>
+    <section id="contrib">
+      <h2>Project Contributtors</h2>
+      <p><a target="_blank" href="https://github.com/brandonros">Brandon Ros</a></p>
+      <p><a target="_blank" href="https://github.com/acheron2302">Archeron2302</a></p>
+      <p><a target="_blank" href="https://github.com/ElCapor">ElCapor</a></p>
+      <p>There are also other people that suggested intereting ideas and optimizations.</p>
+      <p>Regarding wit00 it's a github glitch for git pushing having a bad configuration in git config. (the bug was
+        reported to github)</p>
+      <p>I'm <a target="_blank" href="https://github.com/sha0coder">@sha0coder</a> and I created this software to
+        empower my reversing engineering works, and I'm sharing this because I think it's useful for some cases.</p>
+      <p>Some graphs:<a target="_blank"
+          href="https://github.com/sha0coder/mwemu/graphs/contributors">https://github.com/sha0coder/mwemu/graphs/contributors</a>
+    </section>
 
-        <section id="Videos">
-          <h2>Videos and pics</h2>
-          <p><a target="_blank" href="https://www.youtube.com/watch?v=-TFL-_-nIqA">radare2 integration on mwemu - r2con2025</a></p>
-          <p><a target="_blank" href="https://www.youtube.com/@JesusOlmos-wm8ch/videos">my youtube channel, there are some demos</a></p>
-          <p><a target="_blank" href="https://x.com/noconname/status/1783878216458842312">zloader emulation - NcNLabs2022</a></p>
-          <p><a target="_blank" href="https://www.youtube.com/watch?v=kfNWylFc6oY">Fixing FPU emulation</a></p>
-        </section>
+    <section id="Videos">
+      <h2>Videos and pics</h2>
+      <p><a target="_blank" href="https://www.youtube.com/watch?v=-TFL-_-nIqA">radare2 integration on mwemu -
+          r2con2025</a></p>
+      <p><a target="_blank" href="https://www.youtube.com/@JesusOlmos-wm8ch/videos">my youtube channel, there are some
+          demos</a></p>
+      <p><a target="_blank" href="https://x.com/noconname/status/1783878216458842312">zloader emulation -
+          NcNLabs2022</a></p>
+      <p><a target="_blank" href="https://www.youtube.com/watch?v=kfNWylFc6oY">Fixing FPU emulation</a></p>
+    </section>
 
-        <section id="license">
-          <h2>License</h2>
-          <p>Actually there are several licenses, the source code is GPLv3, but the crates.io rust module and pypi python module are MIT for having less restrictions in distributing software using libmwemu or pymwemu.</p>
-          <p><a target="_blank" href="https://github.com/sha0coder/mwemu/blob/main/LICENSE">https://github.com/sha0coder/mwemu/blob/main/LICENSE</a></p>
-          <p>Don't hesitate in contact me for creating technologies based of this software.</p>
-          <p>email: sha0 at badchecksum dot net</p>
-        </section>
+    <section id="license">
+      <h2>License</h2>
+      <p>Actually there are several licenses, the source code is GPLv3, but the crates.io rust module and pypi python
+        module are MIT for having less restrictions in distributing software using libmwemu or pymwemu.</p>
+      <p><a target="_blank"
+          href="https://github.com/sha0coder/mwemu/blob/main/LICENSE">https://github.com/sha0coder/mwemu/blob/main/LICENSE</a>
+      </p>
+      <p>Don't hesitate in contact me for creating technologies based of this software.</p>
+      <p>email: sha0 at badchecksum dot net</p>
+    </section>
 
     <section id="cmdline">
       <h1>MWEMU commandline tool</h1>
-      <p>The commandline is a quick way of using mwemu, and there are many features like register/memory/call/string tracing or capturing emulation moments.</p>
-      <p>If the packer is simple probably can be full-emulated using the commandline tool, but if you need more control use pymwemu and for total control libmwemu.</p>
+      <p>The commandline is a quick way of using mwemu, and there are many features like register/memory/call/string
+        tracing or capturing emulation moments.</p>
+      <p>If the packer is simple probably can be full-emulated using the commandline tool, but if you need more control
+        use pymwemu and for total control libmwemu.</p>
       <p>In rust you can compile and exec together with cargo run, use --release mode for faster execution, example:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f file -vv -c 100
               </code></pre>
-            </figure>
-          </p>
-        <p>This is equivalent of doing:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>This is equivalent of doing:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo build --release
 ❯❯❯ target/release/mwemu -6 -f file -vv -c 100
               </code></pre>
-            </figure>
-          </p>
+      </figure>
+      </p>
     </section>
 
-        <section id="cmdline_install">
-          <h2>MWEMU Installation</h2>
-          <p>1. First you need to install Rust and Cargo, and the best way is using rustup.</p>
-          <p><a target="_blank" href="https://rustup.rs/">https://rustup.rs/</a></p>
-          <p>For instance in linux or mac:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="cmdline_install">
+      <h2>MWEMU Installation</h2>
+      <p>1. First you need to install Rust and Cargo, and the best way is using rustup.</p>
+      <p><a target="_blank" href="https://rustup.rs/">https://rustup.rs/</a></p>
+      <p>For instance in linux or mac:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
               </code></pre>
-            </figure>
-          </p>
-          <p>In the default setup binaries are in ~/.cargo/bin/ but you need to add this to the path, ideally on last section of the path.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>In the default setup binaries are in ~/.cargo/bin/ but you need to add this to the path, ideally on last
+        section of the path.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ export PATH="$PATH:/home/username/.cargo/bin/"
               </code></pre>
-            </figure>
-          </p>
-          <p>The installer says how to put in the bashrc or other shells rc.</p>
+      </figure>
+      </p>
+      <p>The installer says how to put in the bashrc or other shells rc.</p>
 
-            
-          <p>2. Then there are 2 options to install this</p>
-         <ul>
-            <li>
-                <p>Install from crates.io (is more convininent second option)</p>
-                <p>
-                <figure class="shell-block">
-                  <figcaption>Shell</figcaption>
-                  <pre><code>
+
+      <p>2. Then there are 2 options to install this</p>
+      <ul>
+        <li>
+          <p>Install from crates.io (is more convininent second option)</p>
+          <p>
+          <figure class="shell-block">
+            <figcaption>Shell</figcaption>
+            <pre><code>
 ❯❯❯ cargo install mwemu 
          </code></pre>
-                </figure>
-                </p>
-            </li>
-            <li>
+          </figure>
+          </p>
+        </li>
+        <li>
           <p>The recommended way is cloning the github repo and compile from it, with Cargo it's simple.</p>
           <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+          <figure class="shell-block">
+            <figcaption>Shell</figcaption>
+            <pre><code>
                 git clone https://github.com/sha0coder/mwemu.git
                 cargo build --release
                 make tests
               </code></pre>
-            </figure>
+          </figure>
           </p>
-            </li>
-        </ul>
-        </section>
+        </li>
+      </ul>
+    </section>
 
-        <section id="help">
-            <h2>--help</h2>
-            <p>Use help option for viewing the commandline options, note that the before the "--" there are cargo flags and after the "--" are the parameters of the program, in this case mwemu commandline.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="help">
+      <h2>--help</h2>
+      <p>Use help option for viewing the commandline options, note that the before the "--" there are cargo flags and
+        after the "--" are the parameters of the program, in this case mwemu commandline.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ~/s/mwemu ❯❯❯ cargo run --release -- --help                                                                                                        Finished `release` profile [optimized] target(s) in 0.06s
 Running `target/release/mwemu --help`
 MWEMU emulator for malware 0.7.12
@@ -342,38 +384,46 @@ OPTIONS:
     -V, --verbose_at <NUMBER>
             start displaying assembly at specific position (is like -vv enabled in specific moment)
               </code></pre>
-            </figure>
-          </p>
-            <p></p>
-        </section>
+      </figure>
+      </p>
+      <p></p>
+    </section>
 
-        <section id="fullemu">
-          <h2>Full Emulation</h2>
-          <p>Main options are:</p>
-          <ul>
-              <li><p>-6 for 64bits mode (otherwise would be 32bits)</p></li>
-              <li><p>-f for selecting file path.</p></li>
-              <li><p>-vv for vieweing the emulated assembler. (emulation is faster with no verbosity, in this case only shows the api calls)</p></li>
-          </ul>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="fullemu">
+      <h2>Full Emulation</h2>
+      <p>Main options are:</p>
+      <ul>
+        <li>
+          <p>-6 for 64bits mode (otherwise would be 32bits)</p>
+        </li>
+        <li>
+          <p>-f for selecting file path.</p>
+        </li>
+        <li>
+          <p>-vv for vieweing the emulated assembler. (emulation is faster with no verbosity, in this case only shows
+            the api calls)</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv  
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/fullemu.png" width="120%"></p>
-        </section>
+      </figure>
+      </p>
+      <p><img src="pics/fullemu.png" width="120%"></p>
+    </section>
 
-        <section id="moment">
-          <h2>Capturing a moment</h2>
-          <p>MWEMU displays always the number of emulated instructions, and this is a unique identificator of a moment.</p>
-          <p>The moment 1 is the first assembly instruction, if you add the flag -c 1 the emulator will stop before emulating instruction 1</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="moment">
+      <h2>Capturing a moment</h2>
+      <p>MWEMU displays always the number of emulated instructions, and this is a unique identificator of a moment.</p>
+      <p>The moment 1 is the first assembly instruction, if you add the flag -c 1 the emulator will stop before
+        emulating instruction 1</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1
     Finished `release` profile [optimized] target(s) in 0.07s
      Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1`
@@ -384,58 +434,74 @@ Entry point pointing to .text 0x401000
 --- console ---
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>The instruction 1 will not be colored, this means that that instruction is going to be emulated in next step.</p>
-          <p>This spawns the console in that emulator state, and you can press enters to emulate steps or "h" command for viewing options.</p>
-          <p>If verbose mode is not set, only WinAPI, syscalls etc will be displayed, but there will be also a number that represent the emulated instructions until that state.</p>
-          <p>There is the option of stopping the emulator at specific address with uppercase "-C addr" but note that the address can be triggered multiple times and is not an unique identificator like the -c moment</p>
-        </section>
+      </figure>
+      </p>
+      <p>The instruction 1 will not be colored, this means that that instruction is going to be emulated in next step.
+      </p>
+      <p>This spawns the console in that emulator state, and you can press enters to emulate steps or "h" command for
+        viewing options.</p>
+      <p>If verbose mode is not set, only WinAPI, syscalls etc will be displayed, but there will be also a number that
+        represent the emulated instructions until that state.</p>
+      <p>There is the option of stopping the emulator at specific address with uppercase "-C addr" but note that the
+        address can be triggered multiple times and is not an unique identificator like the -c moment</p>
+    </section>
 
-        <section id="verbosity">
-          <h2>Verbosity</h2>
-          <p>There are 4 verbosity levels:</p>
-          <ul>
-              <li><p>0: Don't use any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p></li>
-              <li><p>1: Use -v for viewing also some messages like, polymorfic code detected etc.</p></li>
-              <li><p>2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.</p></li>
-              <li><p>3: Use -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep movzx" will print one line for every step of the rep loop.</p></li>
-          </ul>
-          <p>Use -V or --verbose_at for enabling verbose mode at specific point.</p>
-          <p>The verbose mode is automatically enabled 100 instructions previous to the configured -c moment to stop.</p>
-        </section>
+    <section id="verbosity">
+      <h2>Verbosity</h2>
+      <p>There are 4 verbosity levels:</p>
+      <ul>
+        <li>
+          <p>0: Don't use any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p>
+        </li>
+        <li>
+          <p>1: Use -v for viewing also some messages like, polymorfic code detected etc.</p>
+        </li>
+        <li>
+          <p>2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes
+            slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every assembly
+            instruction, this makes slower the emulation.</p>
+        </li>
+        <li>
+          <p>3: Use -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep movzx" will
+            print one line for every step of the rep loop.</p>
+        </li>
+      </ul>
+      <p>Use -V or --verbose_at for enabling verbose mode at specific point.</p>
+      <p>The verbose mode is automatically enabled 100 instructions previous to the configured -c moment to stop.</p>
+    </section>
 
-        <section id="log">
-            <h2>Logging</h2>
-            <p>It's possible to redirect the output to a file, ie:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="log">
+      <h2>Logging</h2>
+      <p>It's possible to redirect the output to a file, ie:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1 &gt; /tmp/log
               </code></pre>
-            </figure>
-          </p>
-          <p>But note that colors are terminal escape bytes and will be logged making parsing more difficult, if you do cat /tmp/log you will see the colors but if you use an editor you will see those bytes</p>
-          <p>It is more convinient using --log option for a clean logs.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>But note that colors are terminal escape bytes and will be logged making parsing more difficult, if you do cat
+        /tmp/log you will see the colors but if you use an editor you will see those bytes</p>
+      <p>It is more convinient using --log option for a clean logs.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1 --log /tmp/log
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="initreg">
-            <h2>Initialize registers</h2>
-            <p>There are some cases like emulating dlls or chunk of code that needs some initial values in the registers.</p>
-            <p>The commandline tool allows to set registers using those options:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="initreg">
+      <h2>Initialize registers</h2>
+      <p>There are some cases like emulating dlls or chunk of code that needs some initial values in the registers.</p>
+      <p>The commandline tool allows to set registers using those options:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
         --mxcsr &lt;MXCSR&gt;                           set mxcsr register
         --r10 &lt;R10&gt;                               set r10 register
         --r11 &lt;R11&gt;                               set r11 register
@@ -456,14 +522,15 @@ Entry point pointing to .text 0x401000
         --rsi &lt;RSI&gt;                               set rsi register
         --rsp &lt;RSP&gt;                               set rsp register
               </code></pre>
-            </figure>
-          </p>
-          <p>But note that colors are terminal escape bytes and will be logged making parsing more difficult, if you do cat /tmp/log you will see the colors but if you use an editor you will see those bytes</p>
-          <p>It is more convinient using --log option for a clean logs.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>But note that colors are terminal escape bytes and will be logged making parsing more difficult, if you do cat
+        /tmp/log you will see the colors but if you use an editor you will see those bytes</p>
+      <p>It is more convinient using --log option for a clean logs.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337
 Finished `release` profile [optimized] target(s) in 0.08s
 Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
@@ -475,16 +542,16 @@ rax: 0x123 291
 =&gt;r rbx
 rbx: 0x1337 4919
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="regtrace">
-          <h2>Trace Registers</h2>
-          <p>Use option -R &lt;registers to trace&gt; to trace some registers</p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="regtrace">
+      <h2>Trace Registers</h2>
+      <p>Use option -R &lt;registers to trace&gt; to trace some registers</p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -R rax,rsp
 ...
 57 0x4010a2: rcr   al,1
@@ -525,94 +592,104 @@ rbx: 0x1337 4919
 69 rsp: 0x7fffffffe270
 69 0x4010c8: ret ; ret-addr: 0x0 ret-value: 0x90909090
               </code></pre>
-            </figure>
-          </p>
-          <p>You can trace one or multiple registers at same time with -R option but with no spaces between registers.</p>
-        </section>
+      </figure>
+      </p>
+      <p>You can trace one or multiple registers at same time with -R option but with no spaces between registers.</p>
+    </section>
 
-        <section id="memtrace">
-          <h2>Trace Memory</h2>
-          <p>There are 2 ways of tracing memory:</p>
-          <ul>
-              <li><p>-m for tracing all the memory read and writes. (optionally -S moment enable the tracer from specific moment)</p></li>
-              <li><p>-i 'dword ptr [eax + 0x8]' inspect mode allows many expressions but not all the combinations.</p></li>
-          </ul>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="memtrace">
+      <h2>Trace Memory</h2>
+      <p>There are 2 ways of tracing memory:</p>
+      <ul>
+        <li>
+          <p>-m for tracing all the memory read and writes. (optionally -S moment enable the tracer from specific
+            moment)</p>
+        </li>
+        <li>
+          <p>-i 'dword ptr [eax + 0x8]' inspect mode allows many expressions but not all the combinations.</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -c 494253 -S 490000
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/memtrace.png" width="80%"></p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p><img src="pics/memtrace.png" width="80%"></p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -i 'qword ptr [rsp + 0x8]'
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/inspect.png" width="80%"></p>
-        </section>
+      </figure>
+      </p>
+      <p><img src="pics/inspect.png" width="80%"></p>
+    </section>
 
-        <section id="strtrace">
-          <h2>Trace String</h2>
-          <p>having the address of the string to trace, use -s &lt;addr&gt; to trace it</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="strtrace">
+      <h2>Trace String</h2>
+      <p>having the address of the string to trace, use -s &lt;addr&gt; to trace it</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/strtrace.png" width="80%"></p>
-          <p>Doing full verbose of millions of instructions is slower than non verbose mode, so let's enable the verbose mode only when it's needed.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p><img src="pics/strtrace.png" width="80%"></p>
+      <p>Doing full verbose of millions of instructions is slower than non verbose mode, so let's enable the verbose
+        mode only when it's needed.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8 -V 191
               </code></pre>
-            </figure>
-          </p>
-          <p>Other option is using tracers with no verbose mode.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Other option is using tracers with no verbose mode.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/strtrace2.png" width="80%"></p>
-        </section>
+      </figure>
+      </p>
+      <p><img src="pics/strtrace2.png" width="80%"></p>
+    </section>
 
-        <section id="calltrace">
-          <h2>Trace Function Calls</h2>
-          <p>Following the call paths can be useful when combining emulation with static analysis to see where we are coming from.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="calltrace">
+      <h2>Trace Function Calls</h2>
+      <p>Following the call paths can be useful when combining emulation with static analysis to see where we are coming
+        from.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin --call
               </code></pre>
-            </figure>
-          </p>
-          <p><img src="pics/calltrace.png" width="80%"></p>
-          <p>In this case, it is more convinient not to use verbose mode.</p>
-        </section>
+      </figure>
+      </p>
+      <p><img src="pics/calltrace.png" width="80%"></p>
+      <p>In this case, it is more convinient not to use verbose mode.</p>
+    </section>
 
-        <section id="console">
-          <h2>Interactive Console</h2>
-          <p>With the option -c &lt;num&gt; mwemu stops the emulation when will reached that num of emulated instructions, then spawn a console.</p>
-          <p>For instance, we don't want to emulate 102063765 instructions in verbose mode, It's faster not using verbose mode. The -c option will enable verbose mode and tracers 100 instructions before reaching that number, so when console is spawned we have some previous context.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+    <section id="console">
+      <h2>Interactive Console</h2>
+      <p>With the option -c &lt;num&gt; mwemu stops the emulation when will reached that num of emulated instructions,
+        then spawn a console.</p>
+      <p>For instance, we don't want to emulate 102063765 instructions in verbose mode, It's faster not using verbose
+        mode. The -c option will enable verbose mode and tracers 100 instructions before reaching that number, so when
+        console is spawned we have some previous context.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
 dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
 PE64 header detected.
@@ -684,17 +761,17 @@ mem_trace: pos = 102063763 rip = 14072d2d2 op = read bits = 32 address = 0x14057
 --- console ---
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="helpcmd">
-          <h2>Help Command</h2>
-          <p>press h to see the available commands:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="helpcmd">
+      <h2>Help Command</h2>
+      <p>press h to see the available commands:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;h
 --- help ---
 q ...................... quit
@@ -765,17 +842,17 @@ dump ................... dump current state to disk
 ---
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="regcmd">
-          <h2>Register Commands</h2>
-          <p>Use r for viewing all the registers, or r [reg] to see specific register.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="regcmd">
+      <h2>Register Commands</h2>
+      <p>Use r for viewing all the registers, or r [reg] to see specific register.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;r rsp
     rsp: 0x329f40
 =&gt;r
@@ -797,12 +874,12 @@ dump ................... dump current state to disk
     r14: 0x0 0
     r15: 0x0 0
               </code></pre>
-            </figure>
-          </p>
-          <p>
-            <figure class="shell-block">
-                <figcaption>mwemu console</figcaption>
-                <pre><code>
+      </figure>
+      </p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;rc rax
 command not found, type h
 =&gt;rc
@@ -812,18 +889,18 @@ value=&gt;0x1337
     rax: 0x1337 4919
 =&gt;
                 </code></pre>
-            </figure>
-          </p>
-          <p>you can use 64bits and 32bits registers only, 16/8bits is not allowed for now ("r ax" or "r al")</p>
-        </section>
+      </figure>
+      </p>
+      <p>you can use 64bits and 32bits registers only, 16/8bits is not allowed for now ("r ax" or "r al")</p>
+    </section>
 
-        <section id="mapscmd">
-          <h2>Maps Command</h2>
-          <p>press m to list all the memory maps and addresses.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="mapscmd">
+      <h2>Maps Command</h2>
+      <p>press m to list all the memory maps and addresses.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;m
 --- maps ---
 oleaut32.data       0x7ff001dc7000 - 0x7ff001dca000 (12288)
@@ -854,14 +931,14 @@ winhttp.pdata       0x7ff000a3c000 - 0x7ff000a46000 (40960)
 ws2_32.rdata        0x7ff0005fd000 - 0x7ff00060a000 (53248)
 ...
               </code></pre>
-            </figure>
-          </p>
-          <p>We can see map name, start address, end address and size in bytes.</p>
-          <p>Other memory related commands:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>We can see map name, start address, end address and size in bytes.</p>
+      <p>Other memory related commands:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 m ...................... memory maps
 ms ..................... memory filtered by keyword string
 ma ..................... memory allocs
@@ -880,41 +957,50 @@ mdd .................... memory dump to disk
 mdda ................... memory dump all allocations to disk
 mt ..................... memory test
               </code></pre>
-            </figure>
-          <p></p>
-        </section>
+      </figure>
+      <p></p>
+    </section>
 
-        <section id="mncmd">
-          <h2>Get Map details from Address</h2>
-          <p>if the code is using an address and you want more details, use command mn.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="mncmd">
+      <h2>Get Map details from Address</h2>
+      <p>if the code is using an address and you want more details, use command mn.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;mn
 address=&gt;0x140000008
 map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>Note that mwemu commands dont accept parameters direcly, first type the command + enter then the parameter will prompted.</p>
-          <p>except for the r2 command that needs an address to spawn radare2, ie:  r2 0x140000008</p>
-        </section>
+      </figure>
+      </p>
+      <p>Note that mwemu commands dont accept parameters direcly, first type the command + enter then the parameter will
+        prompted.</p>
+      <p>except for the r2 command that needs an address to spawn radare2, ie: r2 0x140000008</p>
+    </section>
 
-        <section id="searchcmd">
-          <h2>Search Commands</h2>
-          <p>There are four commands to search.</p>
-          <ul>
-              <li><p>use command ss for search a string in a specific map.</p></li>
-              <li><p>use command sb for search a sequence of spaced bytes in a specific map.</p></li>
-              <li><p>use command ssa for search a string in all the maps.</p></li>
-              <li><p>use command sba for search a sequence of spaced bytes in all the maps.</p></li>
-          </ul>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="searchcmd">
+      <h2>Search Commands</h2>
+      <p>There are four commands to search.</p>
+      <ul>
+        <li>
+          <p>use command ss for search a string in a specific map.</p>
+        </li>
+        <li>
+          <p>use command sb for search a sequence of spaced bytes in a specific map.</p>
+        </li>
+        <li>
+          <p>use command ssa for search a string in all the maps.</p>
+        </li>
+        <li>
+          <p>use command sba for search a sequence of spaced bytes in all the maps.</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;ssa  (search string in all the maps)
 string=&gt;http://something.com/
 found at 0x329ec8 'http://something.com/'
@@ -950,38 +1036,51 @@ found at 0x329ec8
 found at 0x329fc8
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="bpcmd">
-          <h2>Breakpoint Commands</h2>
-          <p>There are four types of breakpoints, but only one breakpoint can be set for each type at once.</p>
-          <ul>
-              <li><p>break on address, the next time this address is reached the emulation will stop there.</p></li>
-              <li><p>break on instruction, when the emulator reach that number of instructions emulated in total, will stop there.</p></li>
-              <li><p>break on memory read, next time this address is readed by any assembly instruction (not api or syscall) the emulator will break there.</p></li>
-              <li><p>break on memory write, next write to this address (doesn't matter if is a 1-byte write or any amount) will stop the emulation.</p></li>
-              <li><p>break on next cmp or test instruction, this will stop the emulator on next cmp or test instruction.</p></li>
-          </ul>
-          <p>Use command "b" to see the state of the 4 types of breakpoints.There are four commands to search.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="bpcmd">
+      <h2>Breakpoint Commands</h2>
+      <p>There are four types of breakpoints, but only one breakpoint can be set for each type at once.</p>
+      <ul>
+        <li>
+          <p>break on address, the next time this address is reached the emulation will stop there.</p>
+        </li>
+        <li>
+          <p>break on instruction, when the emulator reach that number of instructions emulated in total, will stop
+            there.</p>
+        </li>
+        <li>
+          <p>break on memory read, next time this address is readed by any assembly instruction (not api or syscall) the
+            emulator will break there.</p>
+        </li>
+        <li>
+          <p>break on memory write, next write to this address (doesn't matter if is a 1-byte write or any amount) will
+            stop the emulation.</p>
+        </li>
+        <li>
+          <p>break on next cmp or test instruction, this will stop the emulator on next cmp or test instruction.</p>
+        </li>
+      </ul>
+      <p>Use command "b" to see the state of the 4 types of breakpoints.There are four commands to search.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;b
 break on address: []
 break on instruction: []
 break on memory read: []
 break on memory write: []
               </code></pre>
-            </figure>
-          </p>
-          <p>Use these commands to set the breakpoints:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Use these commands to set the breakpoints:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 b ...................... breakpoint list
 ba ..................... breakpoint on address
 bi ..................... breakpoint on instruction number
@@ -991,14 +1090,14 @@ bmx .................... breakpoint on execute memory
 bcmp ................... break on next cmp or test instruction
 bc ..................... clear breakpoint
               </code></pre>
-            </figure>
-          </p>
-          <p>Some examples:</p>
-          <p><img src="pics/bpcmp.png" width="80%"></p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Some examples:</p>
+      <p><img src="pics/bpcmp.png" width="80%"></p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 --- console ---
 =&gt;bi
 instruction number=&gt;100
@@ -1021,24 +1120,37 @@ instruction number=&gt;100
 --- console ---
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="svcmd">
-          <h2>Change Verbosity</h2>
-          <p>If you type the "sv" command, mwemu will ask you for the new verbosity level number, these are the possible verbose levels:</p>
-          <ul>
-              <li><p>0: It's like not using any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p></li>
-              <li><p>1: It's like using -v for viewing also some messages like, polymorfic code detected etc.</p></li>
-              <li><p>2: It's like using -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes slower the emulation.</p></li>
-              <li><p>3: It's like using -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep movzx" will print one line for every step of the rep loop.</p></li>
-          </ul>
-          <p>For instance, we want to emulate quiclky the first 200 insturctions, and then enable the verbosity, this could be dont with -V, but let's do it from the console with "sv" command:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="svcmd">
+      <h2>Change Verbosity</h2>
+      <p>If you type the "sv" command, mwemu will ask you for the new verbosity level number, these are the possible
+        verbose levels:</p>
+      <ul>
+        <li>
+          <p>0: It's like not using any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p>
+        </li>
+        <li>
+          <p>1: It's like using -v for viewing also some messages like, polymorfic code detected etc.</p>
+        </li>
+        <li>
+          <p>2: It's like using -vv for viewing also the assembly code, mwemu will print every assembly instruction,
+            this makes slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every
+            assembly instruction, this makes slower the emulation.</p>
+        </li>
+        <li>
+          <p>3: It's like using -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep
+            movzx" will print one line for every step of the rep loop.</p>
+        </li>
+      </ul>
+      <p>For instance, we want to emulate quiclky the first 200 insturctions, and then enable the verbosity, this could
+        be dont with -V, but let's do it from the console with "sv" command:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
 ...
 200 0x3c004e: movzx edx,byte ptr [rax]    (instruction 200 is not emulated yet, it's the next instruction to be emulated)
@@ -1049,24 +1161,33 @@ verbose level=&gt;3
 =&gt; c  (continue emulating now with maximum verbosity) 
 ...
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="ldrcmd">
-          <h2>View LDR</h2>
-          <p>The LDR is a triple circular liked list that cointains all the linked modules (not only DLL, also EXE)</p>
-          <p>MWEMU provides several commands to view and query the LDR.</p>
-          <ul>
-              <li><p>"ldr" command is the way of viewing the LDR contents.</p></li>
-              <li><p>"iat" comamnd allows to find an specified api name in all the IAT's of every linked module.</p></li>
-              <li><p>"iatx" If we have an address and we want to know which API name is, this command does the address to name query.</p></li>
-              <li><p>"iatd" command dump the full IAT of a specified module.</p></li>
-          </ul>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="ldrcmd">
+      <h2>View LDR</h2>
+      <p>The LDR is a triple circular liked list that cointains all the linked modules (not only DLL, also EXE)</p>
+      <p>MWEMU provides several commands to view and query the LDR.</p>
+      <ul>
+        <li>
+          <p>"ldr" command is the way of viewing the LDR contents.</p>
+        </li>
+        <li>
+          <p>"iat" comamnd allows to find an specified api name in all the IAT's of every linked module.</p>
+        </li>
+        <li>
+          <p>"iatx" If we have an address and we want to know which API name is, this command does the address to name
+            query.</p>
+        </li>
+        <li>
+          <p>"iatd" command dump the full IAT of a specified module.</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 --- console ---
 =&gt;ldr
 0x7fe000000000 loader.exe flink:7fe000004000 blink:7fe00000f000 base:7ff001b7e000 pe_hdr:f8 5045
@@ -1083,19 +1204,20 @@ verbose level=&gt;3
 0x7fe00000e000 shell32.dll flink:7fe00000f000 blink:7fe00000d000 base:7ff000da4000 pe_hdr:f0 5045
 0x7fe00000f000 shlwapi.dll flink:7fe000000000 blink:7fe00000e000 base:7ff001b2c000 pe_hdr:f0 5045
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="dtcmd">
-          <h2>View Structures</h2>
-          <p>The windows debugger windbg has a unique feature that is dt command to see information about structures, is quite useful and uniq.</p>
-          <p>MWEMU implements a similar dt command but for specific structures, that could be useful in some situations.</p>
-          <p>Let's use dt to inspect PEB structure.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="dtcmd">
+      <h2>View Structures</h2>
+      <p>The windows debugger windbg has a unique feature that is dt command to see information about structures, is
+        quite useful and uniq.</p>
+      <p>MWEMU implements a similar dt command but for specific structures, that could be useful in some situations.</p>
+      <p>Let's use dt to inspect PEB structure.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;dt
 structure=&gt;peb
 address=&gt;0x7ffdf000
@@ -1127,13 +1249,13 @@ PEB {
         0x0,
 ...
               </code></pre>
-            </figure>
-          </p>
-          <p>Let's use dt to inspect PEB_LDR_DATA structure.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Let's use dt to inspect PEB_LDR_DATA structure.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;dt
 structure=&gt;PEB_LDR_DATA
 address=&gt;0x77647880
@@ -1160,13 +1282,14 @@ PebLdrData {
 }
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>Let's use dt to inspect LDR_DATA_TABLE_ENTRY structure, that represents one LDR entry in the linked list of a specific linked module.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Let's use dt to inspect LDR_DATA_TABLE_ENTRY structure, that represents one LDR entry in the linked list of a
+        specific linked module.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 =&gt;dt
 structure=&gt;LDR_DATA_TABLE_ENTRY
 address=&gt;0x2c18c0
@@ -1208,13 +1331,13 @@ LdrDataTableEntry {
 }
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>Example: a malware is hiding something in an exception.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Example: a malware is hiding something in an exception.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 3307726 0x4f9673: push  ebp
 3307727 0x4f9674: push  edx
 3307728 0x4f9675: push  eax
@@ -1228,13 +1351,13 @@ Reading SEH 0x0
 --- console ---
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>Let's inspect exception structures:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Let's inspect exception structures:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 --- console ---
 =&gt;r esp
         esp: 0x22de98
@@ -1255,21 +1378,24 @@ CppEhRecord {
 }
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>And here we have the error routine 0x4f96f4 and the filter 0x51068c.</p>
-        </section>
+      </figure>
+      </p>
+      <p>And here we have the error routine 0x4f96f4 and the filter 0x51068c.</p>
+    </section>
 
-        <section id="viewcmd">
-          <h2>View Data</h2>
-          <p>There are multiple commands to view data, but currently I'm using the "r2 addr" command which is better bot for code and data. Note that r2 command executes the radare2 and transfer the memory map of the selected address, and sync radare2 with mwemu, but this command needs to have installed radare2 in the path, for instance from the git. More details on <a href="#r2cmd">radare2</a> chapter. It worth to install radare2.</p>
+    <section id="viewcmd">
+      <h2>View Data</h2>
+      <p>There are multiple commands to view data, but currently I'm using the "r2 addr" command which is better bot for
+        code and data. Note that r2 command executes the radare2 and transfer the memory map of the selected address,
+        and sync radare2 with mwemu, but this command needs to have installed radare2 in the path, for instance from the
+        git. More details on <a href="#r2cmd">radare2</a> chapter. It worth to install radare2.</p>
 
 
-          <p>Commands for displaying information:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      <p>Commands for displaying information:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 mr ..................... memory read, speficy ie: dword ptr [esi]
 mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
 mwb .................... memory write bytes, input spaced bytes
@@ -1282,13 +1408,13 @@ mdd .................... memory dump to disk
 mdda ................... memory dump all allocations to disk
 mt ..................... memory test
               </code></pre>
-            </figure>
-          </p>
-          <p>Example with md command:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>Example with md command:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 --- console ---
 =&gt;md
 address=&gt;0x329ec8
@@ -1302,84 +1428,91 @@ address=&gt;0x329ec8
 0x329f38: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00     ................
 =&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="r2cmd">
-          <h2>Radare2 Command</h2>
-          <p>This command gives a lot of power to MWEMU because we can use radare2 from inside of a MWEMU emualtion moment.</p>
+    <section id="r2cmd">
+      <h2>Radare2 Command</h2>
+      <p>This command gives a lot of power to MWEMU because we can use radare2 from inside of a MWEMU emualtion moment.
+      </p>
 
-          <p>Note that this executes another program (also free software) named radare2 that has to be installed and accesible from the path.</p>
-          <p><img src="pics/radare2.png" width=20%></p>
-          <p>The instalation is simple I will explan it later.</p>
-          <p>Spawning radare over a data address:</p>
-          <p><img src="pics/r2_px.png" width=80%></p>
-          <p>Using q to return form r2 prompt to mwemu prompt and spawn radare again with a code address:</p>
-          <p><img src="pics/r2_code.png" width=80%></p>
-          <p>Radare are recognizing functions and decompiling them with the multiple decompilers, even we can use decai for AI based decompiled in python etc.</p>
-          <p>More info specific of radare commands check the r2book: <a href="https://book.rada.re/" target="_blank">https://book.rada.re/</a></p>
-          <p>Regarding the radare2 installation:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      <p>Note that this executes another program (also free software) named radare2 that has to be installed and
+        accesible from the path.</p>
+      <p><img src="pics/radare2.png" width=20%></p>
+      <p>The instalation is simple I will explan it later.</p>
+      <p>Spawning radare over a data address:</p>
+      <p><img src="pics/r2_px.png" width=80%></p>
+      <p>Using q to return form r2 prompt to mwemu prompt and spawn radare again with a code address:</p>
+      <p><img src="pics/r2_code.png" width=80%></p>
+      <p>Radare are recognizing functions and decompiling them with the multiple decompilers, even we can use decai for
+        AI based decompiled in python etc.</p>
+      <p>More info specific of radare commands check the r2book: <a href="https://book.rada.re/"
+          target="_blank">https://book.rada.re/</a></p>
+      <p>Regarding the radare2 installation:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 ❯❯❯ git clone https://github.com/radareorg/radare2.git
 ❯❯❯ cd radare2
 ❯❯❯ sys/install.sh
               </code></pre>
-            </figure>
-          </p>
-          <p>The install.sh script does all the installation, It will prompt sudo to copy binaries to folders that are on the path.</p>
-          <p>If radare2 is in the path, It would be possible to trigger it from mwemu r2 command.</p>
-        </section>
+      </figure>
+      </p>
+      <p>The install.sh script does all the installation, It will prompt sudo to copy binaries to folders that are on
+        the path.</p>
+      <p>If radare2 is in the path, It would be possible to trigger it from mwemu r2 command.</p>
+    </section>
 
-        <section id="pymwemu">
-          <h1>MWEMU from python scripts</h1>
-          <p>This is probably the most practical use-case of MWEMU, using the pymwemu python module.</p>
-        </section>
+    <section id="pymwemu">
+      <h1>MWEMU from python scripts</h1>
+      <p>This is probably the most practical use-case of MWEMU, using the pymwemu python module.</p>
+    </section>
 
-        <section id="pyinstall">
-          <h2>pymwemu Instalation</h2>
-          <p>They easiest way to install this is using pip, the package is published at pypi <a href="https://pypi.org/project/pymwemu/" target="_blank">https://pypi.org/project/pymwemu/</a></p>
-          <p>For using latest version use git, but it's more tricky to install, because you need rust, cargo and maturin.</p>
-          <p>It's precompiled for linux 64bits, so in linux in theory you don't need to install rust first.</p>
-          <p>In linux you just do:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+    <section id="pyinstall">
+      <h2>pymwemu Instalation</h2>
+      <p>They easiest way to install this is using pip, the package is published at pypi <a
+          href="https://pypi.org/project/pymwemu/" target="_blank">https://pypi.org/project/pymwemu/</a></p>
+      <p>For using latest version use git, but it's more tricky to install, because you need rust, cargo and maturin.
+      </p>
+      <p>It's precompiled for linux 64bits, so in linux in theory you don't need to install rust first.</p>
+      <p>In linux you just do:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 ❯❯❯ pip3 install pymwemu --break-system-packages
               </code></pre>
-            </figure>
-          </p>
-          <p>In mac, windows or if the pip requires it, install first rust.</p>
-          <p>Install rust from rustup, make sure cargo is on the path, and do pip or pip3:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>mwemu console</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>In mac, windows or if the pip requires it, install first rust.</p>
+      <p>Install rust from rustup, make sure cargo is on the path, and do pip or pip3:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>mwemu console</figcaption>
+        <pre><code>
 ❯❯❯ pip install --upgrade pip
 ❯❯❯ pip3 install --upgrade pip
 ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ❯❯❯ pip install pymwemu
 ❯❯❯ pip3 install pymwemu
               </code></pre>
-            </figure>
-          </p>
-          <p>In mac, if there is a problem with !tapi-tbd the solution is:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>In mac, if there is a problem with !tapi-tbd the solution is:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ sudo xcode-select --switch /Library/Developer/CommandLineTools
               </code></pre>
-            </figure>
-          </p>
-          <p>To verify the installation we can import the module in python console.</p>
-            <figure class="shell-block">
-              <figcaption>Shell</figcaption>
-              <pre><code>
+      </figure>
+      </p>
+      <p>To verify the installation we can import the module in python console.</p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ python3
 Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
@@ -1387,18 +1520,18 @@ Type "help", "copyright", "credits" or "license" for more information.
 Initialized logging
 &gt;&gt;&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="pyconfigure">
-          <h2>Instantiate and Configure the Emulator</h2>
-          <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
-          <p>Then there are some initial configurations you can do detailed later.</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Python Console</figcaption>
-              <pre><code>
+    <section id="pyconfigure">
+      <h2>Instantiate and Configure the Emulator</h2>
+      <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
+      <p>Then there are some initial configurations you can do detailed later.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
 &gt;&gt;&gt; import pymwemu
 Initialized logging
 &gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
@@ -1410,28 +1543,40 @@ loading memory maps
 &gt;&gt;&gt;
 &gt;&gt;&gt;
               </code></pre>
-            </figure>
+      </figure>
+      </p>
+      <p>All the configurations possible:</p>
+      <ul>
+        <li>
+          <p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p>
+        </li>
+        <li>
+          <p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p>
+        </li>
+        <li>
+          <p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() /
+            bytearray()</p>
+        </li>
+        <li>
+          <p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> use this if you need to add extra modules
           </p>
-          <p>All the configurations possible:</p>
-          <ul>
-                <li><p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p></li>
-                <li><p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p></li>
-                <li><p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() / bytearray()</p></li>
-                <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> use this if you need to add extra modules</p></li>
-          </ul>
-        </section>
+        </li>
+      </ul>
+    </section>
 
-        <section id="pymaps">
-          <h2>Loading Maps</h2>
-          <p>In most of cases you will need to load all the Windows OS simulation part, to have all the PEB+TEB+LDR linkedlist and WinAPI infra.</p>
-          <p>For doing this you can use <code>emu.load_maps(folder:str)</code></p>
-          <p>If you are going to emulate pure assembly, with no api calls, and no access to windows structures, you don't need to load the maps.</p>
-          <p>So does if you are emulating linux elf64 or shellcodes (remember, elf64 is not well suported for now)</p>
-          <p>Example:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Python Console</figcaption>
-              <pre><code>
+    <section id="pymaps">
+      <h2>Loading Maps</h2>
+      <p>In most of cases you will need to load all the Windows OS simulation part, to have all the PEB+TEB+LDR
+        linkedlist and WinAPI infra.</p>
+      <p>For doing this you can use <code>emu.load_maps(folder:str)</code></p>
+      <p>If you are going to emulate pure assembly, with no api calls, and no access to windows structures, you don't
+        need to load the maps.</p>
+      <p>So does if you are emulating linux elf64 or shellcodes (remember, elf64 is not well suported for now)</p>
+      <p>Example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
 &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
 loading memory maps
 dll_path: /home/sha0/src/mwemu/maps/maps64//ntdll.dll dll: ntdll.dll
@@ -1448,74 +1593,538 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shell32.dll dll: shell32.dll
 dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 &gt;&gt;&gt;
               </code></pre>
-            </figure>
-          </p>
-          <p>Note that this need to have the maps, so git clone the repo:</p>
-          <p>
-              <figure class="shell-block">
-                <figcaption>Shell</figcaption>
-                <pre><code>
+      </figure>
+      </p>
+      <p>Note that this need to have the maps, so git clone the repo:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
 ❯❯❯ git clone https://github.com/sha0coder/mwemu.git 
                 </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="pyload">
-          <h2>loading ELF, PE, or shellcodes</h2>
-          <p></p>
-          <ul>
-              <li><p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p></li>
-              <li><p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() / bytearray()</p></li>
-          </ul>
+    <section id="pyload">
+      <h2>loading ELF, PE, or shellcodes</h2>
+      <p></p>
+      <ul>
+        <li>
+          <p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p>
+        </li>
+        <li>
+          <p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() /
+            bytearray()</p>
+        </li>
+      </ul>
 
-          <p>Example:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Python Console</figcaption>
-              <pre><code>
+      <p>Example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
 &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
 &gt;&gt;&gt;
               </code></pre>
-            </figure>
-          </p>
-        </section>
+      </figure>
+      </p>
+    </section>
 
-        <section id="pybuffers">
-          <h2>Creating Buffers</h2>
-          <p>You can load sections from disk to the emulator's virtual memory, and also can allocate buffers.</p>
-          <ul>
-              <li><p><code>emu.alloc(name:str, size:int) -&gt; int</code> allocate an space.</p></li>
-              <li><p><code>emu.alloc_at(name:str, addr:int, size: int)</code> this allows you to reserve a buffer in a specific position.</p></li>
-               <li><p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> you can load extra sections from disk to specific addresses.</p></li>
-          </ul>
+    <section id="pybuffers">
+      <h2>Creating Buffers</h2>
+      <p>You can load sections from disk to the emulator's virtual memory, and also can allocate buffers.</p>
+      <ul>
+        <li>
+          <p><code>emu.alloc(name:str, size:int) -&gt; int</code> allocate an space.</p>
+        </li>
+        <li>
+          <p><code>emu.alloc_at(name:str, addr:int, size: int)</code> this allows you to reserve a buffer in a specific
+            position.</p>
+        </li>
+        <li>
+          <p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> you can load extra sections from disk to
+            specific addresses.</p>
+        </li>
+      </ul>
 
-          <p>Example:</p>
-          <p>
-            <figure class="shell-block">
-              <figcaption>Python Console</figcaption>
-              <pre><code>
+      <p>Example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
 &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
+&gt;&gt;&gt; emu.alloc_at("mybuffer", 0x1000, 1024)
+&gt;&gt;&gt; emu.load_map("mybuffer", "something.dll", 0x1000)
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pycontext">
+      <h2>Prepare Context</h2>
+      <p>Before starting emulation, you need to set up the CPU context: registers, memory values, and optionally hooks.
+      </p>
+
+      <h3>Setting Registers</h3>
+      <p>You can set register values using the following methods:</p>
+      <ul>
+        <li>
+          <p><code>emu.set_rax(value:int)</code> set RAX register (for 64bits)</p>
+        </li>
+        <li>
+          <p><code>emu.set_rbx(value:int)</code>, <code>emu.set_rcx(value:int)</code>,
+            <code>emu.set_rdx(value:int)</code>
+          </p>
+        </li>
+        <li>
+          <p><code>emu.set_rsi(value:int)</code>, <code>emu.set_rdi(value:int)</code>,
+            <code>emu.set_rsp(value:int)</code>, <code>emu.set_rbp(value:int)</code>
+          </p>
+        </li>
+        <li>
+          <p><code>emu.set_rip(value:int)</code> set instruction pointer</p>
+        </li>
+        <li>
+          <p>For 32bits use: <code>set_eax()</code>, <code>set_ebx()</code>, <code>set_ecx()</code>,
+            <code>set_edx()</code>, <code>set_esi()</code>, <code>set_edi()</code>, <code>set_esp()</code>,
+            <code>set_ebp()</code>, <code>set_eip()</code>
+          </p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.set_rax(0x1337)
+&gt;&gt;&gt; emu.set_rbx(0x4141)
+&gt;&gt;&gt; emu.set_rcx(0x100)
 &gt;&gt;&gt;
               </code></pre>
-            </figure>
+      </figure>
+      </p>
+
+      <h3>Reading Registers</h3>
+      <p>You can read register values using getter methods:</p>
+      <ul>
+        <li>
+          <p><code>emu.get_rax() -&gt; int</code> get RAX register value</p>
+        </li>
+        <li>
+          <p><code>emu.get_rbx()</code>, <code>emu.get_rcx()</code>, <code>emu.get_rdx()</code>,
+            <code>emu.get_rsi()</code>, <code>emu.get_rdi()</code>
           </p>
-        </section>
+        </li>
+        <li>
+          <p><code>emu.get_rsp()</code>, <code>emu.get_rbp()</code>, <code>emu.get_rip()</code></p>
+        </li>
+        <li>
+          <p>For 32bits: <code>get_eax()</code>, <code>get_ebx()</code>, <code>get_ecx()</code> etc.</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; value = emu.get_rax()
+&gt;&gt;&gt; print(hex(value))
+0x1337
+&gt;&gt;&gt; rip = emu.get_rip()
+&gt;&gt;&gt; print(f"RIP: {hex(rip)}")
+&gt;&gt;&gt;
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Memory Operations</h3>
+      <p>Read and write memory directly:</p>
+      <ul>
+        <li>
+          <p><code>emu.read_byte(addr:int) -&gt; int</code> read 1 byte</p>
+        </li>
+        <li>
+          <p><code>emu.read_word(addr:int) -&gt; int</code> read 2 bytes</p>
+        </li>
+        <li>
+          <p><code>emu.read_dword(addr:int) -&gt; int</code> read 4 bytes</p>
+        </li>
+        <li>
+          <p><code>emu.read_qword(addr:int) -&gt; int</code> read 8 bytes</p>
+        </li>
+        <li>
+          <p><code>emu.read_string(addr:int, len:int) -&gt; str</code> read ASCII string</p>
+        </li>
+        <li>
+          <p><code>emu.read_wide_string(addr:int, len:int) -&gt; str</code> read wide string (Unicode)</p>
+        </li>
+        <li>
+          <p><code>emu.write_byte(addr:int, value:int)</code>, <code>emu.write_word()</code>,
+            <code>emu.write_dword()</code>, <code>emu.write_qword()</code>
+          </p>
+        </li>
+        <li>
+          <p><code>emu.write_string(addr:int, string:str)</code> write ASCII string</p>
+        </li>
+        <li>
+          <p><code>emu.write_buffer(addr:int, buffer:bytes)</code> write raw bytes</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+buffer_addr = emu.alloc("mybuffer", 1024)
+
+# Write a string
+emu.write_string(buffer_addr, "Hello MWEMU!")
+
+# Read it back
+text = emu.read_string(buffer_addr, 12)
+print(f"Read: {text}")
+
+# Write dword
+emu.write_dword(buffer_addr + 0x100, 0x12345678)
+value = emu.read_dword(buffer_addr + 0x100)
+print(f"DWORD: {hex(value)}")
+
+# Write raw bytes
+data = b"\x90\x90\x90\xc3"  # nop nop nop ret
+emu.write_buffer(buffer_addr + 0x200, data)
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Hooks and Callbacks</h3>
+      <p>Set hooks to intercept execution at specific points:</p>
+      <ul>
+        <li>
+          <p><code>emu.hook_winapi(callback)</code> hook on WinAPI calls</p>
+        </li>
+        <li>
+          <p><code>emu.set_pre_insn_callback(callback)</code> hook before each instruction</p>
+        </li>
+        <li>
+          <p><code>emu.set_post_insn_callback(callback)</code> hook after each instruction</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - hooks_example.py</figcaption>
+        <pre><code>
+import pymwemu
+
+def on_winapi_call(emu, api_name, args):
+    print(f"[API] {api_name}()")
+    # You can modify return value
+    if api_name == "GetProcAddress":
+        return 0x12345678  # fake address
+    return None  # use default implementation
+
+def before_instruction(emu):
+    rip = emu.get_rip()
+    # Break on specific address
+    if rip == 0x401000:
+        print(f"Reached breakpoint at {hex(rip)}")
+        emu.stop()
+
+emu = pymwemu.init64()
+emu.load_maps('/path/to/maps/maps64/')
+emu.load_binary('sample.exe')
+
+# Set hooks
+emu.hook_winapi(on_winapi_call)
+emu.set_pre_insn_callback(before_instruction)
+
+emu.run(100000)
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pyemu">
+      <h2>Start Emulation</h2>
+      <p>Once everything is configured, you can start the emulation.</p>
+
+      <h3>Basic Emulation</h3>
+      <p>Main methods to control emulation:</p>
+      <ul>
+        <li>
+          <p><code>emu.run(max_instructions:int)</code> run for max number of instructions</p>
+        </li>
+        <li>
+          <p><code>emu.run()</code> run without limit (until halt or error)</p>
+        </li>
+        <li>
+          <p><code>emu.call32(address:int, args:list)</code> call a 32-bit function at address with arguments</p>
+        </li>
+        <li>
+          <p><code>emu.call64(address:int, args:list)</code> call a 64-bit function at address with arguments</p>
+        </li>
+        <li>
+          <p><code>emu.step()</code> execute one instruction</p>
+        </li>
+        <li>
+          <p><code>emu.stop()</code> stop the emulation</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - basic_run.py</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+emu.load_binary('shellcode.bin')
+
+# Run for max 10000 instructions
+emu.run(10000)
+
+print("Emulation finished")
+print(f"Final RAX: {hex(emu.get_rax())}")
+print(f"Instructions executed: {emu.get_pos()}")
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Calling Functions Directly</h3>
+      <p>You can call functions at specific addresses with call32/call64:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - call_function.py</figcaption>
+        <pre><code>
+import pymwemu
+
+# Example: call a decryption function
+emu = pymwemu.init64()
+emu.load_maps('/path/to/maps/maps64/')
+emu.load_binary('malware.exe')
+
+# Allocate buffer for output
+output_buffer = emu.alloc("output", 1024)
+
+# Call function at 0x401234 with arguments
+# Function signature: decrypt(char* input, char* output, int size)
+encrypted_str = 0x404000  # address of encrypted data
+result = emu.call64(0x401234, [encrypted_str, output_buffer, 100])
+
+# Read decrypted result
+decrypted = emu.read_string(output_buffer, 100)
+print(f"Decrypted: {decrypted}")
+print(f"Return value: {hex(result)}")
+              </code></pre>
+      </figure>
+      </p>
+
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - call32_example.py</figcaption>
+        <pre><code>
+import pymwemu
+
+# Example with 32-bit malware
+emu = pymwemu.init32()
+emu.load_binary('malware32.exe')
+
+# Call a string decryption routine
+# Function: char* decrypt_string(int index)
+decrypt_func = 0x00401200
+
+for i in range(10):
+    # Call function with index
+    result_addr = emu.call32(decrypt_func, [i])
+    
+    # Read decrypted string
+    if result_addr != 0:
+        decrypted = emu.read_string(result_addr, 256)
+        print(f"String {i}: {decrypted}")
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Step-by-Step Emulation</h3>
+      <p>For debugging or detailed control, execute instruction by instruction:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - step_by_step.py</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+emu.set_verbose(2)  # show assembly
+emu.load_binary('shellcode.bin')
+
+# Execute 10 instructions one by one
+for i in range(10):
+    emu.step()
+    rip = emu.get_rip()
+    rax = emu.get_rax()
+    print(f"Step {i+1}: RIP={hex(rip)} RAX={hex(rax)}")
+
+print(f"Total instructions: {emu.get_pos()}")
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Complete Practical Example</h3>
+      <p>Here is a complete example combining all concepts:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - decrypt_example.py</figcaption>
+        <pre><code>
+#!/usr/bin/env python3
+import pymwemu
+
+def hook_api(emu, api_name, args):
+    print(f"[API] {api_name}")
+    return None
+
+# Initialize 64-bit emulator
+emu = pymwemu.init64()
+
+# Configure
+emu.set_verbose(0)  # only API calls
+
+# Load Windows simulation
+emu.load_maps('/path/to/mwemu/maps/maps64/')
+
+# Load malware sample
+emu.load_binary('malware.exe')
+
+# Allocate buffer for decrypted data
+decrypt_buffer = emu.alloc("decrypt_buffer", 4096)
+print(f"Decrypt buffer at: {hex(decrypt_buffer)}")
+
+# Set initial context if needed
+emu.set_rcx(decrypt_buffer)  # pointer to output
+emu.set_rdx(0x1000)          # size
+
+# Hook WinAPI calls
+emu.hook_winapi(hook_api)
+
+# Run emulation
+print("Starting emulation...")
+emu.run(500000)  # max 500k instructions
+
+# Extract results
+decrypted = emu.read_string(decrypt_buffer, 1000)
+print(f"\nDecrypted data:")
+print(decrypted)
+
+# Dump memory if needed
+# emu.dump_maps("/tmp/dumps")
+
+print(f"\nTotal instructions: {emu.get_pos()}")
+print(f"Final RAX: {hex(emu.get_rax())}")
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Additional Useful Methods</h3>
+      <p>Other helpful methods for emulation control:</p>
+      <ul>
+        <li>
+          <p><code>emu.get_pos() -&gt; int</code> get current instruction position</p>
+        </li>
+        <li>
+          <p><code>emu.set_verbose(level:int)</code> set verbosity (0=quiet, 1=API, 2=asm, 3=all)</p>
+        </li>
+        <li>
+          <p><code>emu.spawn_console()</code> spawn interactive console</p>
+        </li>
+        <li>
+          <p><code>emu.dump_maps(output_dir:str)</code> dump all memory maps to disk</p>
+        </li>
+        <li>
+          <p><code>emu.get_maps() -&gt; list</code> get list of memory maps</p>
+        </li>
+        <li>
+          <p><code>emu.search_bytes(pattern:bytes) -&gt; list</code> search for byte pattern in memory</p>
+        </li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; # Run and then spawn console for inspection
+&gt;&gt;&gt; emu.run(1000)
+&gt;&gt;&gt; emu.spawn_console()  # interactive debugging
+&gt;&gt;&gt; 
+&gt;&gt;&gt; # Dump all memory
+&gt;&gt;&gt; emu.dump_maps("/tmp/memory_dump")
+&gt;&gt;&gt; 
+&gt;&gt;&gt; # Search for strings
+&gt;&gt;&gt; addresses = emu.search_bytes(b"http://")
+&gt;&gt;&gt; for addr in addresses:
+...     print(f"Found at: {hex(addr)}")
+&gt;&gt;&gt;
+              </code></pre>
+      </figure>
+      </p>
+
+      <h3>Practical Example: String Decryption</h3>
+      <p>A typical use case is decrypting malware strings:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - string_decrypt.py</figcaption>
+        <pre><code>
+#!/usr/bin/env python3
+import pymwemu
+
+# Initialize
+emu = pymwemu.init32()  # 32-bit malware
+emu.load_binary('malware32.exe')
+
+# Find encrypted strings in .data section
+encrypted_strings = [
+    0x00401000,
+    0x00401100,
+    0x00401200,
+]
+
+# Decrypt function address (from IDA/Ghidra)
+decrypt_func = 0x00402340
+
+decrypted = []
+
+for enc_addr in encrypted_strings:
+    # Set parameters
+    emu.set_eax(enc_addr)  # pointer to encrypted string
+    emu.set_eip(decrypt_func)  # start at decrypt function
+    
+    # Run until return
+    emu.run(10000)
+    
+    # Read decrypted result (assume in EAX)
+    result_addr = emu.get_eax()
+    decrypted_str = emu.read_string(result_addr, 256)
+    
+    print(f"Encrypted {hex(enc_addr)} -&gt; {decrypted_str}")
+    decrypted.append(decrypted_str)
+
+# Save results
+with open('decrypted_strings.txt', 'w') as f:
+    for s in decrypted:
+        f.write(s + '\n')
+              </code></pre>
+      </figure>
+      </p>
+    </section>
 
 
+    <section id="libmwemu">
+      <h2>MWEMU for Rust apps</h2>
+      <p>All is implemented in libmwemu, mwemu is just a flags parser that uses libmwemu, same with pyhon bindings on
+        pymwemu, so having said that, from rust you can use all the power of MWEMU, and most of the objects are public
+        so you have a good control of the emulator.</p>
+      <p><a href="https://docs.rs/libmwemu/0.23.0/libmwemu/"
+          target="_blank">https://docs.rs/libmwemu/0.23.0/libmwemu/</a></p>
+      <p><a href="https://crates.io/crates/libmwemu" target="_blank">https://crates.io/crates/libmwemu</a></p>
+    </section>
 
-
-        <section id="libmwemu">
-          <h2>MWEMU for Rust apps</h2>
-          <p>All is implemented in libmwemu, mwemu is just a flags parser that uses libmwemu, same with pyhon bindings on pymwemu, so having said that, from rust you can use all the power of MWEMU, and most of the objects are public so you have a good control of the emulator.</p>
-          <p><a href="https://docs.rs/libmwemu/0.23.0/libmwemu/" target="_blank">https://docs.rs/libmwemu/0.23.0/libmwemu/</a></p>
-          <p><a href="https://crates.io/crates/libmwemu" target="_blank">https://crates.io/crates/libmwemu</a></p>
-        </section>
-
-</div>
+  </div>
 </body>
+
 </html>
-
-
-
-
