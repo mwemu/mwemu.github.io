@@ -62,6 +62,7 @@
         <a href="#pymwemu">3. MWEMU from python scripts</a>
         <ul>
           <li><a href="#pyinstall">3.1. pymwemu instalation</a></li>
+          <li><a href="#pycompile">3.1. build pymwemu (only for devs)</a></li>
           <li><a href="#pyconfigure">3.2. instantiate and configure emulator</a></li>
           <li><a href="#pymaps">3.3. loading maps</a></li>
           <li><a href="#pyload">3.4. loading ELF PE or shellcodes</a></li>
@@ -1522,6 +1523,28 @@ Initialized logging
               </code></pre>
       </figure>
       </p>
+    </section>
+
+    <section id="pycompile">
+      <h2>build pymwemu (only for developers)</h2>
+      <p></p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>shell</figcaption>
+        <pre><code>
+sudo apt install python3.13-venv
+python3 -m venv .venv
+source .venv/bin/activate.fish
+pip install -U pip maturin
+maturin develop --release
+python
+import pymwemu
+Initialized logging  # loaded ok
+^D
+MATURIN_PYPI_TOKEN="..." maturin publish
+        </code></pre>
+      </figure>
+      <p>remember to update version both in Crates.toml and pyproject.toml</p>
     </section>
 
     <section id="pyconfigure">
