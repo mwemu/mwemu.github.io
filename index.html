@@ -1582,6 +1582,44 @@ loading memory maps
               </code></pre>
       </figure>
       </p>
+      <p>All the configurations available:</p>
+      <ul>
+          <li><p><code>set_verbose(n: int)<code> 0: only display apicalls, 1: also messages, 2: also assembly, 3: also unrolled reps.</p></li>
+          <li><p><code>enable_console()</code> this spawns mwemu command console.</p></li>
+          <li><p><code>disable_console()</code></p></li>
+          <li><p><code>spawn_console_at_pos(n: int)</code> spawn the console when position n will be reached (n instructions emulated)</p></li>
+          <li><p><code>spawn_console_at_addr(addr: int)</code> spawn the console when addr is reached.</p></li>
+          <li><p><code>disable_colors()</code></p></li>
+          <li><p><code>enable_colors()</code></p></li>
+          <li><p><code>enable_trace_mem()</code></p></li>
+          <li><p><code>disable_trace_mem()</code></p></li>
+          <li><p><code>enable_trace_regs()</code></p></li>
+          <li><p><code>disable_trace_regs()</code></p></li>
+          <li><p><code>enable_trace_reg(regs_list: list(str))</code> provide list of strings with name of registers to be traced.</p></li>
+          <li><p><code>disable_trace_reg()</code></p></li>
+          <li><p><code>update_ldr_entry_base(libname: str, base: int)</code></p></li>
+          <li><p><code>set_stack_base(addr: int)</code></p></li>
+          <li><p><code>enable_count_loops()</code></p></li>
+          <li><p><code>disable_count_loops()</code></p></li>
+          <li><p><code>enable_trace_string(addr: int)</code></p></li>
+          <li><p><code>disable_trace_string()</code></p></li>
+          <li><p><code>enable_inspect_sequence(seq: str)</code></p></li>
+          <li><p><code>disable_inspect_sequence()</code></p></li>
+          <li><p><code>enable_endpoint_mode()</code></p></li>
+          <li><p><code>disable_endpoint_mode()</code></p></li>
+          <li><p><code>set_entry_point(addr: int)</code></p></li>
+          <li><p><code>set_base_address(addr: int)</code></p></li>
+          <li><p><code>enable_stack_trace()</code></p></li>
+          <li><p><code>disable_stack_trace()</code></p></li>
+          <li><p><code>enable_test_mode()</code></p></li>
+          <li><p><code>disable_test_mode()</code></p></li>
+          <li><p><code>enable_banzai_mode()</code></p></li>
+          <li><p><code>disable_banzai_mode()</code></p></li>
+          <li><p><code>banzai_add(apiname: str, nparams: int)</code> banzai keep emulating on a non implemented API.</p></li>
+          <li><p><code>enable_ctrlc()</code></p></li>
+          <li><p><code>disable_ctrlc()</code></p></li>
+      </ul>
+          
     </section>
 
     <section id="pymaps">
@@ -1660,7 +1698,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
         <pre><code>
 &gt;&gt;&gt; emu.init_win32()
             or
-&gt;&gt;&gt; emu.init_linux64()
+&gt;&gt;&gt; emu.init_linux64(is_dynamic)
               </code></pre>
       </figure>
       </p>
