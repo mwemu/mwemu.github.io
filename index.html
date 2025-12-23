@@ -63,12 +63,13 @@
         <ul>
           <li><a href="#pyinstall">3.1. pymwemu instalation</a></li>
           <li><a href="#pycompile">3.2. build pymwemu (only for devs)</a></li>
-          <li><a href="#pyconfigure">3.3. instantiate and configure emulator</a></li>
-          <li><a href="#pymaps">3.4. loading maps</a></li>
-          <li><a href="#pyload">3.5. loading ELF PE or shellcodes</a></li>
-          <li><a href="#pybuffers">3.6. creating buffers</a></li>
-          <li><a href="#pycontext">3.7. prepare context</a></li>
-          <li><a href="#pyemu">3.8. start emulation</a></li>
+          <li><a href="#pycreate">3.3. create emulation object</a></li>
+          <li><a href="#pyconfigure">3.4. configure emulator</a></li>
+          <li><a href="#pymaps">3.5. loading maps</a></li>
+          <li><a href="#pyload">3.6. loading ELF PE or shellcodes</a></li>
+          <li><a href="#pybuffers">3.7. creating buffers</a></li>
+          <li><a href="#pycontext">3.8. prepare context</a></li>
+          <li><a href="#pyemu">3.9. start emulation</a></li>
         </ul>
       </li>
       <li>
@@ -1510,6 +1511,7 @@ address=&gt;0x329ec8
               </code></pre>
       </figure>
       </p>
+      <p>If there is the error: Caused by: feature `edition2024` is required. then update your rust: rustup update</p>
       <p>To verify the installation we can import the module in python console.</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
@@ -1547,18 +1549,30 @@ MATURIN_PYPI_TOKEN="..." maturin publish
       <p>remember to update version both in Crates.toml and pyproject.toml</p>
     </section>
 
-    <section id="pyconfigure">
-      <h2>Instantiate and Configure the Emulator</h2>
+    <section id="pycreate">
+      <h2>Create the emulation object</h2>
       <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
-      <p>Then there are some initial configurations you can do detailed later.</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
         <pre><code>
 &gt;&gt;&gt; import pymwemu
 Initialized logging
-&gt;&gt;&gt; emu = pymwemu.init32() # or emu = pymwemu.init64()
-&gt;&gt;&gt; # then there are some initial configurations, for instance:
+&gt;&gt;&gt; emu = pymwemu.init32()
+            or
+&gt;&gt;&gt; emu = pymwemu.init64()
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pyconfigure">
+      <h2>Configure the Emulator</h2>
+      <p>Then there are some initial configurations you can do, detailed later.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
 &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
 &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
 &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
@@ -1568,23 +1582,6 @@ loading memory maps
               </code></pre>
       </figure>
       </p>
-      <p>All the configurations possible:</p>
-      <ul>
-        <li>
-          <p><code>emu.load_maps(folder:str)</code> set the maps32 or maps64 folder with all the libs.</p>
-        </li>
-        <li>
-          <p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p>
-        </li>
-        <li>
-          <p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() /
-            bytearray()</p>
-        </li>
-        <li>
-          <p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> use this if you need to add extra modules
-          </p>
-        </li>
-      </ul>
     </section>
 
     <section id="pymaps">
