@@ -1652,6 +1652,21 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
               </code></pre>
       </figure>
       </p>
+      <p>It detects if it's ELF, PE and otherwise is a shellcode.</p>
+      <p>In the case of PE or shellcode the win32 simulation is initialized automatically.</p>
+      <p>In the case of ELF the linux64 simulation is initialized automaticall.</p>
+      <p>But if for any reason you don't use load_binary() and you need the windows simulator with peb/ldr/dlls loaded on the memory, you need to call init_win32 (even for 64bits, it will detect the arch)</p>
+      <p>And if you dont use load_binary() but you need the linux simulator with libc etc loaded, use init_linux64. Note that linux implementation is very basic and only for static 64bits</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.init_win32()
+            or
+&gt;&gt;&gt; emu.init_linux64()
+              </code></pre>
+      </figure>
+      </p>
     </section>
 
     <section id="pybuffers">
