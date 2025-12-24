@@ -75,6 +75,8 @@
           <li><a href="#pybp">3.12. breakpoints</a></li>
           <li><a href="#pymemdump">3.13. memory dump</a></li>
           <li><a href="#pyview">3.14. view info</a></li>
+          <li><a href="#pychbits">3.15. change bits</a></li>
+          <li><a href="#pyexamples">3.16. real case examples</a></li>
         </ul>
       </li>
       <li>
@@ -2127,7 +2129,7 @@ with open('decrypted_strings.txt', 'w') as f:
 
     <section id="pyview">
       <h2>View info</h2>
-      <p></p>
+      <p>There are some less used methods to fetch different type of information.</p>
       <ul>
             <li><p><code>version() -&gt; str</code></p> get current pymwemu version.</li>
             <li><p><code>get_prev_mnemonic() -&gt; str</code> get last emulated mnemonic.</p></li>
@@ -2166,6 +2168,37 @@ with open('decrypted_strings.txt', 'w') as f:
       </p>
     </section>
 
+    <section id="pychbits">
+      <h2>Change architecture bits.</h2>
+      <p>There are methods for changing from 32bits to 64bits and vice versa.</p>
+      <ul>
+            <li><p><code>set_64bits()</code></p></li>
+            <li><p><code>set_32bits()</code></p></li>
+            <li><p><code>inspect_seq(s: str)</code></p></li>
+      </ul>
+      <p>But instead of using those I suggest to re-create the emulation object like:</p>
+
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; import pymwemu
+&gt;&gt;&gt; emu = pymwemu.init32()
+&gt;&gt;&gt; ... 
+&gt;&gt;&gt; emu = pymwemu.init64()
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pyexamples">
+      <h2>Real case examples.</h2>
+      <p>Find some examples here:</p>
+      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
+      <p>And some jupyter nobebooks here:</p>
+      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
+    </section>
 
     <section id="libmwemu">
       <h2>MWEMU for Rust apps</h2>
