@@ -2056,8 +2056,8 @@ with open('decrypted_strings.txt', 'w') as f:
 
     <section id="pystack">
       <h2>Stack operations</h2>
-      <p>Methods for altering the stack, note that you also could do emu.write_qword(emu.get_reg('rsp'), 123)</p>
-      <p>This trigger the stack logic, incrementing rsp/esp.</p>
+      <p>There are methods for altering the stack, note that you also could do emu.write_qword(emu.get_reg('rsp'), 123)</p>
+      <p>But with this meethods you trigger all the stack logic, also incrementing rsp/esp.</p>
       <ul>
             <li><p><code>stack_push32(value: int) -&gt; bool</code></p></li>
             <li><p><code>stack_push64(value: int) -&gt; bool</code></p></li>
