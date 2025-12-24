@@ -68,8 +68,13 @@
           <li><a href="#pymaps">3.5. loading maps</a></li>
           <li><a href="#pyload">3.6. loading ELF PE or shellcodes</a></li>
           <li><a href="#pybuffers">3.7. creating buffers</a></li>
-          <li><a href="#pycontext">3.8. prepare context</a></li>
-          <li><a href="#pyemu">3.9. start emulation</a></li>
+          <li><a href="#pyregisters">3.8. registers</a></li>
+          <li><a href="#pymemory">3.9. memory operations</a></li>
+          <li><a href="#pystart">3.10. start emulation</a></li>
+          <li><a href="#pystack">3.11. stack</a></li>
+          <li><a href="#pybp">3.12. breakpoints</a></li>
+          <li><a href="#pymemdump">3.13. memory dump</a></li>
+          <li><a href="#pyview">3.14. view info</a></li>
         </ul>
       </li>
       <li>
@@ -1669,7 +1674,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p></p>
       <ul>
         <li>
-          <p><code>emu.load_binary(filename:str)</code> load the sample to be emulated:.</p>
+          <p><code>emu.load_binary(filename:str)</code> load the sample to be emulated.</p>
         </li>
         <li>
           <p><code>emu.load_code_bytes(opcodes:bytes)</code> if you have the bytes already on python bytes() /
@@ -1708,20 +1713,14 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <h2>Creating Buffers</h2>
       <p>You can load sections from disk to the emulator's virtual memory, and also can allocate buffers.</p>
       <ul>
-        <li>
-          <p><code>emu.alloc(name:str, size:int) -&gt; int</code> allocate an space.</p>
-        </li>
-        <li>
-          <p><code>emu.alloc_at(name:str, addr:int, size: int)</code> this allows you to reserve a buffer in a specific
-            position.</p>
-        </li>
-        <li>
-          <p><code>emu.load_map(name:str, filename:str, base_addr:int)</code> you can load extra sections from disk to
-            specific addresses.</p>
-        </li>
+            <li><p><code>alloc(name: str, size: int) -&gt; int</code> simplest way to alloc a buffer, it returns the address.</p></li>
+            <li><p><code>alloc_at(name: str, addr: int, size: int)</code> the name is an unique id of the allocated map.</p></li>
+            <li><p><code>load_map(name: str, filename: str, base_addr: int)</code> load extra payloads from disk, sections dumped etc.</p></li>
+            <li><p><code>link_library(filepath: str) -&gt; int</code> link a custom dll in the LDR.</p></li>
+            <li><p><code>free(name: str)</code> free an allocation.</p></li>
       </ul>
 
-      <p>Example:</p>
+      <p>Examples:</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
@@ -1729,119 +1728,93 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
 &gt;&gt;&gt; emu.alloc_at("mybuffer", 0x1000, 1024)
 &gt;&gt;&gt; emu.load_map("mybuffer", "something.dll", 0x1000)
-              </code></pre>
+        </code></pre>
       </figure>
       </p>
     </section>
 
-    <section id="pycontext">
-      <h2>Prepare Context</h2>
-      <p>Before starting emulation, you need to set up the CPU context: registers, memory values, and optionally hooks.
-      </p>
-
-      <h3>Setting Registers</h3>
-      <p>You can set register values using the following methods:</p>
+    <section id="pyregisters">
+      <h2>Registers</h2>
+      <p>You can view the register values and modify it in any moment.</p>
+      <p>For instance to prepare the context previous to the emulation, preparing an emulation state.</p>
       <ul>
-        <li>
-          <p><code>emu.set_rax(value:int)</code> set RAX register (for 64bits)</p>
-        </li>
-        <li>
-          <p><code>emu.set_rbx(value:int)</code>, <code>emu.set_rcx(value:int)</code>,
-            <code>emu.set_rdx(value:int)</code>
-          </p>
-        </li>
-        <li>
-          <p><code>emu.set_rsi(value:int)</code>, <code>emu.set_rdi(value:int)</code>,
-            <code>emu.set_rsp(value:int)</code>, <code>emu.set_rbp(value:int)</code>
-          </p>
-        </li>
-        <li>
-          <p><code>emu.set_rip(value:int)</code> set instruction pointer</p>
-        </li>
-        <li>
-          <p>For 32bits use: <code>set_eax()</code>, <code>set_ebx()</code>, <code>set_ecx()</code>,
-            <code>set_edx()</code>, <code>set_esi()</code>, <code>set_edi()</code>, <code>set_esp()</code>,
-            <code>set_ebp()</code>, <code>set_eip()</code>
-          </p>
-        </li>
+            <li><p><code>get_reg(reg: str) -&gt; int</code> provide the name of the register to view it.</p></li>
+            <li><p><code>set_reg(reg: str, value: int) -&gt; int</code> modify a register.</p></li>
+            <li><p><code>get_xmm(reg: str) -&gt; u128</code> also can view xmm registers.</p></li>
+            <li><p><code>set_xmm(reg: str, value: u128) -&gt; u128</code> and can modify xmm registers.</p></li>
+            <li><p><code>set_rip(addr: int) -&gt; bool</code></p> for changing rip triggering all flow change logic ie winapi calls etc.</li>
+            <li><p><code>set_eip(addr: int) -&gt; bool</code></p> for changing eip triggering all flow change logic ie winapi calls etc.</li>
       </ul>
+
+      <p>Examples:</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
         <pre><code>
-&gt;&gt;&gt; emu.set_rax(0x1337)
-&gt;&gt;&gt; emu.set_rbx(0x4141)
-&gt;&gt;&gt; emu.set_rcx(0x100)
-&gt;&gt;&gt;
-              </code></pre>
+&gt;&gt;&gt; rax = emu.get_reg('rax')
+&gt;&gt;&gt; emu.set_reg('rax', rax+1)
+        </code></pre>
       </figure>
       </p>
+    </section>
 
-      <h3>Reading Registers</h3>
-      <p>You can read register values using getter methods:</p>
+    <section id="pymemory">
+      <h2>Memory operations</h2>
+      <p>It could be useful for pinpint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
+      <p>Note that this read/write are inside the emulation virtual memory.</p>
       <ul>
-        <li>
-          <p><code>emu.get_rax() -&gt; int</code> get RAX register value</p>
-        </li>
-        <li>
-          <p><code>emu.get_rbx()</code>, <code>emu.get_rcx()</code>, <code>emu.get_rdx()</code>,
-            <code>emu.get_rsi()</code>, <code>emu.get_rdi()</code>
-          </p>
-        </li>
-        <li>
-          <p><code>emu.get_rsp()</code>, <code>emu.get_rbp()</code>, <code>emu.get_rip()</code></p>
-        </li>
-        <li>
-          <p>For 32bits: <code>get_eax()</code>, <code>get_ebx()</code>, <code>get_ecx()</code> etc.</p>
-        </li>
+            <li><p>Memory write:</p></li>
+            <li><p><code>write_qword(addr: int, value: int) -&gt; bool</code></p></li>
+            <li><p><code>write_dword(addr: int, value: int) -&gt; bool</code></p></li>
+            <li><p><code>write_word(addr: int, value: u16) -&gt; bool</code></p></li>
+            <li><p><code>write_byte(addr: int, value: u8) -&gt; bool</code></p></li>
+            <li><p><code>write_bytes(to: int, from: bytes)</code></p></li>
+            <li><p><code>write_string(to: int, from: str)</code></p></li>
+            <li><p><code>write_wide_string(to: int, from: str)</code></p></li>
+            <li><p><code>write_buffer(to: int, from: bytes)</code></p></li>
+            <li><p><code>write_spaced_bytes(addr: int, spaced_hex_bytes: str) -&gt; bool</code></p></li>
+
+            <li><p>Read operations:</p></li>
+            <li><p><code>read_128bits_be(addr: int) -&gt; u128</code></p></li>
+            <li><p><code>read_128bits_le(addr: int) -&gt; u128</code></p></li>
+            <li><p><code>read_qword(addr: int) -&gt; int</code></p></li>
+            <li><p><code>read_dword(addr: int) -&gt; int</code></p></li>
+            <li><p><code>read_word(addr: int) -&gt; u16</code></p></li>
+            <li><p><code>read_byte(addr: int) -&gt; u8</code></p></li>
+            <li><p><code>read_buffer(from: int, sz: usize) -&gt; Vec<u8</code></p></li>
+            <li><p><code>read_bytes(addr: int, sz: usize) -&gt; bytes</code></p></li>
+            <li><p><code>read_string_of_bytes(addr: int, sz: usize) -&gt; str</code></p></li>
+            <li><p><code>read_string(addr: int) -&gt; str</code></p></li>
+            <li><p><code>read_wide_string(addr: int) -&gt; str</code></p></li>
+
+            <li><p>Libc style memory operations:</p></li>
+            <li><p><code>memset(addr: int, byte: int, amount: usize)</code></p></li>
+            <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; usize</code></p></li>
+
+            <li><p>Search methods:</p></li>
+            <li><p><code>search_spaced_bytes_from(saddr: int, sbs: str) -&gt; int</code></p></li>
+            <li><p><code>search_spaced_bytes_from_bw(saddr: int, sbs: str) -&gt; int</code></p></li>
+            <li><p><code>search_spaced_bytes(sbs: str, map_name: str) -&gt; Vec<int</code></p></li>
+            <li><p><code>search_spaced_bytes_in_all(sbs: str) -&gt; Vec<int</code></p></li>
+            <li><p><code>search_string(kw: str, map_name: str) -&gt; list[int]</code> search a string in a specific map.</p></li>
+            <li><p><code>search_string_in_all(kw: str)</code> search a string in all the memory maps, not very useful becaouse dont return the result, just print it. It will be improved.</p></li>
+            <li><p><code>search_bytes(bkw: bytes, map_name: str) -&gt; list[int]</code> search bytes in a specific memory map, the result is a list of addresses.</p></li>
       </ul>
+
+      <p>Examples of preparing context previous to start emulation:</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
         <pre><code>
-&gt;&gt;&gt; value = emu.get_rax()
-&gt;&gt;&gt; print(hex(value))
-0x1337
-&gt;&gt;&gt; rip = emu.get_rip()
-&gt;&gt;&gt; print(f"RIP: {hex(rip)}")
-&gt;&gt;&gt;
-              </code></pre>
+&gt;&gt;&gt; some_data_structure_needed = open('blob.bin','rw').read()
+&gt;&gt;&gt; addr = emu.alloc("struct1", len(some_data_structure_needed))
+&gt;&gt;&gt; emu.write_bytes(addr, some_data_structure_needed)
+&gt;&gt;&gt; emu.set_reg('rdi', addr)
+&gt;&gt;&gt; rax = emu.call32(0x40323, [addr, 0])
+        </code></pre>
       </figure>
       </p>
-
-      <h3>Memory Operations</h3>
-      <p>Read and write memory directly:</p>
-      <ul>
-        <li>
-          <p><code>emu.read_byte(addr:int) -&gt; int</code> read 1 byte</p>
-        </li>
-        <li>
-          <p><code>emu.read_word(addr:int) -&gt; int</code> read 2 bytes</p>
-        </li>
-        <li>
-          <p><code>emu.read_dword(addr:int) -&gt; int</code> read 4 bytes</p>
-        </li>
-        <li>
-          <p><code>emu.read_qword(addr:int) -&gt; int</code> read 8 bytes</p>
-        </li>
-        <li>
-          <p><code>emu.read_string(addr:int, len:int) -&gt; str</code> read ASCII string</p>
-        </li>
-        <li>
-          <p><code>emu.read_wide_string(addr:int, len:int) -&gt; str</code> read wide string (Unicode)</p>
-        </li>
-        <li>
-          <p><code>emu.write_byte(addr:int, value:int)</code>, <code>emu.write_word()</code>,
-            <code>emu.write_dword()</code>, <code>emu.write_qword()</code>
-          </p>
-        </li>
-        <li>
-          <p><code>emu.write_string(addr:int, string:str)</code> write ASCII string</p>
-        </li>
-        <li>
-          <p><code>emu.write_buffer(addr:int, buffer:bytes)</code> write raw bytes</p>
-        </li>
-      </ul>
+      <p>Another example:</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Script</figcaption>
@@ -1869,79 +1842,22 @@ emu.write_buffer(buffer_addr + 0x200, data)
               </code></pre>
       </figure>
       </p>
-
-      <h3>Hooks and Callbacks</h3>
-      <p>Set hooks to intercept execution at specific points:</p>
-      <ul>
-        <li>
-          <p><code>emu.hook_winapi(callback)</code> hook on WinAPI calls</p>
-        </li>
-        <li>
-          <p><code>emu.set_pre_insn_callback(callback)</code> hook before each instruction</p>
-        </li>
-        <li>
-          <p><code>emu.set_post_insn_callback(callback)</code> hook after each instruction</p>
-        </li>
-      </ul>
-      <p>
-      <figure class="shell-block">
-        <figcaption>Python Script - hooks_example.py</figcaption>
-        <pre><code>
-import pymwemu
-
-def on_winapi_call(emu, api_name, args):
-    print(f"[API] {api_name}()")
-    # You can modify return value
-    if api_name == "GetProcAddress":
-        return 0x12345678  # fake address
-    return None  # use default implementation
-
-def before_instruction(emu):
-    rip = emu.get_rip()
-    # Break on specific address
-    if rip == 0x401000:
-        print(f"Reached breakpoint at {hex(rip)}")
-        emu.stop()
-
-emu = pymwemu.init64()
-emu.load_maps('/path/to/maps/maps64/')
-emu.load_binary('sample.exe')
-
-# Set hooks
-emu.hook_winapi(on_winapi_call)
-emu.set_pre_insn_callback(before_instruction)
-
-emu.run(100000)
-              </code></pre>
-      </figure>
-      </p>
     </section>
 
-    <section id="pyemu">
+    <section id="pystart">
       <h2>Start Emulation</h2>
       <p>Once everything is configured, you can start the emulation.</p>
-
-      <h3>Basic Emulation</h3>
-      <p>Main methods to control emulation:</p>
       <ul>
-        <li>
-          <p><code>emu.run(max_instructions:int)</code> run for max number of instructions</p>
-        </li>
-        <li>
-          <p><code>emu.run()</code> run without limit (until halt or error)</p>
-        </li>
-        <li>
-          <p><code>emu.call32(address:int, args:list)</code> call a 32-bit function at address with arguments</p>
-        </li>
-        <li>
-          <p><code>emu.call64(address:int, args:list)</code> call a 64-bit function at address with arguments</p>
-        </li>
-        <li>
-          <p><code>emu.step()</code> execute one instruction</p>
-        </li>
-        <li>
-          <p><code>emu.stop()</code> stop the emulation</p>
-        </li>
+            <li><p><code>run(end_addr) -&gt; int</code> provide the address to end the emulation or None to emulate as further as possible.</p></li>
+            <li><p><code>run_to(position: int) -&gt; int</code> emulate a specific number of instructions.</p></li>
+            <li><p><code>call32(address: int, params: list[int]) -&gt; int</code> call a funcion using microsoft 32bits calling convention.</p></li>
+            <li><p><code>call64(address: int, params: list[int]) -&gt; int</code> call a functon using microsoft 64bits calling convention.</p></li>
+            <li><p><code>linux_call64(address: int, params: list[int]) -&gt; int</code> call a function using linux 64bits calling convention.</p></li>
+            <li><p><code>stop()</code> stop emulation, i never used this call.</p></li>
+            <li><p><code>run_until_return() -&gt; int</code></p></li>
+            <li><p><code>run_until_apicall() -&gt; (int, str)</code></p></li>
+            <li><p><code>step() -&gt; bool</code> you can use a while step(): loop and control the situation step by step. This is slow.</p></li>
+            <li><p><code>handle_winapi(addr: int)</code></p></li>
       </ul>
       <p>
       <figure class="shell-block">
@@ -1952,8 +1868,7 @@ import pymwemu
 emu = pymwemu.init64()
 emu.load_binary('shellcode.bin')
 
-# Run for max 10000 instructions
-emu.run(10000)
+rip = emu.run(None)
 
 print("Emulation finished")
 print(f"Final RAX: {hex(emu.get_rax())}")
@@ -2041,59 +1956,6 @@ print(f"Total instructions: {emu.get_pos()}")
       </figure>
       </p>
 
-      <h3>Complete Practical Example</h3>
-      <p>Here is a complete example combining all concepts:</p>
-      <p>
-      <figure class="shell-block">
-        <figcaption>Python Script - decrypt_example.py</figcaption>
-        <pre><code>
-#!/usr/bin/env python3
-import pymwemu
-
-def hook_api(emu, api_name, args):
-    print(f"[API] {api_name}")
-    return None
-
-# Initialize 64-bit emulator
-emu = pymwemu.init64()
-
-# Configure
-emu.set_verbose(0)  # only API calls
-
-# Load Windows simulation
-emu.load_maps('/path/to/mwemu/maps/maps64/')
-
-# Load malware sample
-emu.load_binary('malware.exe')
-
-# Allocate buffer for decrypted data
-decrypt_buffer = emu.alloc("decrypt_buffer", 4096)
-print(f"Decrypt buffer at: {hex(decrypt_buffer)}")
-
-# Set initial context if needed
-emu.set_rcx(decrypt_buffer)  # pointer to output
-emu.set_rdx(0x1000)          # size
-
-# Hook WinAPI calls
-emu.hook_winapi(hook_api)
-
-# Run emulation
-print("Starting emulation...")
-emu.run(500000)  # max 500k instructions
-
-# Extract results
-decrypted = emu.read_string(decrypt_buffer, 1000)
-print(f"\nDecrypted data:")
-print(decrypted)
-
-# Dump memory if needed
-# emu.dump_maps("/tmp/dumps")
-
-print(f"\nTotal instructions: {emu.get_pos()}")
-print(f"Final RAX: {hex(emu.get_rax())}")
-              </code></pre>
-      </figure>
-      </p>
 
       <h3>Additional Useful Methods</h3>
       <p>Other helpful methods for emulation control:</p>
@@ -2182,6 +2044,124 @@ with open('decrypted_strings.txt', 'w') as f:
     for s in decrypted:
         f.write(s + '\n')
               </code></pre>
+      </figure>
+      </p>
+    </section>
+
+
+    <section id="pystack">
+      <h2>Creating Buffers</h2>
+      <p>Methods for altering the stack, note that you also could do emu.write_qword(emu.get_reg('rsp'), 123)</p>
+      <p>This trigger the stack logic, incrementing rsp/esp.</p>
+      <ul>
+            <li><p><code>stack_push32(value: int) -&gt; bool</code></p></li>
+            <li><p><code>stack_push64(value: int) -&gt; bool</code></p></li>
+            <li><p><code>stack_pop32() -&gt; int</code></p></li>
+            <li><p><code>stack_pop64() -&gt; int</code></p></li>
+      </ul>
+
+      <p>This example simulates a stack based calling convention, but note that you can also use call32() and call64() and linux_call64() methods.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.stack_push32(ret_addr)
+&gt;&gt;&gt; emu.stack_push32(param1)
+&gt;&gt;&gt; emu.stack_push32(param2)
+&gt;&gt;&gt; emu.set_reg('rip', 0x40123)
+&gt;&gt;&gt; emu.run(None)
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pybp">
+      <h2>Breakpoints</h2>
+      <p>mwemu's breakpoitns are simple, and most of times there are better ways to trigger the emulation to stop.</p>
+      <p>You can bp an adderss (only one at time ...) or instruction, also memory read/write</p>
+      <ul>
+            <li><p><code>bp_show()</code></p></li>
+            <li><p><code>bp_clear_all()</code></p></li>
+            <li><p><code>bp_set_addr(addr: int)</code></p></li>
+            <li><p><code>bp_get_addr() -&gt; Vec<int</code></p></li>
+            <li><p><code>bp_set_inst(ins: int)</code></p></li>
+            <li><p><code>bp_get_inst() -&gt; Vec<int</code></p></li>
+            <li><p><code>bp_set_mem_read(addr: int)</code></p></li>
+            <li><p><code>bp_get_mem_read() -&gt; Vec<int</code></p></li>
+            <li><p><code>bp_set_mem_write(addr: int)</code></p></li>
+            <li><p><code>bp_get_mem_write() -&gt; Vec<int</code></p></li>
+      </ul>
+
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.set_bp_addr(0x11223344)
+&gt;&gt;&gt; emu.run(None)
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pymemdump">
+      <h2>Memory dump</h2>
+      <p>there are several ways do do a memory dump</p>
+      <ul>
+          <li><p><code>save_all_allocs(path: str)</code> only save to disk allocations done by the emulated code.</p></li>
+          <li><p><code>save(addr: int, size: int, filename: str)</code> dump specific blob to disk.</p></li>
+      </ul>
+
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.print_maps()
+...
+&gt;&gt;&gt; emu.save(0x40324234, 1024, "/tmp/blob.bin")
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="pyview">
+      <h2>View info</h2>
+      <p></p>
+      <ul>
+            <li><p><code>version() -&gt; str</code></p> get current pymwemu version.</li>
+            <li><p><code>get_prev_mnemonic() -&gt; str</code> get last emulated mnemonic.</p></li>
+            <li><p><code>reset_pos()</code> reset the emulated instruction count to zero.</p></li>
+            <li><p><code>is_64bits() -&gt; bool</code> detect in which mode is the emulator.</p></li>
+            <li><p><code>is_32bits() -&gt; bool</code> detect in which mode is the emulator.</p></li>
+            <li><p><code>get_position() -&gt; int</code> get current pos, (amount of emulated instructions).</p></li>
+            <li><p><code>disassemble(addr: int, amount: int) -&gt; str</code> dissassemble bytes.</p></li>
+            <li><p><code>print_maps()</code> print all the maps (allocs, linked dlls, etc)</p></li>
+            <li><p><code>print_maps_by_keyword(kw: str)</code> print the maps that contain a keyword.</p> </li>
+            <li><p><code>get_addr_base(addr: int) -&gt; int</code> get the begining of a map.</p></li>
+            <li><p><code>is_mapped(addr: int) -&gt; bool</code> check if an address is allocated.</p></li>
+            <li><p><code>get_addr_name(addr: int) -&gt; str</code> get in which map name is the address.</p></li>
+            <li><p><code>dump(addr: int)</code> print bytes.</p></li>
+            <li><p><code>dump_n(addr: int, amount: int)</code> print n bytes.</p></li>
+            <li><p><code>dump_qwords(addr: int, n: int)</code> print a list of qwords.</p></li>
+            <li><p><code>dump_dwords(addr: int, n: int)</code> print a list of dwords.</p></li>
+            <li><p><code>allocated_size() -&gt; usize</code> show the total allocated memory.</p></li>
+            <li><p><code>memory_overlaps(addr: int, sz: int) -&gt; bool</code> check if a memory block overlaps with existing map.</p></li>
+            <li><p><code>show_allocs()</code> print all the allocations.</p></li>
+            <li><p><code>mem_test() -&gt; bool</code> do a automatic memory test to look for map overlapps.</p></li>
+            <li><p><code>api_addr_to_name(addr: int) -&gt; str</code> provide an address pointing to an API and will fetch the API name.</p></li>
+            <li><p><code>api_name_to_addr(name: str) -&gt; int</code> get the address of an api name.</p></li>
+      </ul>
+
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; name = api_addr_to_name(0x11223344)
+&gt;&gt;&gt; print( name )
+        MessageBoxA
+        </code></pre>
       </figure>
       </p>
     </section>
