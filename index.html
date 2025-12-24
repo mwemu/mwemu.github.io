@@ -1768,7 +1768,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>It could be useful for pinpint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
       <p>Note that this read/write are inside the emulation virtual memory.</p>
       <ul>
-          <p><h3>Memory write</h3></p>
+          <p><h3>memory write</h3></p>
             <li><p><code>write_qword(addr: int, value: int) -&gt; bool</code></p></li>
             <li><p><code>write_dword(addr: int, value: int) -&gt; bool</code></p></li>
             <li><p><code>write_word(addr: int, value: u16) -&gt; bool</code></p></li>
@@ -1779,7 +1779,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
             <li><p><code>write_buffer(to: int, from: bytes)</code></p></li>
             <li><p><code>write_spaced_bytes(addr: int, spaced_hex_bytes: str) -&gt; bool</code></p></li>
 
-          <p><h3>Read operations</h3></p>
+          <p><h3>read operations</h3></p>
             <li><p><code>read_128bits_be(addr: int) -&gt; u128</code></p></li>
             <li><p><code>read_128bits_le(addr: int) -&gt; u128</code></p></li>
             <li><p><code>read_qword(addr: int) -&gt; int</code></p></li>
@@ -1792,11 +1792,11 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
             <li><p><code>read_string(addr: int) -&gt; str</code></p></li>
             <li><p><code>read_wide_string(addr: int) -&gt; str</code></p></li>
 
-          <p><h3>Libc style memory operations:</h3></p>
+          <p><h3>libc style memory operations:</h3></p>
             <li><p><code>memset(addr: int, byte: int, amount: usize)</code></p></li>
             <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; usize</code></p></li>
 
-          <p><h3>Search methods:</h3></p>
+          <p><h3>search methods:</h3></p>
             <li><p><code>search_spaced_bytes_from(saddr: int, sbs: str) -&gt; int</code></p></li>
             <li><p><code>search_spaced_bytes_from_bw(saddr: int, sbs: str) -&gt; int</code></p></li>
             <li><p><code>search_spaced_bytes(sbs: str, map_name: str) -&gt; Vec<int</code></p></li>
