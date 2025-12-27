@@ -147,6 +147,10 @@ figcaption {
   padding: 8px 10px;
 }
 
+code {
+  background-color: #000;
+}
+
 .shell-block figcaption {
   background: #444;
 }

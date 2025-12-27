@@ -59,7 +59,7 @@
         </ul>
       </li>
       <li>
-        <a href="#pymwemu">3. MWEMU from python scripts</a>
+        <a href="#pymwemu">3. PYMWEMU from python scripts</a>
         <ul>
           <li><a href="#pyinstall">3.1. pymwemu instalation</a></li>
           <li><a href="#pycompile">3.2. build pymwemu (only for devs)</a></li>
@@ -80,13 +80,23 @@
         </ul>
       </li>
       <li>
-        <a href="#libmwemu">4. MWEMU from Rust apps</a>
+        <a href="#libmwemu">4. LIBMWEMU from Rust apps</a>
         <ul>
-          <li><a href="#crateinstall">4.1. rust crate instalation</a></li>
-          <li><a href="#crateinstance">4.2. instance emu object</a></li>
-          <li><a href="#crateload">4.3. loading ELF PE or shellcodes</a></li>
-          <li><a href="#cratecontext">4.4. prepare context</a></li>
-          <li><a href="#crateemu">4.5. start emulation</a></li>
+            <li><a href="#libproject">4.1. Start a project</a></li>
+            <li><a href="#libcompile">4.2. build project</a></li>
+            <li><a href="#libcreate">4.3. Create the emulation object</a></li>
+            <li><a href="#libconfigure">4.4. Configure the Emulator</a></li>
+            <li><a href="#libmaps">4.5. Configuring Maps Folder</a></li>
+            <li><a href="#libload">4.6. Loading ELF, PE, or shellcodes</a></li>
+            <li><a href="#libbuffers">4.7. Creating Buffers</a></li>
+            <li><a href="#libregisters">4.8. Registers</a></li>
+            <li><a href="#libmemory">4.9. Memory operations</a></li>
+            <li><a href="#libstart">4.10. Start Emulation</a></li>
+            <li><a href="#libstack">4.11. Stack operations</a></li>
+            <li><a href="#libbp">4.12. Breakpoints</a></li>
+            <li><a href="#libmemdump">4.13. Memory dump</a></li>
+            <li><a href="#libview">4.14. View info</a></li>
+            <li><a href="#libchbits">4.15. Switch architecture bits</a></li>
         </ul>
       </li>
     </ul>
@@ -1578,7 +1588,7 @@ Initialized logging
 
     <section id="pyconfigure">
       <h2>Configure the Emulator</h2>
-      <p>Then there are some initial configurations you can do, detailed later.</p>
+      <p>Then there are some initial configurations you can do.</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
@@ -1594,7 +1604,7 @@ loading memory maps
       </p>
       <p>All the configurations available:</p>
       <ul>
-          <li><p><code>set_verbose(n: int)<code> 0: only display apicalls, 1: also messages, 2: also assembly, 3: also unrolled reps.</p></li>
+          <li><p><code>set_verbose(n: int)</code> 0: only display apicalls, 1: also messages, 2: also assembly, 3: also unrolled reps.</p></li>
           <li><p><code>enable_console()</code> this spawns mwemu command console.</p></li>
           <li><p><code>disable_console()</code></p></li>
           <li><p><code>spawn_console_at_pos(n: int)</code> spawn the console when position n will be reached (n instructions emulated)</p></li>
@@ -1766,7 +1776,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
     <section id="pymemory">
       <h2>Memory operations</h2>
-      <p>It could be useful for pinpint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
+      <p>It could be useful for pinpoint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
       <p>Note that this read/write are inside the emulation virtual memory.</p>
       <ul>
           <p><h3>memory write</h3></p>
@@ -1787,15 +1797,16 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
             <li><p><code>read_dword(addr: int) -&gt; int</code></p></li>
             <li><p><code>read_word(addr: int) -&gt; u16</code></p></li>
             <li><p><code>read_byte(addr: int) -&gt; u8</code></p></li>
-            <li><p><code>read_buffer(from: int, sz: usize) -&gt; Vec<u8</code></p></li>
-            <li><p><code>read_bytes(addr: int, sz: usize) -&gt; bytes</code></p></li>
-            <li><p><code>read_string_of_bytes(addr: int, sz: usize) -&gt; str</code></p></li>
+            <li><p><code>read_buffer(from: int, sz: int) -&gt; Vec<u8</code></p></li>
+            <li><p><code>read_bytes(addr: int, sz: int) -&gt; bytes</code></p></li>
+            <li><p><code>read_string_of_bytes(addr: int, sz: int) -&gt; str</code></p></li>
             <li><p><code>read_string(addr: int) -&gt; str</code></p></li>
             <li><p><code>read_wide_string(addr: int) -&gt; str</code></p></li>
 
           <p><h3>libc style memory operations:</h3></p>
-            <li><p><code>memset(addr: int, byte: int, amount: usize)</code></p></li>
-            <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; usize</code></p></li>
+            <li><p><code>memset(addr: int, byte: int, amount: int)</code></p></li>
+            <li><p><code>memcmp(to_addr: int, from_addr: int, amount: int)</code></p></li>
+            <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; int</code></p></li>
 
           <p><h3>search methods:</h3></p>
             <li><p><code>search_spaced_bytes_from(saddr: int, sbs: str) -&gt; int</code></p></li>
@@ -1976,13 +1987,13 @@ print(f"Total instructions: {emu.get_pos()}")
           <p><code>emu.spawn_console()</code> spawn interactive console</p>
         </li>
         <li>
-          <p><code>emu.dump_maps(output_dir:str)</code> dump all memory maps to disk</p>
+          <p><code>emu.print_maps()</code> print the full list of maps.</p>
         </li>
         <li>
-          <p><code>emu.get_maps() -&gt; list</code> get list of memory maps</p>
+          <p><code>emu.print_maps_by_keyword(kw: str)</code> print the maps that match with that keyword.</p>
         </li>
         <li>
-          <p><code>emu.search_bytes(pattern:bytes) -&gt; list</code> search for byte pattern in memory</p>
+          <p><code>emu.search_bytes(pattern:bytes) -&gt; list</code> search for byte pattern in memory.</p>
         </li>
       </ul>
       <p>
@@ -1993,8 +2004,6 @@ print(f"Total instructions: {emu.get_pos()}")
 &gt;&gt;&gt; emu.run(1000)
 &gt;&gt;&gt; emu.spawn_console()  # interactive debugging
 &gt;&gt;&gt; 
-&gt;&gt;&gt; # Dump all memory
-&gt;&gt;&gt; emu.dump_maps("/tmp/memory_dump")
 &gt;&gt;&gt; 
 &gt;&gt;&gt; # Search for strings
 &gt;&gt;&gt; addresses = emu.search_bytes(b"http://")
@@ -2151,7 +2160,7 @@ with open('decrypted_strings.txt', 'w') as f:
             <li><p><code>dump_n(addr: int, amount: int)</code> print n bytes.</p></li>
             <li><p><code>dump_qwords(addr: int, n: int)</code> print a list of qwords.</p></li>
             <li><p><code>dump_dwords(addr: int, n: int)</code> print a list of dwords.</p></li>
-            <li><p><code>allocated_size() -&gt; usize</code> show the total allocated memory.</p></li>
+            <li><p><code>allocated_size() -&gt; int</code> show the total allocated memory.</p></li>
             <li><p><code>memory_overlaps(addr: int, sz: int) -&gt; bool</code> check if a memory block overlaps with existing map.</p></li>
             <li><p><code>show_allocs()</code> print all the allocations.</p></li>
             <li><p><code>mem_test() -&gt; bool</code> do a automatic memory test to look for map overlapps.</p></li>
@@ -2180,7 +2189,7 @@ with open('decrypted_strings.txt', 'w') as f:
             <li><p><code>set_32bits()</code></p></li>
             <li><p><code>inspect_seq(s: str)</code></p></li>
       </ul>
-      <p>But instead of using those I suggest to re-create the emulation object like:</p>
+      <p>But better don't change the architecture on the fly, re-instantiate the emulation object like:</p>
 
       <p>Example</p>
       <p>
@@ -2204,15 +2213,667 @@ with open('decrypted_strings.txt', 'w') as f:
       <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
     </section>
 
+
+
+
+    <!---------- LIBMWEMU --------------->
+
     <section id="libmwemu">
       <h2>MWEMU for Rust apps</h2>
-      <p>All is implemented in libmwemu, mwemu is just a flags parser that uses libmwemu, same with pyhon bindings on
-        pymwemu, so having said that, from rust you can use all the power of MWEMU, and most of the objects are public
-        so you have a good control of the emulator.</p>
-      <p><a href="https://docs.rs/libmwemu/0.23.0/libmwemu/"
-          target="_blank">https://docs.rs/libmwemu/0.23.0/libmwemu/</a></p>
+      <p>Core and bindings are everything implemented in Rust, and all the logic is inside libmwemu, so a rust program can have even more control of the emulator than pymwemu.</p>
+      <p>So having said that, from Rust you can use all the power of MWEMU, and access to most of the objects because are public most of them, so you can have a good control of the emulator.</p>
+      <p><a href="https://docs.rs/libmwemu/0.23.5/libmwemu/"
+          target="_blank">https://docs.rs/libmwemu/0.23.5/libmwemu/</a></p>
       <p><a href="https://crates.io/crates/libmwemu" target="_blank">https://crates.io/crates/libmwemu</a></p>
     </section>
+
+    <section id="libproject">
+      <h2>Start a project</h2>
+      <p>First of all you need the rustc compiler and the cargo tool, best way of installing this is rustup.rs</p>
+      <p>
+        <figure class="shell-block">
+          <figcaption>Shell</figcaption>
+          <pre><code>
+  ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+                </code></pre>
+        </figure>
+        </p>
+      <p>Then you have to create a rust project.</p>
+        <p>
+        <figure class="shell-block">
+          <figcaption>Shell</figcaption>
+          <pre><code>
+  ❯❯❯ cargo init --bin myproject
+  ❯❯❯ cd myproject
+                </code></pre>
+        </figure>
+        </p>
+      <p>This creates a folder with src/main.rs and also Cargo.toml</p>
+      <p>Add de dependency to Cargo.toml manually or better automatically using cargo too.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
+❯❯❯ cargo add libmwemu
+
+❯❯❯ cat Cargo.toml
+[package]
+name = "myproject"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+libmwemu = "0.23.5"
+              </code></pre>
+      </figure>
+      </p>
+      <p>Then you can add code to src/main.rs</p>
+    </section>
+
+    <section id="libcompile">
+      <h2>build project</h2>
+      <p>If you need to run the project remember to use the release mode (adding --release)</p>
+      <p>In release mode the emulator is blazing fast.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>shell</figcaption>
+        <pre><code>
+  ❯❯❯ cargo run --release
+        </code></pre>
+      </figure>
+      </p>
+      <p>The compilation will be slower the first time because have to download the libmwemu and compile it automaticall.</p>
+      <p>What cargo run does internally is compiling like (cargo build --release) and then execute the binary.</p>
+      <p>You can pass parameter to cargo and also to your code in this way:</p>
+      <p><code>cargo run [cargo args] -- [you program args]</code> example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>shell</figcaption>
+        <pre><code>
+  ❯❯❯ cargo run --release -- samples/binary.exe
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libcreate">
+      <h2>Create the emulation object</h2>
+      <p>First of all, use the emu32 or emu64 object depending what you need.</p>
+      <p>If you will do memory allocations you al will need to use the Permission object.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+use libmwemu::emu32;
+use libmwemu::maps::mem64::Permission;
+        </code></pre>
+      </figure>
+      </p>
+      <p>Note that even in 32bits the Permission object implementation is implemented in mem64, actually internally all is 64bits</p>
+      <p>Then create the emulation object for the chosen architecture.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut emu = emu32();  // or also emu64()
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libconfigure">
+      <h2>Configure the Emulator</h2>
+      <p>Then optionally you can use modificators to configure the emulator, even access directly to Config object</p>
+      <p>All the configurations available:</p>
+      <ul>
+            <li><p><code>emu.set_verbose(n: u32)</code> change verbosity, 0: only show winapi calls, 1: also messages, 2: also every asm instructions, 3: also every rep iteration.</p></li>
+            <li><p><code>emu.set_stack_address(addr: u64)</code></p></li>
+            <li><p><code>emu.set_base_address(addr: u64)</code> set the base address of the code, the initial emulable blob, by default mwemu gets it from the PE/ELF structures.</p></li>
+
+            <li><p><code>emu.disable_ctrlc()</code></p></li>
+            <li><p><code>emu.disable_console()</code></p></li>
+            <li><p><code>emu.disable_banzai()</code></p></li>
+            <li><p><code>emu.disable_color()</code></p></li>
+            <li><p><code>emu.disable_interrupt()</code></p></li>
+            <li><p><code>emu.disable_exception()</code></p></li>
+            <li><p><code>emu.disable_memory_read()</code></p></li>
+            <li><p><code>emu.disable_memory_write()</code></p></li>
+            <li><p><code>emu.disable_pre_instruction()</code></p></li>
+            <li><p><code>emu.disable_post_instruction()</code></p></li>
+            <li><p><code>emu.disable_winapi_call()</code></p></li>
+            <li><p><code>emu.spawn_console()</code></p></li>
+            <li><p><code>emu.spawn_console_at(exp: u64)</code></p></li>
+            <li><p><code>emu.spawn_console_at_addr(addr: u64)</code></p></li>
+            <li><p><code>emu.update_ldr_entry_base(libname: &amp;str, base: u64)</code></p></li>
+        </ul>
+        <p>From rust you can also modify directly the Config structure, example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+            emu.cfg.arguments = "--exe_sample_some_arg".to_string();
+            emu.cfg.shellcode = true;
+        </code></pre>
+      </figure>
+      </p>
+      <p>Find here all the configs available in<a href="https://docs.rs/libmwemu/0.23.5/libmwemu/config/struct.Config.html" about="_blank">Config</a> object.</p>
+      <p>But main configs has function wrappers in the main <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/emu/struct.Emu.html" target="_blank">Emu</a> base object.</a></p>
+      <p>You can also create a Config object and set it to the emulator with <code>emu.set_config(cfg: Config)</code> but normaly is more convinien to access to emul.cfg as seen above.</p>
+    </section>
+
+    <section id="libmaps">
+      <h2>Configuring Maps Folder</h2>
+      <p>In most of cases you will need to load all the Windows OS simulation part, to have all the PEB+TEB+LDR
+        linked-list doing windows Process Simulation.</p>
+      <p>For doing this you can use <code>emu.set_maps_folder(folder:str)</code></p>
+      <p>If you are going to emulate pure assembly, with no api calls, and no access to windows structures, you don't
+        need to load the maps.</p>
+      <p>Example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut emu = emu64();
+emu.set_maps_folder("/home/sha0/src/mwemu/maps/maps64/");
+emu.init_logger();
+        </code></pre>
+      </figure>
+      </p>
+      <p>Note that this need to have the maps, so git clone the repo:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
+❯❯❯ git clone https://github.com/sha0coder/mwemu.git 
+                </code></pre>
+      </figure>
+      </p>
+      <p>This call configure the path, but don't load it for now!</p>
+      <p>Later we will use one of those 3 to trigger the win32 simulator:</p>
+      <ul>
+            <li><p><code>emu.load_code(file: &amp;str)</code> if it's PE or shellcode will call internally init_win32</p></li>
+            <li><p><code>emu.init_win32(clear_registers: bool, clear_flags: bool)</code> you can trigger directly the win32 simulation, but don't call it twice.</p></li>
+      </ul>
+      <p>So, if you need the maps and win32 stuff but you don't do load_sample, then you will need to call directly the <code>init_win32</code></p>
+    </section>
+
+    <section id="libload">
+      <h2>loading ELF, PE, or shellcodes</h2>
+      <p>In most of cases you will need to load a sample, from file or from vector.</p>
+      <p>Load your main sample with one of these methods, and only once.</p>
+      <p>For loading aditional maps, use the load/allocation methods that are explained later.</p>
+      <ul>
+        <li>
+          <p><code>emu.load_code(filename: &amp;str)</code> load the sample to be emulated.</p>
+        </li>
+        <li>
+          <p><code>emu.load_code_bytes(opcodes: &amp;[u8])</code> if you have the bytes already on a variable.</p>
+        </li>
+      </ul>
+
+      <p>Example1:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+emu.load_code("/samples/sample.bin");
+        </code></pre>
+      </figure>
+      </p>
+      <p>Example2:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut opcodes: Vec&lt;u8&gt; = Vec::new();
+... // fill the opcodes
+let mut emu = emu32();
+emu.set_maps_folder("/home/sha0/src/mwemu/maps/maps64/");
+emu.load_code_bytes(&amp;opcodes);
+emu.init_win32(false, false);
+        </code></pre>
+      </figure>
+      </p>
+      <p>Example3:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut emu = emu32();
+emu.load_code_bytes(&amp;opcodes);
+emu.init_linux64();  // load_code("sample") would trigger init_win32 or init_linux64 depending on file format. 
+                     // but with no load_code we must trigger manually the init if we need it.
+        </code></pre>
+      </figure>
+      </p>
+      <p>It detects if it's ELF, PE and otherwise is a shellcode.</p>
+      <p>In the case of PE or shellcode the win32 simulation is initialized automatically.</p>
+      <p>In the case of ELF the linux64 simulation is initialized automatically.</p>
+      <p>But if for any reason you don't use load_code() and you need the windows simulator with peb/ldr/dlls loaded on the memory, you need to call init_win32 (even for 64bits, it will detect the arch)</p>
+      <p>And if you dont use load_binary() but you need the linux simulator with libc etc loaded, use init_linux64. Note that linux implementation is very basic and only for static 64bits</p>
+      <p>Note that calling init_win32() requires previously to have done load_maps to set the maps folder.</p>
+    </section>
+
+    <section id="libbuffers">
+      <h2>Creating Buffers</h2>
+      <p>You can load sections from disk to the emulator's virtual memory, and also can allocate buffers.</p>
+      <ul>
+            <li><p><code>emu.alloc(map_name: &amp;str, size: u64, permission: Permission) -&gt; u64</code> simplest way to alloc a buffer, it returns the address.</p></li>
+            <li><p><code>emu.maps.alloc(sz: u64) -&gt; Option&lt;u64&gt;</code> this is used by the winapi and linux syscalls, this just find a free block of size sz, but don't allocate it, you need then to do emu.maps.create_map</p></li>
+            <li><p><code>emu.maps.create_map(name: &amp;str, base: u64, size: u64, permission: Permission</p> create an empty map at specific location.</li>
+            <li><p><code>emu.free(map_name: &amp;str);</code> deallocate by map name.</p></li>
+            <li><p><code>emu.maps.dealloc(addr: u64);</code> deallocate by address.</p></li>
+            <li><p><code>emu.link_library(filepath: &smp;str) -&gt; u64</code> dynamic link a custom dll to the LDR struct.</p></li>
+      </ul>
+
+      <p>Example1:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+use libmwemu::maps::mem64::Permission;
+use libmwemu::emu32;
+...
+let ptr_encoded = emu.alloc("enc", 1024, Permission::READ_WRITE_EXECUTE);
+let ptr_decoded = emu.alloc("dec", 1024, Permission::READ_WRITE_EXECUTE);
+emu.maps.write_bytes(ptr_encoded, &amp;data);
+let rax = emu.call64(decoder_func_addr, &amp;[ptr_encoded, ptr_decoded]);
+        </code></pre>
+      </figure>
+      </p>
+
+      <p>Example2:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let addr = emu.maps.alloc(1024);
+let map = emu
+            .maps
+            .create_map("section_memorydump", addr, 1024, Permission::READ_WRITE_EXECUTE)
+            .expect("load_map out of memory");
+map.load("dumped_section.bin");
+        </code></pre>
+      </figure>
+      </p>
+      <p>map is a <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/maps/mem64/struct.Mem64.html" target="_blank">Mem64</a> object, and it has multiple methods. But for most of cases <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/emu/struct.Emu.html" target="_blank">emu</a> and <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/maps/struct.Maps.html" about="_blank">emu.maps</a> methods are enoguth.</p>
+    </section>
+
+    <section id="libregisters">
+      <h2>Registers</h2>
+      <p>You can view the register values and modify it in any moment.</p>
+      <p>For instance to prepare the context previous to the emulation, preparing an emulation state.</p>
+      <ul>
+      <p><h3>Reading a 64bits register or bigger is very direct</h3></p>
+          <il><p><code>let rax = emu.regs().rax;</code></p></il>
+          <il><p><code>let rip = emu.regs().rip;</code></p></il>
+          <il><p><code>let xmm15 = emu.regs().xmm15;</code></p></il>
+          <p><h3>Settings a 64bits register or bigger is very direct.</h3></p> 
+          <il><p><code>emu.regs_mut().rax = 0x123;</code></p></il>
+          <il><p><code>emu.regs_mut().rip = 0x4012312;</code></p></il>
+          <il><p><code>emu.regs_mut().xmm15 = 0x11223344_11223344_11223344_11223344u128;</code></p></il>
+      <p><h3>Getters for non 64bits (it return always u64 type)</h3></p>
+          <il><p><code>let eax = emu.regs().get_eax() as u32;</code></p></il>
+          <il><p><code>let eip = emu.regs().get_eip() as u32;</code></p></il>
+          <il><p><code>let al = emu.regs().get_eip() as u8;</code></p></il>
+      <p><h3>Setters for non 64bits (provide always u64 type)</h3></p>
+          <il><p><code>emu.regs_mut().set_eax(123u8);</code></p></il>
+          <il><p><code>emu.regs_mut().set_eip(0x123123);</code></p></il>
+          <il><p><code>emu.regs_mut().set_al(0xff);</code></p></il>
+          <il><p><code>emu.regs_mut().set_sil(0xff);</code></p></il>
+          <il><p><code>emu.regs_mut().set_dil(0xff);</code></p></il>
+      <p><h3>r1 to r15</h3></p>
+          <il><p><code>let r15 = emu.regs().r15();</code></p></il>
+          <il><p><code>let n = emu.regs().get_r12w();</code></p></il>
+          <il><p><code>emu.regs_mut().set_r8h(0x00);</code></p></il>
+          <il><p><code>emu.regs_mut().set_r8l(0xff);</code></p></il>
+          <il><p><code>emu.regs_mut().r8 = 0;</code></p></il>
+          <il><p><code>let lower_32bits = emu.regs().set_r8d();</code></p></il>
+          <il><p><code>let upper_32bits = emu.regs().set_r8u();</code></p></il>
+      </ul>
+      <p>Regs64 is fully featured, there are also some uncommon registers like ymm, cr, gs, fs, tr and msr.</p>
+      <ul>
+        <p><h3>helper methods</h3></p>
+          <il><p><code>emu.regs_mut().clear::&lt;u8&gt;();</code> clear the lower byte of all the registers.</p></il>
+          <il><p><code>emu.regs_mut().rand();</code> randomize register values.</p></il>
+          <il><p><code>emu.regs().print::&lt;u32&gt;();</code> print main registers.</p></il>
+      </ul>
+      <p>And there are much more stuff, for more check the <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/regs64/struct.Regs64.html" target="_blank">Regs64</a> object.</p>
+      <p>Note that you can change <code>emu.regs_mut().set_eip(addr);<code> but most of times what you really need is <code>emu.set_eip(addr);</code> which emulates the jmp logic triggering WinAPI if the address is a lib.</p>
+    </section>
+
+    <section id="libmemory">
+      <h2>Memory operations</h2>
+      <p>It could be useful for pinpoint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
+      <p>Note that this read/write are inside the emulation virtual memory.</p>
+      <ul>
+         <p><h3>memory read</h3></p>
+            <li><p><code>emu.maps.read_byte(addr: u64) -&gt; Option&lt;u8&gt;</code></p></li>
+            <li><p><code>emu.maps.read_f64(addr: u64) -&gt; Option&lt;f64&gt;</code></p></li>
+            <li><p><code>emu.maps.read_f32(addr: u64) -&gt; Option&lt;f32&gt;</code></p></li>
+            <li><p><code>emu.maps.read_128bits_be(addr: u64) -&gt; Option&lt;u128&gt;</code></p></li>
+            <li><p><code>emu.maps.read_128bits_le(addr: u64) -&gt; Option&lt;u128&gt;</code></p></li>
+            <li><p><code>emu.maps.read_qword(addr: u64) -&gt; Option&lt;u64&gt;</code></p></li>
+            <li><p><code>emu.maps.read_dword(addr: u64) -&gt; Option&lt;u32&gt;</code></p></li>
+            <li><p><code>emu.maps.read_word(addr: u64) -&gt; Option&lt;u16&gt;</code></p></li>
+            <li><p><code>emu.maps.read_buffer(from: u64, sz: usize) -&gt; Vec&lt;u8&gt;</code></p></li>
+            <li><p><code>emu.maps.read_bytes(addr: u64, sz: usize) -&gt; &amp;[u8]</code></p></li>
+            <li><p><code>emu.maps.read_bytes_option(addr: u64, sz: usize) -&gt; Option&lt;&amp;[u8]&gt;</code></p></li>
+            <li><p><code>emu.maps.read_string_of_bytes(addr: u64, sz: usize) -&gt; String</code></p></li>
+            <li><p><code>emu.maps.read_string(addr: u64) -&gt; String</code></p></li>
+            <li><p><code>emu.maps.read_wide_string_nocrash(addr: u64) -&gt; String</code></p></li>
+            <li><p><code>emu.maps.read_wide_string(addr: u64) -&gt; String</code></p></li>
+            <li><p><code>emu.maps.read_wide_string_n(addr: u64, max_chars: usize) -&gt; String</code></p></li>
+
+         <p><h3>memory write</h3></p>
+            <li><p><code>emu.maps.write_byte(addr: u64, value: u8) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.write_qword(addr: u64, value: u64) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.write_dword(addr: u64, value: u32) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.write_word(addr: u64, value: u16) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.write_bytes(addr: u64, data: Vec&lt;u8&gt;) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.write_string(to: u64, from: &amp;str)</code></p></li>
+            <li><p><code>emu.maps.write_wide_string(to: u64, from: &amp;str)</code></p></li>
+            <li><p><code>emu.maps.write_buffer(to: u64, from: &amp;[u8])</code></p></li>
+            <li><p><code>emu.maps.write_spaced_bytes(addr: u64, sbs: &amp;str) -&gt; bool</code></p></li>
+
+          <p><h3>libc style memory operations:</h3></p>
+            <li><p><code>emu.maps.memset(addr: u64, b: u8, amount: usize)</code></p></li>
+            <li><p><code>emu.maps.memcpy(to: u64, from: u64, size: usize) -&gt; bool</code></p></li>
+            <li><p><code>emu.maps.sizeof_wide(unicode_str_ptr: u64) -&gt; usize</code></p></li>
+
+          <p><h3>search methods:</h3></p>
+            <li><p><code>emu.maps.search_string(kw: &amp;str, map_name: &amp;str) -&gt; Option&lt;Vec&lt;u64&gt;&gt;</code></p></li>
+            <li><p><code>emu.maps.search_spaced_bytes_from(sbs: &amp;str, saddr: u64) -&gt; u64</code></p></li>
+            <li><p><code>emu.maps.search_spaced_bytes_from_bw(spaced_bytes: &amp;str, start_address: u64) -&gt; u64</code></p></li>
+            <li><p><code>emu.maps.search_spaced_bytes(sbs: &amp;str, map_name: &amp;str) -&gt; Vec&lt;u64&gt;</code></p></li>
+            <li><p><code>emu.maps.search_spaced_bytes_in_all(sbs: &amp;str) -&gt; Vec&lt;u64&gt;</code></p></li>
+            <li><p><code>emu.maps.search_string_in_all(kw: String)</code></p></li>
+            <li><p><code>emu.maps.search_bytes(bkw: Vec&lt;u8&gt;, map_name: &amp;str) -&gt; Vec&lt;u64&gt;</code></p></li>
+      </ul>
+
+      <p>Examples of preparing context previous to start emulation:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut some_data_structure_needed: Vec<u8> = Vec::new();
+load_blob_from_disk("blob.bin", &amp;mut some_data_structure_needed);
+
+let mut emu = libmwemu::emu32();
+let addr = emu.alloc("struct1", some_data_structure_needed.len());
+emu.maps.write_bytes(addr, some_data_structure_needed);
+let rax = emu.call32(0x40323, &amp;[addr, some_data_structure_needed.len()]);
+        </code></pre>
+      </figure>
+      </p>
+      <p>Another example:</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut emu = libmwemu::emu32();
+let addr = emu.alloc("buff1", 100);
+emu.maps.write_string(addr, "Hello MWEMU!");
+let text = emu.maps.read_string(addr, 12);
+println!("{}", text);
+
+// Write dword
+let buffer_addr = emu.alloc("buff2", 4);
+emu.maps.write_dword(buffer_addr + 0x100, 0x12345678);
+let value = emu.maps.read_dword(buffer_addr + 0x100);
+println!("dword: 0x{:x}", value);
+
+// emulate some opcodes
+let buff = emu.alloc("code_blob", 1024);
+let opcodes = vec![0x90, 0x90, 0x90, 0xc3]; // nop nop nop ret
+emu.maps.write_buffer(buff, opcodes);
+emu.regs_mut().set_eip(buff);
+emu.run(Some(buff+3));
+println!("eip: 0x{:x}", emu.regs().get_eip());
+// just an example, probalby more convinient using emu.load_code_bytes(&amp;opcodes) for emulating shellcode that is in a variable.
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libstart">
+      <h2>Start Emulation</h2>
+      <p>Once everything is configured, you can start the emulation.</p>
+      <ul>
+          <p><h3>You can start the mulation using run functions</h3></p>
+            <li><p><code>emu.run(end_addr: Option&lt;u64&gt;) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
+            <li><p><code>emu.run_until_ret() -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
+            <li><p><code>emu.run_to(end_pos: u64) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
+            <li><p><code>emu.run_multi_threaded(end_addr: Option&lt;u64&gt;) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
+            <li><p><code>emu.run_single_threaded(end_addr: Option&lt;u64&gt;) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
+            <li><p><code>emu.stop()</code></p></li>
+
+          <p><h3>But this ways is wide more confortable because mimics calling conventions.</h3></p>
+            <li><p><code>emu.call32(addr: u64, args: &amp;[u32]) -&gt; Result&lt;u32, MwemuError&gt;</code> microsoft 32bits calling convention.</p></li>
+            <li><p><code>emu.call64(addr: u64, args: &amp;[u64]) -&gt; Result&lt;u64, MwemuError&gt;</code> microsoft 64bits calling convention.</p></li>
+            <li><p><code>emu.linux_call64(addr: u64, args: &amp;[u64]) -&gt; Result&lt;u64, MwemuError&gt;</code> ABI SysV AMD64 calling conventionused on linux64 user space.</p></li>
+
+          <p><h3>For more control but slow way you can use step, but note that also can use hooks.</h3></p>
+            <li><p><code>emu.step() -&gt; bool</code></p></li>
+            <li><p><code>emu.step_single_threaded() -&gt; bool</code></p></li>
+            <li><p><code>emu.step_multi_threaded() -&gt; bool</code></p></li>
+      </ul>
+
+
+      <h3>Additional Useful Methods</h3>
+      <p>Other helpful stuff for emulation control:</p>
+      <ul>
+          <li><p><code>emu.pos</code> this is the emulated instruction counter, you can access even modify it.</p></li>
+          <li><p><code>emu.set_verbose(n: u32)</code> set verbose 0 for go faster to a specific point and then set 2 to view the asm only in that pos ranges.</p></li>
+          <li><p><code>emu.cfg.console_enabled = true</code> enable the console autospawn.</p></li>
+          <li><p><code>emu.spawn_console()</code> in specific case spawn the console to inspect manually the situation.</p></li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>emu.rs</figcaption>
+        <pre><code>
+fn main() {
+    let mut emu = limwemu::emu64();
+    emu.init_logger();
+    emu.load_code("/bin/ls.static");
+    emu.cfg.console_enabled = true;
+    emu.run(None).unwrap();
+    emu.spawn_console();
+}
+        </code></pre>
+      </figure>
+      </p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>emu.rs</figcaption>
+        <pre><code>
+let mut emu = libmwemu::emu64();
+let vm_buff = emu.alloc("buff", 1024, Permission::READ_WRITE_EXECUTE);
+let vm: Vec<u8> = vec![
+    0x17, 0xC6, 0x04, 0x4D, 0xFF,
+    0x10, 0x5C, 0x3D, 0x86, 0x09,
+    0xC9, 0x30, 0xAC, 0x42, 0x05,
+    0x59, 0x8C, 0x21, 0x07, 0xD2,
+];
+
+emu.load_code_bytes(&amp;shellcode);
+let decoder = 0x3c000;
+emu.call64(decoder, &amp;[&amp;vm_buff]);
+          </code></pre>
+        </figure>
+        </p>
+        <p>
+        <p>
+      <figure class="shell-block">
+        <figcaption>emu.rs</figcaption>
+        <pre><code>
+fn main() {
+    let mut emu = limwemu::emu64();
+    emu.init_logger();
+    emu.load_code("/bin/ls.static");
+    emu.cfg.console_enabled = true;
+    emu.run(None).unwrap();
+    emu.spawn_console();
+}
+        </code></pre>
+      </figure>
+      </p>
+
+    </section>
+
+
+    <section id="libstack">
+      <h2>Stack operations</h2>
+      <p>There are methods for altering the stack, note that you also could do with <code>emu.maps</code> writes.</p>
+      <p>But with this meethods you trigger all the stack logic, also incrementing rsp/esp.</p>
+      <ul>
+            <li><p><code>stack_push32(value: u32) -&gt; bool</code></p></li>
+            <li><p><code>stack_push64(value: u53) -&gt; bool</code></p></li>
+            <li><p><code>stack_pop32() -&gt; Option&lt;u32&gt;</code></p></li>
+            <li><p><code>stack_pop64() -&gt; Option&lt;u64&gt;</code></p></li>
+      </ul>
+
+      <p>This example simulates a stack based calling convention, but note that you can also use call32() and call64() and linux_call64() methods.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>emu.rs</figcaption>
+        <pre><code>
+loop {
+    emu.maps.memset(str_buff, 0, 1024);
+    emu.maps.memset(str_decoded, 0, 1024);
+    emu.regs_mut().set_eip(decrypt_strings_func);
+    emu.stack_push32(i);
+    emu.stack_push32(str_buff as u32);
+    emu.stack_push32(thread_ctx as u32);
+    emu.stack_push32(ret_addr as u32);
+    emu.run(Some(ret_addr)).unwrap();
+    ...
+}
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libbp">
+      <h2>Breakpoints</h2>
+      <p>Like a debugger you can configure different types of breakpoints, but the implementation is simple, but are other ways of trigger the emulation to stop.</p>
+      <ul>
+            <li><p><code>emu.bp.show()</code></p></li>
+            <li><p><code>emu.bp.clear_bp()</code></p></li>
+            <li><p><code>emu.bp.add_bp(addr: u64)</code></p></li>
+            <li><p><code>emu.bp.addr.clone()</code> get a vector of address based breakpoints.</p></li>
+            <li><p><code>emu.bp.add_bp_instruction(ins: u64)</code></p></li>
+            <li><p><code>emu.bp.instruction.clone()</code></p></li>
+            <li><p><code>emu.bp.add_bp_mem_read(addr: u64)</code></p></li>
+            <li><p><code>emu.bp.mem_read_addr.clone()</code></p></li>
+            <li><p><code>emu.bp.add_bp_mem_write(addr: u64)</code></p></li>
+            <li><p><code>emu.bp.mem_write_addr.clone()</code></p></li>
+      </ul>
+      <p>For more info check <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/breakpoint/struct.Breakpoint.html" target="_blank">Breakpoint</a> object reference.</p>
+
+    </section>
+
+    <section id="libmemdump">
+      <h2>Memory dump</h2>
+      <p>there are several ways do do a memory dump</p>
+      <ul>
+          <li><p><code>emu.maps.save_all_allocs(path: &amp;str)</code> only save to disk allocations done by the emulated code.</p></li>
+          <li><p><code>emu.maps.save(addr: u64, size: u64, filename: String)</code> dump specific blob to disk.</p></li>
+      </ul>
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+emu.maps.print_maps()
+emu.maps.save(0x40324234, 1024, "/tmp/blob.bin")
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libview">
+      <h2>View info</h2>
+      <p>There are some less used methods to fetch different type of information.</p>
+      <ul>
+            <li><p><code>
+let mut output = String::new();
+self.emu
+    .formatter
+    .format(&amp;self.emu.instruction.unwrap(), &amp;mut output);
+                </code>get last emulated mnemonic.</p></li>
+
+
+            <li><p><code>emu.pos = 0;</code> reset the emulated instruction count to zero.</p></li>
+            <li><p><code>emu.cfg.is_64bits</code> detect in which mode is the emulator.</p></li>
+            <li><p><code>emu.disassemble(addr: u64, amount: u32) -&gt; String</code> dissassemble bytes.</p></li>
+            <li><p><code>emu.maps.print_maps()</code> print all the maps (allocs, linked dlls, etc)</p></li>
+            <li><p><code>emu.maps.print_maps_keyword(kw: &amp;str)</code> print the maps that contain a keyword.</p> </li>
+            <li><p><code>
+let base = match emu.maps.get_addr_base(addr) {
+    Some(v) =&gt; Ok(v),
+    None =&gt; ...,
+};
+            </code></p></li>
+            <li><p><code>emu.maps.is_mapped(addr: u64) -&gt; bool</code> check if an address is allocated.</p></li>
+            <li><p><code>emu.maps.get_addr_name(addr: u64) -&gt; String</code> get in which map name is the address.</p></li>
+            <li><p><code>emu.maps.dump(addr: u64)</code> print bytes.</p></li>
+            <li><p><code>emu.maps.dump_n(addr: u64, amount: u64)</code> print n bytes.</p></li>
+            <li><p><code>emu.maps.dump_qwords(addr: u64, n: u64)</code> print a list of qwords.</p></li>
+            <li><p><code>emu.maps.dump_dwords(addr: u64, n: u64)</code> print a list of dwords.</p></li>
+            <li><p><code>emu.maps.size() -&gt; usize</code> show the total allocated memory.</p></li>
+            <li><p><code>emu.maps.overlaps(addr: u64, sz: u64) -&gt; bool</code> check if a memory block overlaps with existing map.</p></li>
+            <li><p><code>emu.maps.show_allocs()</code> print all the allocations done by the emulated code.</p></li>
+            <li><p><code>emu.maps.mem_test() -&gt; bool</code> do a automatic memory test to look for map overlapps.</p></li>
+            <li><p><code>emu.api_addr_to_name(addr: u64) -&gt; String</code> provide an address pointing to an API and will fetch the API name.</p></li>
+            <li><p><code>emu.api_name_to_addr(name: &amp;str) -&gt; u64</code> get the address of an api name.</p></li>
+      </ul>
+
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let name = emu.api_addr_to_name(0x11223344)
+println!("{}", name)
+   MessageBoxA
+        </code></pre>
+      </figure>
+      </p>
+    </section>
+
+    <section id="libchbits">
+      <h2>Switch architecture bits.</h2>
+      <p>There are methods for changing from 32bits to 64bits and vice versa.</p>
+      <ul>
+            <li><p><code>set_64bits()</code></p></li>
+            <li><p><code>set_32bits()</code></p></li>
+            <li><p><code>inspect_seq(s: str)</code></p></li>
+      </ul>
+      <p>But better don't change the architecture on the fly, re-instantiate the emulation object like:</p>
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+let mut emu = libmwemu::emu64();
+...
+let mut emu = libmwemu::emu32();
+        </code></pre>
+      </figure>
+      </p>
+      <p>Or even create both objtects.</p>
+    </section>
+
+    <!--
+    <section id="libexamples">
+      <h2>Real case examples.</h2>
+      <p>Find some examples here:</p>
+      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
+      <p>And some jupyter nobebooks here:</p>
+      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
+    </section>
+    -->
 
   </div>
 </body>
