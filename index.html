@@ -97,6 +97,7 @@
             <li><a href="#libmemdump">4.13. Memory dump</a></li>
             <li><a href="#libview">4.14. View info</a></li>
             <li><a href="#libchbits">4.15. Switch architecture bits</a></li>
+            <li><a href="#libhooks">4.16. Hooks</a></li>
         </ul>
       </li>
     </ul>
@@ -2539,7 +2540,7 @@ map.load("dumped_section.bin");
           <il><p><code>emu.regs().print::&lt;u32&gt;();</code> print main registers.</p></il>
       </ul>
       <p>And there are much more stuff, for more check the <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/regs64/struct.Regs64.html" target="_blank">Regs64</a> object.</p>
-      <p>Note that you can change <code>emu.regs_mut().set_eip(addr);<code> but most of times what you really need is <code>emu.set_eip(addr);</code> which emulates the jmp logic triggering WinAPI if the address is a lib.</p>
+      <p>Note that you can change <code>emu.regs_mut().set_eip(addr);</code> but most of times what you really need is <code>emu.set_eip(addr);</code> which emulates the jmp logic triggering WinAPI if the address is a lib.</p>
     </section>
 
     <section id="libmemory">
@@ -2863,6 +2864,103 @@ let mut emu = libmwemu::emu32();
       </figure>
       </p>
       <p>Or even create both objtects.</p>
+    </section>
+
+    <section id="libhooks">
+      <h2>Hooks</h2>
+      <p>The <a href="https://docs.rs/libmwemu/0.23.6/libmwemu/hooks/struct.Hooks.html" target="_blank">Hooks</a> object allow to extend the emulator without blockign the emulation.</p>
+      <ul>
+        <p><h3>Enable a hook</h3></p>
+            <li><p><code>emu.hooks.on_memory_read(trace_memory_read);</code> the hook is triggered after every read.</p></li>
+            <li><p><code>emu.hooks.on_memory_write(trace_memory_write);</code> the hook is triggered before every write, and the hook can change the value to write by returning it.</p></li>
+            <li><p><code>emu.hooks.on_interrupt(trace_interrupt);</code> the hook is triggered before handling it, the hook can decide with the return value if mwemu do the handling or not.</p></li>
+            <li><p><code>emu.hooks.on_exception(trace_exceptions);</code> the hook is triggered before handling it, the hook can decide with the return value if mwemu do the handling or not.</p></li>
+            <li><p><code>emu.hooks.on_pre_instruction(trace_pre_instruction);</code> the hook is triggered before emulating the instruction.</p></li>
+            <li><p><code>emu.hooks.on_post_instruction(trace_post_instruction);</code> the hook is triggered after emulating the instruction.</p></li>
+            <li><p><code>emu.hooks.on_winapi_call(trace_winapi_call);</code> you can implement a Windows API.</p></li>
+        <p><h3>Disable a hook</h3></p>
+            <li><p><code>emu.hooks.disable_memory_read();</code></p></li>
+            <li><p><code>emu.hooks.disable_memory_write();</code></p></li>
+            <li><p><code>emu.hooks.disable_interrupt();</code></p></li>
+            <li><p><code>emu.hooks.disable_exception();</code></p></li>
+            <li><p><code>emu.hooks.disable_pre_instruction();</code></p></li>
+            <li><p><code>emu.hooks.disable_post_instruction();</code></p></li>
+            <li><p><code>emu.hooks.disable_winapi_call();</code></p></li>
+      </ul>
+      <p>Example</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>main.rs</figcaption>
+        <pre><code>
+use libmwemu::emu32;
+
+//need iced_x86 crate only for instruction hooks, to get the
+//instruction object, so cargo add iced-x86
+use iced_x86::{Instruction};  
+
+fn trace_memory_read(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
+                     mem_addr:u64, sz:u8) {
+    log::info!("0x{:x}: reading {} at 0x{:x}", ip_addr, sz, mem_addr);
+    if mem_addr == 0x22dff0 {
+        emu.stop();
+    }
+}
+
+fn trace_memory_write(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
+                      mem_addr:u64, sz:u8, value:u128) -&gt; u128 {
+    log::info!("0x{:x}: writing {} '0x{:x}' at 0x{:x}", ip_addr, sz, 
+             value, mem_addr);
+    value   // I could change the value to write
+}
+
+fn trace_interrupt(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
+                   interrupt:u64) -&gt; bool {
+    log::info!("interrupt {} triggered at eip: 0x{:x}", interrupt, 
+             ip_addr);
+    true  // do handle interrupts
+}   
+
+fn trace_exceptions(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, ex_type: libmwemu::exception_type::ExceptionType) -&gt; bool {
+    log::info!("0x{:x} triggered an exception {}", ip_addr, ex_type);
+    if (ex_type == libmwemu::exception_type::ExceptionType::Int3) {
+        // do handle SIGTRAP for example
+    }
+    true // do handle exceptions
+}
+
+fn trace_pre_instruction(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
+                         ins:&amp;Instruction, sz:usize) -&gt; bool{
+                            // return false to skip the instruction
+                            true
+}
+
+fn trace_post_instruction(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
+                          ins:&amp;Instruction, sz:usize, emu_ok:bool) {
+}
+
+fn trace_winapi_call(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, api_addr:u64) -&gt; bool {
+    return true; // handle api calls
+}
+
+fn main() {
+    let mut emu = emu32();
+    emu.set_maps_folder("../mwemu/maps32/"); // download the maps, ideally from mwemu git.
+    emu.init();
+
+    emu.load_code("/home/sha0/src/mwemu/shellcodes32/mars.exe");
+    emu.hooks.on_memory_read(trace_memory_read);
+    emu.hooks.on_memory_write(trace_memory_write);
+    emu.hooks.on_interrupt(trace_interrupt);
+    emu.hooks.on_exception(trace_exceptions);
+    emu.hooks.on_pre_instruction(trace_pre_instruction);
+    emu.hooks.on_post_instruction(trace_post_instruction);
+    emu.hooks.on_winapi_call(trace_winapi_call);
+    emu.run(None).unwrap();
+    log::info!("end!");
+}
+        </code></pre>
+      </figure>
+      </p>
     </section>
 
     <!--
