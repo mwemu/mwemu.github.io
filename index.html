@@ -17,13 +17,14 @@
         <a href="#intro">1. MWEMU Intro</a>
         <ul>
           <li><a href="#whatis">1.1. what is mwemu</a></li>
-          <li><a href="#ways">1.2. three ways of using it</a></li>
+          <li><a href="#ways">1.2. four ways of using it</a></li>
           <li><a href="#archs">1.3. architectures</a></li>
           <li><a href="#internals">1.4. internals overview</a></li>
-          <li><a href="#test">1.5. test system</a></li>
-          <li><a href="#contrib">1.6. contributors</a></li>
-          <li><a href="#videos">1.7. videos</a></li>
-          <li><a href="#license">1.8. license</a></li>
+          <li><a href="#syscallmode">1.5. syscall mode (SSDT)</a></li>
+          <li><a href="#test">1.6. test system</a></li>
+          <li><a href="#contrib">1.7. contributors</a></li>
+          <li><a href="#videos">1.8. videos</a></li>
+          <li><a href="#license">1.9. license</a></li>
         </ul>
       </li>
       <li>
@@ -74,9 +75,10 @@
           <li><a href="#pystack">3.11. stack</a></li>
           <li><a href="#pybp">3.12. breakpoints</a></li>
           <li><a href="#pymemdump">3.13. memory dump</a></li>
-          <li><a href="#pyview">3.14. view info</a></li>
-          <li><a href="#pychbits">3.15. change bits</a></li>
-          <li><a href="#pyexamples">3.16. real case examples</a></li>
+          <li><a href="#pyserialize">3.14. serialize / snapshots</a></li>
+          <li><a href="#pyview">3.15. view info</a></li>
+          <li><a href="#pychbits">3.16. change bits</a></li>
+          <li><a href="#pyexamples">3.17. real case examples</a></li>
         </ul>
       </li>
       <li>
@@ -132,7 +134,7 @@
     </section>
 
     <section id="ways">
-      <h2>The 3 ways of using MWEMU</h2>
+      <h2>The 4 ways of using MWEMU</h2>
       <p>1. The first way is commandline, see <a href="#commandline">commandline</a> for more details, this is for
         trying full-emulation.</p>
       <p>2. Second way is creating python scripts with pymwemu module, can be installed with pip or git.</p>
@@ -142,6 +144,13 @@
           instalation</a></p>
       <p>3. Third way is using the rust crate published in crates.io <a target="_blank"
           href="https://crates.io/crates/libmwemu">https://crates.io/crates/libmwemu</a> from a rust application.</p>
+      <p>4. Fourth way is <b>mwemu-mcp</b>, a <a target="_blank" href="https://modelcontextprotocol.io">Model Context
+          Protocol</a> server that exposes libmwemu to MCP clients like Claude. It works like driving pymwemu by hand
+        but over MCP: you open a session for an architecture, configure it, prepare memory (allocs, register and memory
+        writes), then emulate step by step and inspect the result, all through discrete tools. This lets an AI agent
+        drive the emulator to analyze a binary. More details: <a target="_blank"
+          href="https://github.com/sha0coder/mwemu/tree/main/crates/mwemu-mcp">github.com/sha0coder/mwemu/crates/mwemu-mcp</a></p>
+      <p><img src="pics/mwemu_architecture_en_v3.png" width="120%"></p>
     </section>
 
     <section id="archs">
@@ -193,6 +202,15 @@ utils.rs w      inapi/
       <p>In engine/ there are the implementation of all the instructions.</p>
       <p>winapi/ contains the WinAPI implemntations divided in winapi32/ and winapi64/</p>
       <p>there are other thigngs like contants.rs structures/ etc.</p>
+    </section>
+
+    <section id="syscallmode">
+      <h2>Syscall mode (SSDT)</h2>
+      <p>Besides emulating the high level WinAPI, mwemu can run in a lower level <b>syscall mode</b> (also called SSDT mode), enabled with the <code>--ssdt</code> flag (alias <code>--syscall-mode</code>) on the commandline (or the <code>ssdt_use_ldr_initialize_thunk</code> config from the API).</p>
+      <p>In this mode mwemu does not shortcut the userland: it loads a genuine <code>ntdll.dll</code> and lets the sample go all the way down to the <code>syscall</code> instruction, exactly like on a real Windows. This is closer to the real thing and very useful to study malware that calls syscalls directly to evade userland hooks.</p>
+      <p>To dispatch a syscall mwemu needs to map a <b>System Service Number (SSN)</b> to the kernel routine it represents. Those numbers are not fixed: they change between Windows builds. So instead of hardcoding a table, mwemu resolves them from the very <code>ntdll.dll</code> that is loaded, walking its Export Address Table (EAT) to find the <code>Nt*</code> / <code>Zw*</code> stubs and reading the SSN encoded inside each stub (the <code>mov eax, ssn</code> right before the <code>syscall</code>). This way the SSDT is always consistent with the exact Windows version in use (see the <a href="#pymaps">load_maps_from_winver()</a> feature to fetch a concrete build).</p>
+      <p>The following diagram shows that EAT resolution layout, how the SSNs are extracted from ntdll's export table to build the syscall dispatch table:</p>
+      <p><img src="pics/ntdll_eat_resolution_layout.png" width="100%"></p>
     </section>
 
     <section id="test">
@@ -1541,7 +1559,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 Initialized logging
 &gt;&gt;&gt; emu = pymwemu.init64()
 &gt;&gt;&gt; emu.version()
-            '0.10.5'
+            '0.11.6'
 
               </code></pre>
       </figure>
@@ -1572,19 +1590,27 @@ MATURIN_PYPI_TOKEN="..." maturin publish
 
     <section id="pycreate">
       <h2>Create the emulation object</h2>
-      <p>First of all, import the module and init the 32bits or the 64bits engine.</p>
+      <p>First of all, import the module and init the engine for the architecture you need: 32bits, 64bits or aarch64 (ARM64).</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
         <pre><code>
 &gt;&gt;&gt; import pymwemu
 Initialized logging
-&gt;&gt;&gt; emu = pymwemu.init32()
+&gt;&gt;&gt; emu = pymwemu.init32()       # x86 32bits
             or
-&gt;&gt;&gt; emu = pymwemu.init64()
+&gt;&gt;&gt; emu = pymwemu.init64()       # x86_64 64bits
+            or
+&gt;&gt;&gt; emu = pymwemu.init_aarch64() # ARM64 / aarch64
               </code></pre>
       </figure>
       </p>
+      <p>You can also restore a previously saved emulator state instead of creating a fresh one, see the <a href="#pyserialize">serialization</a> section:</p>
+      <ul>
+        <li><p><code>pymwemu.load_from_file(filename: str) -&gt; Emu</code> load a state previously saved with <code>emu.dump_to_file()</code>.</p></li>
+        <li><p><code>pymwemu.load_from_minidump(filename: str) -&gt; Emu</code> load a state saved with <code>emu.dump_to_minidump()</code>.</p></li>
+        <li><p><code>pymwemu.deserialize(data: bytes) -&gt; Emu</code> rebuild an emulator from the bytes returned by <code>emu.serialize()</code>.</p></li>
+      </ul>
     </section>
 
     <section id="pyconfigure">
@@ -1626,8 +1652,7 @@ loading memory maps
           <li><p><code>disable_trace_string()</code></p></li>
           <li><p><code>enable_inspect_sequence(seq: str)</code></p></li>
           <li><p><code>disable_inspect_sequence()</code></p></li>
-          <li><p><code>enable_endpoint_mode()</code></p></li>
-          <li><p><code>disable_endpoint_mode()</code></p></li>
+          <li><p><code>enable_shellcode_mode()</code> force shellcode mode instead of autodetecting the format.</p></li>
           <li><p><code>set_entry_point(addr: int)</code></p></li>
           <li><p><code>set_base_address(addr: int)</code></p></li>
           <li><p><code>enable_stack_trace()</code></p></li>
@@ -1638,10 +1663,38 @@ loading memory maps
           <li><p><code>disable_banzai_mode()</code></p></li>
           <li><p><code>allow_empty_code_blocks()</code> if found multiple zeros also emulate them.</p></li>
           <li><p><code>banzai_add(apiname: str, nparams: int)</code> banzai keep emulating on a non implemented API.</p></li>
-          <li><p><code>enable_ctrlc()</code></p></li>
-          <li><p><code>disable_ctrlc()</code></p></li>
+          <li><p><code>enable_ctrlc()</code></p> / <code>disable_ctrlc()</code> handle Control-C to spawn the console.</li>
+          <li><p><code>enable_threading(enable: bool)</code> enable/disable the threads scheduler.</p></li>
       </ul>
-          
+
+      <h3>Configuration properties</h3>
+      <p>Besides the toggles above, the emulator exposes the whole configuration as plain python properties you can read and assign directly (these mirror the command line flags of the <code>mwemu</code> binary):</p>
+      <ul>
+          <li><p><code>emu.max_instructions: int | None</code> stop after this many instructions.</p></li>
+          <li><p><code>emu.timeout_secs: float | None</code> stop the emulation after this many seconds.</p></li>
+          <li><p><code>emu.max_faults: int | None</code> stop after this number of memory faults.</p></li>
+          <li><p><code>emu.exit_position: int</code> instruction position where the emulation must stop.</p></li>
+          <li><p><code>emu.dump_on_exit: bool</code> / <code>emu.dump_filename: str | None</code> dump the state to a file when the emulation ends.</p></li>
+          <li><p><code>emu.trace_filename: str | None</code> / <code>emu.trace_start: int</code> / <code>emu.trace_calls: bool</code> write an execution trace.</p></li>
+          <li><p><code>emu.module_name: str</code> / <code>emu.exe_name: str</code> name presented to the emulated sample.</p></li>
+          <li><p><code>emu.user_name: str</code> / <code>emu.host_name: str</code> identity reported by the winapi.</p></li>
+          <li><p><code>emu.temp_path: str</code> / <code>emu.cwd_path: str</code> / <code>emu.windows_directory: str</code> / <code>emu.system_directory: str</code> simulated filesystem paths.</p></li>
+          <li><p><code>emu.emulate_winapi: bool</code> emulate the winapi or just skip the calls.</p></li>
+          <li><p><code>emu.short_circuit_sleep: bool</code> make Sleep() return immediately.</p></li>
+          <li><p><code>emu.heap_alloc_min_size: int</code> / <code>emu.heap_free_soft: bool</code> heap allocator tuning.</p></li>
+          <li><p><code>emu.ssdt_use_ldr_initialize_thunk: bool</code> use the real ntdll LdrInitializeThunk path in syscall/ssdt mode.</p></li>
+      </ul>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu.max_instructions = 5_000_000
+&gt;&gt;&gt; emu.timeout_secs = 30
+&gt;&gt;&gt; emu.short_circuit_sleep = True
+&gt;&gt;&gt; emu.user_name = "sha0"
+              </code></pre>
+      </figure>
+      </p>
     </section>
 
     <section id="pymaps">
@@ -1680,8 +1733,22 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
         <pre><code>
-❯❯❯ git clone https://github.com/sha0coder/mwemu.git 
+❯❯❯ git clone https://github.com/sha0coder/mwemu.git
                 </code></pre>
+      </figure>
+      </p>
+
+      <h3>Fetching maps from a Windows version (no local maps needed)</h3>
+      <p>Since version 0.11 you no longer need a local copy of the maps. With <code>emu.load_maps_from_winver(version: str)</code> mwemu downloads the genuine Windows system DLLs straight from Microsoft's symbol server and uses them as the maps folder.</p>
+      <p>The <code>version</code> argument can be a friendly name (<code>"win11"</code>, <code>"win10"</code>, <code>"win2019"</code>) or an exact build number (<code>"26100.7920"</code>). It also pins the build, so any extra DLL the loader needs later is auto-fetched on demand. It requires network access on first use and caches everything under <code>maps/winver/</code>.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Console</figcaption>
+        <pre><code>
+&gt;&gt;&gt; emu = pymwemu.init64()
+&gt;&gt;&gt; emu.load_maps_from_winver("win11")
+&gt;&gt;&gt; emu.load_binary("sample.exe")
+              </code></pre>
       </figure>
       </p>
     </section>
@@ -1714,7 +1781,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>In the case of ELF the linux64 simulation is initialized automatically.</p>
       <p>But if for any reason you don't use load_binary() and you need the windows simulator with peb/ldr/dlls loaded on the memory, you need to call init_win32 (even for 64bits, it will detect the arch)</p>
       <p>And if you dont use load_binary() but you need the linux simulator with libc etc loaded, use init_linux64. Note that linux implementation is very basic and only for static 64bits</p>
-      <p>Note that calling init_win32() requires previously to have done load_maps to set the maps folder.</p>
+      <p>Since version 0.11 the maps are bundled, so init_win32() works out of the box; you only need load_maps() or load_maps_from_winver() if you want a specific maps folder or a concrete Windows build.</p>
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
@@ -1807,7 +1874,6 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
           <p><h3>libc style memory operations:</h3></p>
             <li><p><code>memset(addr: int, byte: int, amount: int)</code></p></li>
-            <li><p><code>memcmp(to_addr: int, from_addr: int, amount: int)</code></p></li>
             <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; int</code></p></li>
 
           <p><h3>search methods:</h3></p>
@@ -1847,7 +1913,7 @@ buffer_addr = emu.alloc("mybuffer", 1024)
 emu.write_string(buffer_addr, "Hello MWEMU!")
 
 # Read it back
-text = emu.read_string(buffer_addr, 12)
+text = emu.read_string(buffer_addr)
 print(f"Read: {text}")
 
 # Write dword
@@ -1890,8 +1956,8 @@ emu.load_binary('shellcode.bin')
 rip = emu.run(None)
 
 print("Emulation finished")
-print(f"Final RAX: {hex(emu.get_rax())}")
-print(f"Instructions executed: {emu.get_pos()}")
+print(f"Final RAX: {hex(emu.get_reg('rax'))}")
+print(f"Instructions executed: {emu.get_position()}")
               </code></pre>
       </figure>
       </p>
@@ -1918,7 +1984,7 @@ encrypted_str = 0x404000  # address of encrypted data
 result = emu.call64(0x401234, [encrypted_str, output_buffer, 100])
 
 # Read decrypted result
-decrypted = emu.read_string(output_buffer, 100)
+decrypted = emu.read_string(output_buffer)
 print(f"Decrypted: {decrypted}")
 print(f"Return value: {hex(result)}")
               </code></pre>
@@ -1945,7 +2011,7 @@ for i in range(10):
     
     # Read decrypted string
     if result_addr != 0:
-        decrypted = emu.read_string(result_addr, 256)
+        decrypted = emu.read_string(result_addr)
         print(f"String {i}: {decrypted}")
               </code></pre>
       </figure>
@@ -1966,11 +2032,11 @@ emu.load_binary('shellcode.bin')
 # Execute 10 instructions one by one
 for i in range(10):
     emu.step()
-    rip = emu.get_rip()
-    rax = emu.get_rax()
+    rip = emu.get_reg('rip')
+    rax = emu.get_reg('rax')
     print(f"Step {i+1}: RIP={hex(rip)} RAX={hex(rax)}")
 
-print(f"Total instructions: {emu.get_pos()}")
+print(f"Total instructions: {emu.get_position()}")
               </code></pre>
       </figure>
       </p>
@@ -1980,7 +2046,7 @@ print(f"Total instructions: {emu.get_pos()}")
       <p>Other helpful methods for emulation control:</p>
       <ul>
         <li>
-          <p><code>emu.get_pos() -&gt; int</code> get current instruction position</p>
+          <p><code>emu.get_position() -&gt; int</code> get current instruction position</p>
         </li>
         <li>
           <p><code>emu.set_verbose(level:int)</code> set verbosity (0=quiet, 1=API, 2=asm, 3=all)</p>
@@ -1995,7 +2061,7 @@ print(f"Total instructions: {emu.get_pos()}")
           <p><code>emu.print_maps_by_keyword(kw: str)</code> print the maps that match with that keyword.</p>
         </li>
         <li>
-          <p><code>emu.search_bytes(pattern:bytes) -&gt; list</code> search for byte pattern in memory.</p>
+          <p><code>emu.search_bytes(pattern: bytes, map_name: str) -&gt; list</code> search for a byte pattern in a specific memory map.</p>
         </li>
       </ul>
       <p>
@@ -2007,8 +2073,8 @@ print(f"Total instructions: {emu.get_pos()}")
 &gt;&gt;&gt; emu.spawn_console()  # interactive debugging
 &gt;&gt;&gt; 
 &gt;&gt;&gt; 
-&gt;&gt;&gt; # Search for strings
-&gt;&gt;&gt; addresses = emu.search_bytes(b"http://")
+&gt;&gt;&gt; # Search for strings (search_bytes needs a map name, or use *_in_all)
+&gt;&gt;&gt; addresses = emu.search_bytes(b"http://", "code")
 &gt;&gt;&gt; for addr in addresses:
 ...     print(f"Found at: {hex(addr)}")
 &gt;&gt;&gt;
@@ -2043,15 +2109,15 @@ decrypted = []
 
 for enc_addr in encrypted_strings:
     # Set parameters
-    emu.set_eax(enc_addr)  # pointer to encrypted string
+    emu.set_reg('eax', enc_addr)  # pointer to encrypted string
     emu.set_eip(decrypt_func)  # start at decrypt function
-    
+
     # Run until return
     emu.run(10000)
-    
+
     # Read decrypted result (assume in EAX)
-    result_addr = emu.get_eax()
-    decrypted_str = emu.read_string(result_addr, 256)
+    result_addr = emu.get_reg('eax')
+    decrypted_str = emu.read_string(result_addr)
     
     print(f"Encrypted {hex(enc_addr)} -&gt; {decrypted_str}")
     decrypted.append(decrypted_str)
@@ -2142,6 +2208,49 @@ with open('decrypted_strings.txt', 'w') as f:
       </p>
     </section>
 
+    <section id="pyserialize">
+      <h2>Serialize / snapshots</h2>
+      <p>The whole emulator state (memory maps, registers, configuration, loaded modules...) can be serialized so you can save a snapshot and resume it later, share it, or branch the analysis from a known point.</p>
+      <ul>
+            <li><p><code>serialize() -&gt; bytes</code> serialize the whole state to a bytes object you can keep in memory or store yourself.</p></li>
+            <li><p><code>dump_to_file(filename: str)</code> serialize the state directly to a file.</p></li>
+            <li><p><code>dump_to_minidump(filename: str)</code> serialize the state to a Windows minidump file (loadable by other tools).</p></li>
+            <li><p><code>save_all_allocs(path: str)</code> save to disk every memory block allocated during the emulation.</p></li>
+            <li><p><code>save(addr: int, size: int, filename: str)</code> dump a specific chunk of memory to disk.</p></li>
+      </ul>
+      <p>And to restore a state, these are module-level functions that return a fresh <code>Emu</code> object:</p>
+      <ul>
+            <li><p><code>pymwemu.deserialize(data: bytes) -&gt; Emu</code> rebuild from the bytes produced by <code>serialize()</code>.</p></li>
+            <li><p><code>pymwemu.load_from_file(filename: str) -&gt; Emu</code> load a state saved with <code>dump_to_file()</code>.</p></li>
+            <li><p><code>pymwemu.load_from_minidump(filename: str) -&gt; Emu</code> load a state saved with <code>dump_to_minidump()</code>.</p></li>
+      </ul>
+
+      <p>Example: take a snapshot, keep emulating, and resume from the snapshot later.</p>
+      <p>
+      <figure class="shell-block">
+        <figcaption>Python Script - snapshot.py</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+emu.load_binary('sample.exe')
+
+# run up to an interesting point and snapshot it
+emu.run_to(100000)
+emu.dump_to_file('snapshot.bin')
+
+# ... keep emulating, maybe ruining the state ...
+emu.run(None)
+
+# later, or in another script, resume exactly from the snapshot
+emu2 = pymwemu.load_from_file('snapshot.bin')
+print(f"resumed at {hex(emu2.get_pc())}")
+emu2.run(None)
+              </code></pre>
+      </figure>
+      </p>
+    </section>
+
     <section id="pyview">
       <h2>View info</h2>
       <p>There are some less used methods to fetch different type of information.</p>
@@ -2158,7 +2267,7 @@ with open('decrypted_strings.txt', 'w') as f:
             <li><p><code>get_addr_base(addr: int) -&gt; int</code> get the begining of a map.</p></li>
             <li><p><code>is_mapped(addr: int) -&gt; bool</code> check if an address is allocated.</p></li>
             <li><p><code>get_addr_name(addr: int) -&gt; str</code> get in which map name is the address.</p></li>
-            <li><p><code>dump(addr: int)</code> print bytes.</p></li>
+            <li><p><code>dump_memory(addr: int)</code> print bytes.</p></li>
             <li><p><code>dump_n(addr: int, amount: int)</code> print n bytes.</p></li>
             <li><p><code>dump_qwords(addr: int, n: int)</code> print a list of qwords.</p></li>
             <li><p><code>dump_dwords(addr: int, n: int)</code> print a list of dwords.</p></li>
@@ -2185,11 +2294,18 @@ with open('decrypted_strings.txt', 'w') as f:
 
     <section id="pychbits">
       <h2>Change architecture bits.</h2>
-      <p>There are methods for changing from 32bits to 64bits and vice versa.</p>
+      <p>There are methods for changing from 32bits to 64bits and vice versa, or to aarch64.</p>
       <ul>
             <li><p><code>set_64bits()</code></p></li>
             <li><p><code>set_32bits()</code></p></li>
+            <li><p><code>set_aarch64()</code> switch to ARM64 mode (or better use <code>pymwemu.init_aarch64()</code>).</p></li>
+            <li><p><code>is_64bits() -&gt; bool</code> / <code>is_32bits() -&gt; bool</code> check the current mode.</p></li>
             <li><p><code>inspect_seq(s: str)</code></p></li>
+      </ul>
+      <p>To stay architecture-agnostic (handy when you also target aarch64) use the generic program counter and stack pointer accessors instead of the x86 register names:</p>
+      <ul>
+            <li><p><code>get_pc() -&gt; int</code> / <code>set_pc(addr: int)</code> works on x86, x64 and aarch64.</p></li>
+            <li><p><code>get_sp() -&gt; int</code> / <code>set_sp(addr: int)</code> stack pointer for any arch.</p></li>
       </ul>
       <p>But better don't change the architecture on the fly, re-instantiate the emulation object like:</p>
 
