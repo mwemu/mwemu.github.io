@@ -102,6 +102,21 @@
             <li><a href="#libhooks">4.16. Hooks</a></li>
         </ul>
       </li>
+      <li>
+        <a href="#kernel">5. Kernel-mode: Linux drivers</a>
+        <ul>
+          <li><a href="#kernelwhy">5.1. why driver emulation is different</a></li>
+          <li><a href="#kernelhow">5.2. how it works</a></li>
+          <li><a href="#kernelspace">5.3. address space</a></li>
+          <li><a href="#kernelsurface">5.4. emulated kernel surface</a></li>
+          <li><a href="#kerneldetect">5.5. what it detects</a></li>
+          <li><a href="#kernelcli">5.6. loading a .ko from the CLI</a></li>
+          <li><a href="#kernellib">5.7. driving a driver from Rust</a></li>
+          <li><a href="#kernelmcp">5.8. driving a driver over MCP</a></li>
+          <li><a href="#kernelexample">5.9. worked example: a use-after-free</a></li>
+          <li><a href="#kernelother">5.10. Windows and macOS</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 
@@ -131,6 +146,9 @@
         translation from a bunch of bytes to instruction objects. I implemented more than 300 x86 instructions, flags,
         exceptions, some loaders PE32/PE64/ELF64/shellcode32/shellcode64 and many other stuff.</p>
       <p>MWEMU is blazing fast and also is memory-safe thanks to the Rust magic compiler.</p>
+      <p>Besides user-mode binaries and shellcode, mwemu can also load and emulate Linux
+        kernel modules (<code>.ko</code>) to hunt for driver memory-safety bugs without a
+        real kernel &mdash; see <a href="#kernel">Kernel-mode: Linux drivers</a>.</p>
     </section>
 
     <section id="ways">
@@ -2180,7 +2198,7 @@ with open('decrypted_strings.txt', 'w') as f:
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
         <pre><code>
-&gt;&gt;&gt; emu.set_bp_addr(0x11223344)
+&gt;&gt;&gt; emu.bp_set_addr(0x11223344)
 &gt;&gt;&gt; emu.run(None)
         </code></pre>
       </figure>
@@ -2633,21 +2651,21 @@ map.load("dumped_section.bin");
       <p><h3>Getters for non 64bits (it return always u64 type)</h3></p>
           <il><p><code>let eax = emu.regs().get_eax() as u32;</code></p></il>
           <il><p><code>let eip = emu.regs().get_eip() as u32;</code></p></il>
-          <il><p><code>let al = emu.regs().get_eip() as u8;</code></p></il>
+          <il><p><code>let al = emu.regs().get_al() as u8;</code></p></il>
       <p><h3>Setters for non 64bits (provide always u64 type)</h3></p>
-          <il><p><code>emu.regs_mut().set_eax(123u8);</code></p></il>
+          <il><p><code>emu.regs_mut().set_eax(123u64);</code></p></il>
           <il><p><code>emu.regs_mut().set_eip(0x123123);</code></p></il>
           <il><p><code>emu.regs_mut().set_al(0xff);</code></p></il>
           <il><p><code>emu.regs_mut().set_sil(0xff);</code></p></il>
           <il><p><code>emu.regs_mut().set_dil(0xff);</code></p></il>
       <p><h3>r1 to r15</h3></p>
-          <il><p><code>let r15 = emu.regs().r15();</code></p></il>
+          <il><p><code>let r15 = emu.regs().r15;</code></p></il>
           <il><p><code>let n = emu.regs().get_r12w();</code></p></il>
           <il><p><code>emu.regs_mut().set_r8h(0x00);</code></p></il>
           <il><p><code>emu.regs_mut().set_r8l(0xff);</code></p></il>
           <il><p><code>emu.regs_mut().r8 = 0;</code></p></il>
-          <il><p><code>let lower_32bits = emu.regs().set_r8d();</code></p></il>
-          <il><p><code>let upper_32bits = emu.regs().set_r8u();</code></p></il>
+          <il><p><code>let lower_32bits = emu.regs().get_r8d();</code></p></il>
+          <il><p><code>let upper_32bits = emu.regs().get_r8u();</code></p></il>
       </ul>
       <p>Regs64 is fully featured, there are also some uncommon registers like ymm, cr, gs, fs, tr and msr.</p>
       <ul>
@@ -3062,9 +3080,8 @@ fn trace_winapi_call(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, api_addr:u64)
 fn main() {
     let mut emu = emu32();
     emu.set_maps_folder("../mwemu/maps32/"); // download the maps, ideally from mwemu git.
-    emu.init();
 
-    emu.load_code("/home/sha0/src/mwemu/shellcodes32/mars.exe");
+    emu.load_code("/home/sha0/src/mwemu/shellcodes32/mars.exe"); // load_code() sets everything up
     emu.hooks.on_memory_read(trace_memory_read);
     emu.hooks.on_memory_write(trace_memory_write);
     emu.hooks.on_interrupt(trace_interrupt);
@@ -3089,6 +3106,223 @@ fn main() {
       <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
     </section>
     -->
+
+    <section id="kernel">
+      <h1>Kernel-mode: Linux drivers</h1>
+      <p>Besides user-mode PE/ELF binaries and shellcode, mwemu can load and emulate Linux
+        kernel modules (<code>.ko</code> files). It links the driver against a synthetic
+        kernel it controls and models the slab allocator explicitly, so a memory-safety bug
+        &mdash; the dominant species of kernel vulnerability &mdash; surfaces as a report
+        instead of a kernel panic. No real kernel, no root, nothing runs on the host.</p>
+    </section>
+
+    <section id="kernelwhy">
+      <h2>Why driver emulation is different</h2>
+      <p>Emulating a driver is not emulating a program with different imports. A driver has no
+        entry point, no libc, no loader and no process: a <code>.ko</code> is an
+        <code>ET_REL</code> relocatable object &mdash; no program headers, no
+        <code>.dynamic</code>, sections that have not been placed. It is the operating system
+        that places those sections into its own address space, relocates them, and then calls
+        back into the module. mwemu supplies exactly the three things that are missing:</p>
+      <p>1. <b>A linker.</b> The <code>.ko</code> sections are placed and every relocation is
+        applied at load time.</p>
+      <p>2. <b>A kernel to call.</b> Each imported symbol (<code>kmalloc</code>,
+        <code>mutex_lock</code>, <code>printk</code>&hellip;) is resolved to an address in a
+        synthetic &ldquo;kernel text&rdquo; region; a call that lands there is intercepted and
+        routed to a Rust implementation &mdash; the same mechanism the WinAPI layer uses.</p>
+      <p>3. <b>An allocator with a memory.</b> Driver bugs are lifetime bugs, so the slab is
+        modelled explicitly: chunks are tracked with their provenance, freed chunks go to
+        quarantine instead of being recycled, and every access is checked against the
+        ledger.</p>
+    </section>
+
+    <section id="kernelhow">
+      <h2>How it works</h2>
+      <p>Point 3 is the reason this exists. A real slab hands freed memory straight back out,
+        which is exactly what makes a use-after-free hard to see. mwemu inverts that: a freed
+        chunk is <b>not</b> recycled &mdash; it goes to <b>quarantine</b>, stays mapped, and
+        its bytes are overwritten with SLUB's free poison (<code>0x6b6b6b6b&hellip;</code>).
+        Chunks are separated by an unmapped redzone, so a linear overflow off the end of an
+        allocation faults instead of silently corrupting the next object. Keeping the chunk
+        mapped-but-poisoned is what turns an invisible bug into a report &mdash; and because it
+        stays mapped, execution continues past the first stale dereference, so a single run can
+        surface the whole chain rather than stopping at the first symptom.</p>
+    </section>
+
+    <section id="kernelspace">
+      <h2>Address space</h2>
+      <p>The regions are chosen to match real kernel layouts, and &mdash; more importantly
+        &mdash; so the distances between them stay inside what the relocations can encode. A
+        module built with <code>-mcmodel=kernel</code> reaches the kernel through
+        <code>R_X86_64_PLT32</code>, a signed 32-bit displacement, so module and stub area must
+        be within &plusmn;2GB.</p>
+      <figure class="shell-block">
+        <figcaption>Linux address space</figcaption>
+        <pre><code>
+kernel text (stubs)   0xffffffff81000000   one interceptable slot per imported function
+kernel data           0xffffffff82000000   storage for imported variables (jiffies, ...)
+module image          0xffffffffc0000000   the loaded .ko
+slab                  0xffff888000000000   kmalloc / kmem_cache_alloc chunks
+vmalloc               0xffffc90000000000   vmalloc / page allocations
+kernel stack          0xffffc90000100000
+        </code></pre>
+      </figure>
+    </section>
+
+    <section id="kernelsurface">
+      <h2>Emulated kernel surface</h2>
+      <p>The Linux surface is broad, and every spelling of the allocator funnels into one
+        ledger (<code>__kmalloc</code>, <code>__kmalloc_noprof</code>,
+        <code>kmem_cache_alloc</code>, <code>kvmalloc</code>, <code>devm_kzalloc</code>,
+        <code>vmalloc</code>, <code>kfree</code>, <code>kmem_cache_free</code>&hellip;), so it
+        does not matter which kernel version the driver was built against. Also implemented:
+        user copies (<code>copy_from_user</code>/<code>copy_to_user</code>), string and memory
+        helpers (<code>memcpy</code>, <code>memmove</code>, <code>strscpy</code>&hellip;),
+        refcounts and krefs, locking, deferred work (workqueues, timers, RCU), logging
+        (<code>printk</code>/<code>dev_*</code>), and device registration
+        (<code>misc_register</code>, <code>__register_chrdev</code>,
+        <code>proc_create</code>&hellip;).</p>
+      <p>A few pieces are modelled for real rather than stubbed, because the bug lives in them.
+        The memory helpers run through the guard too &mdash; a <code>memcpy()</code> into a
+        freed object is a use-after-free that no instruction-level check would see, because the
+        copy runs inside the kernel's code, not the driver's. Refcounts are real:
+        <code>refcount_dec_and_test()</code> returning true is what triggers a free. And
+        deferred callbacks (<code>call_rcu</code>, <code>schedule_work</code>, timers) are
+        <b>queued, not run inline</b> &mdash; &ldquo;unregister now, free later&rdquo; is the
+        shape of most kernel UAFs, so running the callback immediately would close the very
+        window the bug lives in; drain them with <code>kernel_run_deferred()</code>. Locking is
+        a no-op (single-threaded emulation cannot deadlock). An import with no implementation is
+        not fatal: it is reported at load time as <code>unresolved</code>, and if called it
+        returns 0, so a partially covered kernel still runs a driver as far as it can go. The
+        full list is returned at runtime by <code>libmwemu::kernel::linux::SURFACE</code> and by
+        the <code>mwemu_kernel_surface</code> MCP tool.</p>
+    </section>
+
+    <section id="kerneldetect">
+      <h2>What it detects</h2>
+      <figure class="shell-block">
+        <figcaption>Findings</figcaption>
+        <pre><code>
+use-after-free (read/write)   access lands in a quarantined chunk
+poisoned-pointer deref        the address itself is free poison (0x6b6b...) --
+                              the pointer was loaded out of a freed object
+use-after-free call           an indirect branch target came out of quarantine
+double-free                   free of a chunk already in quarantine
+invalid-free                  free of something that is not a chunk base
+slab out-of-bounds            access past the requested size, inside the bucket
+memory-leak                   still live after the module's exit path ran
+        </code></pre>
+      </figure>
+      <p>Each finding carries the faulting instruction, the object, its cache, and both the
+        allocation and the free site. Repeats of the same (kind, instruction, object) collapse
+        into a hit count.</p>
+    </section>
+
+    <section id="kernelcli">
+      <h2>Loading a .ko from the CLI</h2>
+      <p>The CLI links the module and leaves PC at its init, so a plain run does what
+        <code>insmod</code> would do:</p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
+  ❯❯❯ mwemu -f driver.ko -6 -v
+        </code></pre>
+      </figure>
+      <p>Reaching the ioctl surface (and therefore most bugs) needs argument structs in guest
+        memory, so it is driven from Rust or over MCP &mdash; see below.</p>
+    </section>
+
+    <section id="kernellib">
+      <h2>Driving a driver from Rust</h2>
+      <figure class="code-block">
+        <figcaption>Rust</figcaption>
+        <pre><code>
+let mut emu = libmwemu::emu64();
+emu.load_kernel_module("driver.ko")?;          // link + relocate the ET_REL object
+emu.run_module_init()?;                         // this is what insmod does
+emu.call_module_symbol("drv_ioctl", &amp;[0, cmd, argp])?;
+for f in emu.kernel_findings() {
+    println!("{}", f.report());
+}
+        </code></pre>
+      </figure>
+    </section>
+
+    <section id="kernelmcp">
+      <h2>Driving a driver over MCP</h2>
+      <p>The same surface is exposed over the <a target="_blank"
+          href="https://modelcontextprotocol.io">Model Context Protocol</a> server, so an AI
+        agent can link a driver, drive its ioctls conversationally and read back the findings
+        without ever touching a kernel. The kernel-mode tools are
+        <code>mwemu_kernel_load_module</code>, <code>mwemu_kernel_init</code>,
+        <code>mwemu_kernel_call</code>, <code>mwemu_kernel_findings</code> and
+        <code>mwemu_kernel_surface</code>.</p>
+    </section>
+
+    <section id="kernelexample">
+      <h2>Worked example: a use-after-free</h2>
+      <p>The reference target is <code>tlm</code>, a deliberately vulnerable telemetry driver
+        written the way a real one is: refcounted objects in their own
+        <code>kmem_cache</code>, a mutex-protected list of channels, per-object operation
+        vectors, and an ioctl surface. The bug is <b>not</b> &ldquo;free it, then read it two
+        lines later&rdquo;. The driver keeps a one-entry <b>hot-channel cache</b> to skip the
+        list walk on repeated writes; the invariant is that whoever removes a channel also
+        clears the cache. It is honoured on close and on unload, but the author missed the
+        third way a channel dies: <code>TLM_IOC_DESTROY</code> frees the object while the file
+        handle stays open. The cache is left dangling, and the next write takes the hot path
+        straight through it &mdash; skipping even the magic check &mdash; all the way to an
+        indirect call:</p>
+      <figure class="code-block">
+        <figcaption>drivers/linux/tlm/tlm.c (excerpt)</figcaption>
+        <pre><code>
+if (dev-&gt;fast &amp;&amp; dev-&gt;fast_id == req-&gt;id)
+        ch = dev-&gt;fast;                       /* freed object */
+...
+ret = ch-&gt;ops-&gt;encode(ch, kbuf, req-&gt;len);    /* indirect call through it */
+        </code></pre>
+      </figure>
+      <p>Trigger: create a channel, write once (populates the cache), destroy it, write again.
+        Build the driver and run it end to end:</p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
+  ❯❯❯ make driver
+  ❯❯❯ cargo test -p libmwemu tests::kernel -- --nocapture
+        </code></pre>
+      </figure>
+      <p>What mwemu reports for the stale-cache write:</p>
+      <figure class="shell-block">
+        <figcaption>Output</figcaption>
+        <pre><code>
+BUG: KMWEMU: use-after-free (read) in tlm_channel of size 8 at addr 0xffff888000001128
+  object 0xffff888000001100..0xffff888000001160 (requested 88 bytes, bucket 96), offset 40
+  allocated by kmem_cache_alloc_noprof at 0xffffffffc000056c (step 86)
+  freed by kmem_cache_free at 0xffffffffc00004e9 (step 407)
+
+BUG: KMWEMU: use-after-free (poisoned pointer dereference) at addr 0x6b6b6b6b6b6b6b73
+        </code></pre>
+      </figure>
+      <p>Read together, those two lines are the whole bug. The first is the load of
+        <code>ch-&gt;ops</code> (offset 40) out of the quarantined object, naming its cache and
+        both the alloc and free sites. The second is the dereference of the pointer that load
+        produced &mdash; <code>0x6b6b&hellip;</code> is free poison, so its provenance is proof,
+        not a guess.</p>
+    </section>
+
+    <section id="kernelother">
+      <h2>Windows and macOS</h2>
+      <p>Only the symbol tables and the handlers differ between operating systems; placement,
+        interception, the ledger and the analysis are shared. Windows and macOS already have
+        their surfaces declared and their pool/zone allocators implemented
+        (<code>ExAllocatePool2</code>/<code>ExFreePool</code> for ntoskrnl,
+        <code>IOMalloc</code>/<code>IOFree</code>/<code>kalloc_external</code> for XNU). What is
+        still missing is the <b>loader</b>: a <code>.sys</code> is a PE with a
+        <code>DriverEntry</code>, so it needs the PE path with kernel-space placement rather
+        than the <code>ET_REL</code> path; a kext is a Mach-O <code>MH_KEXT_BUNDLE</code> with
+        external relocations. The day either loader lands, it inherits the whole use-after-free
+        analysis for free, because the part that finds the bug never cared which OS the driver
+        was for.</p>
+    </section>
 
   </div>
 </body>
