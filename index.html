@@ -112,8 +112,9 @@
           <li><a href="#kerneldetect">5.5. what it detects</a></li>
           <li><a href="#kernelcli">5.6. loading a .ko from the CLI</a></li>
           <li><a href="#kernellib">5.7. driving a driver from Rust</a></li>
-          <li><a href="#kernelmcp">5.8. driving a driver over MCP</a></li>
-          <li><a href="#kernelexample">5.9. worked example: a use-after-free</a></li>
+          <li><a href="#kernelpy">5.8. driving a driver from Python</a></li>
+          <li><a href="#kernelmcp">5.9. driving a driver over MCP</a></li>
+          <li><a href="#kernelexample">5.10. worked example: a use-after-free</a></li>
           <li><a href="#kernelother">5.10. Windows and macOS</a></li>
         </ul>
       </li>
@@ -3244,6 +3245,34 @@ emu.call_module_symbol("drv_ioctl", &amp;[0, cmd, argp])?;
 for f in emu.kernel_findings() {
     println!("{}", f.report());
 }
+        </code></pre>
+      </figure>
+    </section>
+
+    <section id="kernelpy">
+      <h2>Driving a driver from Python (pymwemu)</h2>
+      <p>The same driver surface is available from Python, so you can link a
+        <code>.ko</code>, drive a specific handler with a crafted argument, and read the
+        slab ledger back &mdash; the practical way to fuzz one function without a kernel.
+        Note the commandline tool only runs the module's <code>init</code>; from pymwemu
+        (or Rust, or MCP) you can reach any exported symbol with your own arguments.</p>
+      <figure class="code-block">
+        <figcaption>Python</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+emu.load_kernel_module("driver.ko")          # link + relocate the ET_REL object
+emu.run_module_init()                         # this is what insmod does
+
+# drive one handler with attacker-controlled arguments
+emu.call_module_symbol("drv_ioctl", [0, cmd, argp])
+
+for f in emu.kernel_findings():               # the slab ledger's reports (list of str)
+    print(f)
+
+if emu.kernel_found_uaf():                    # quick boolean check
+    print("use-after-free detected")
         </code></pre>
       </figure>
     </section>
