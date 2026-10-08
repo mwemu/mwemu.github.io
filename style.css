@@ -201,6 +201,24 @@ code {
   scrollbar-gutter: stable both-edges;
 }
 
+/* --- Tables --- */
+table {
+  border: 1px solid #444;
+  border-radius: 6px;
+  overflow: hidden;
+}
+table th {
+  background: #222;
+  color: #00bfa5;
+  font-weight: bold;
+}
+table td {
+  border-top: 1px solid #333;
+}
+table tr:hover td {
+  background: #00bfa508;
+}
+
 /* --- FIX PARA MÓVIL --- */
 @media (max-width: 767px) {
   .content,

@@ -18,13 +18,14 @@
         <ul>
           <li><a href="#whatis">1.1. what is mwemu</a></li>
           <li><a href="#ways">1.2. four ways of using it</a></li>
-          <li><a href="#archs">1.3. architectures</a></li>
-          <li><a href="#internals">1.4. internals overview</a></li>
-          <li><a href="#syscallmode">1.5. syscall mode (SSDT)</a></li>
-          <li><a href="#test">1.6. test system</a></li>
-          <li><a href="#contrib">1.7. contributors</a></li>
-          <li><a href="#videos">1.8. videos</a></li>
-          <li><a href="#license">1.9. license</a></li>
+          <li><a href="#archs">1.3. architectures and platforms</a></li>
+          <li><a href="#apicoverage">1.4. API coverage</a></li>
+          <li><a href="#internals">1.5. internals overview</a></li>
+          <li><a href="#syscallmode">1.6. syscall mode (SSDT)</a></li>
+          <li><a href="#test">1.7. test system</a></li>
+          <li><a href="#contrib">1.8. contributors</a></li>
+          <li><a href="#videos">1.9. videos</a></li>
+          <li><a href="#license">1.10. license</a></li>
         </ul>
       </li>
       <li>
@@ -133,22 +134,22 @@
 
     <section id="whatis">
       <h2>What is MWEMU?</h2>
-      <p>MWEMU is a hardware emulator and Windows process simulator written in pure Rust from scratch, It was created by
-        @sha0coder and It's open source. The contributors of this software have improved the quality of the project a
+      <p>MWEMU is a multi-platform binary emulator written in pure Rust from scratch. It was created by
+        @sha0coder and it's open source. The contributors of this software have improved the quality of the project a
         lot, <a href="#contrib">click here to know them.</a>
-      <p>
-      <p>The implemented hardware is x86/x64, unlike other emulators also implemt some parts of the OS (mainly windows)
-        because asm code soon or later is going to do system calls (WinAPI, linux syscalls, etc).</p>
-      <p>It resulted extremely useful for malware deobfuscation, but this don't replace reversing, I't needed a previous
+      </p>
+      <p>Unlike other emulators, MWEMU also simulates parts of the operating system &mdash; Windows (PEB/TEB/LDR, 424+ WinAPI64 functions, SSDT syscall mode), Linux (105+ syscalls, 57 libc functions), and macOS (181 libsystem/libc functions) &mdash; because real-world code soon or later does system calls.</p>
+      <p>It supports <b>PE32, PE64, ELF64, Mach-O 64, raw shellcode (32/64-bit)</b>, and Linux kernel modules (<b>.ko</b>). The emulated architectures are <b>x86, x86_64</b> and <b>AArch64</b>.</p>
+      <p>It resulted extremely useful for malware deobfuscation, but this doesn't replace reversing. It's needed a previous
         reversing to prepare well the emulation initial state, and emulate only small group of functions, like
-        decryption, keygen etc. In some specific cases mwemu can do full-emulation, wihth simple packers, encoded
+        decryption, keygen etc. In some specific cases mwemu can do full-emulation, with simple packers, encoded
         shellcodes, etc.</p>
-      <p>The emulation and simulation is implemented from scratch, but the awesome Rust library iced-x86 is used to the
-        translation from a bunch of bytes to instruction objects. I implemented more than 300 x86 instructions, flags,
-        exceptions, some loaders PE32/PE64/ELF64/shellcode32/shellcode64 and many other stuff.</p>
-      <p>MWEMU is blazing fast and also is memory-safe thanks to the Rust magic compiler.</p>
+      <p>The emulation and simulation is implemented from scratch, but the awesome Rust library iced-x86 is used for
+        the translation from bytes to instruction objects. More than 300 x86 instructions are implemented, plus flags,
+        exceptions, FPU, SSE/AVX, and multiple loaders.</p>
+      <p>MWEMU is blazing fast and memory-safe thanks to Rust.</p>
       <p>Besides user-mode binaries and shellcode, mwemu can also load and emulate Linux
-        kernel modules (<code>.ko</code>) to hunt for driver memory-safety bugs without a
+        kernel modules (<code>.ko</code>) to hunt for driver memory-safety bugs (UAF, double-free, slab overflow, leaks) without a
         real kernel &mdash; see <a href="#kernel">Kernel-mode: Linux drivers</a>.</p>
     </section>
 
@@ -173,14 +174,76 @@
     </section>
 
     <section id="archs">
-      <h2>Architectures</h2>
-      <p>You can run MWEMU from Windows, Linux and Mac (x86 and also m1)</p>
-      <p>But only can be emulated x86 code (32bits and 64bits) mainly for Windows, there is linux shellcode support even
-        syscalls are implemented but regarding ELF only 64bits, only static compiled and quite basic support for now,
-        but no problem with shellcodes.</p>
-      <p>libc can be emulated well despite it is plenty of ymm instructions, but the linker cannot be emulated totally
-        so far, my plan is fully emulating the linker, in this case I don't need to implement the hole linking process
-        (.got and .plt creation etc)</p>
+      <h2>Architectures and Platforms</h2>
+      <p>MWEMU runs on Windows, Linux and macOS (both x86_64 and Apple Silicon via Rosetta), and can emulate code for three CPU architectures:</p>
+      <ul>
+        <li><b>x86 (32-bit)</b> &mdash; PE32 executables, 32-bit shellcode, Windows WinAPI simulation.</li>
+        <li><b>x86_64 (64-bit)</b> &mdash; PE64, ELF64, Mach-O 64 and 64-bit shellcode. Full WinAPI, Linux syscall and macOS libsystem simulation.</li>
+        <li><b>AArch64 / ARM64</b> &mdash; ARM64 instruction emulation for shellcode and ELF/Mach-O binaries.</li>
+      </ul>
+
+      <h3>Binary formats</h3>
+      <ul>
+        <li><b>PE32 / PE64</b> &mdash; full loader with IAT binding, delay-load, PEB/TEB/LDR simulation, Windows maps.</li>
+        <li><b>ELF64</b> &mdash; static and dynamically linked binaries, Go static binaries, Linux syscall dispatch (105+ syscalls), libc interception (57 functions).</li>
+        <li><b>Mach-O 64</b> &mdash; loader with segment/section mapping, libsystem interception (181 functions across libsystem, pthread, libc_extra, process, sync), macOS syscall dispatch.</li>
+        <li><b>Linux kernel modules (.ko)</b> &mdash; <code>ET_REL</code> relocatable objects linked against a synthetic kernel. See <a href="#kernel">Kernel-mode</a>.</li>
+        <li><b>Shellcode</b> &mdash; raw position-independent code, 32-bit and 64-bit.</li>
+      </ul>
+    </section>
+
+    <section id="apicoverage">
+      <h2>API Coverage</h2>
+      <p>MWEMU intercepts and emulates OS API calls so that the emulated binary behaves as if it were running on a real system. The tables below summarize the current coverage.</p>
+
+      <h3>Windows 64-bit (424 APIs)</h3>
+      <table style="border-collapse:collapse; width:100%; margin-bottom:1em;">
+        <tr style="border-bottom:1px solid #444;"><th style="text-align:left; padding:6px;">DLL</th><th style="text-align:right; padding:6px;">APIs</th><th style="text-align:left; padding:6px 12px;">Highlights</th></tr>
+        <tr><td style="padding:4px 6px;">kernel32</td><td style="text-align:right; padding:4px 6px;">221</td><td style="padding:4px 12px;">File I/O, heap, virtual memory, threads, processes, sync (SRWLock, CriticalSection, events, mutexes), modules, environment, console, time, string conversion</td></tr>
+        <tr><td style="padding:4px 6px;">ntdll</td><td style="text-align:right; padding:4px 6px;">61</td><td style="padding:4px 12px;">Nt/Rtl memory, sections, strings, sync, process/system info, heap</td></tr>
+        <tr><td style="padding:4px 6px;">user32</td><td style="text-align:right; padding:4px 6px;">22</td><td style="padding:4px 12px;">MessageBox A/W, FindWindow A/W, GetKeyState, SetWindowsHookEx, wsprintf A/W, CharLower/UpperBuff</td></tr>
+        <tr><td style="padding:4px 6px;">advapi32</td><td style="text-align:right; padding:4px 6px;">19</td><td style="padding:4px 12px;">Registry (RegOpenKeyEx, RegQueryValueEx), Crypt* (AcquireContext, Hash, Encrypt, Decrypt, GenRandom), AdjustTokenPrivileges</td></tr>
+        <tr><td style="padding:4px 6px;">ws2_32</td><td style="text-align:right; padding:4px 6px;">17</td><td style="padding:4px 12px;">Winsock socket, connect, send, recv, getaddrinfo</td></tr>
+        <tr><td style="padding:4px 6px;">wininet</td><td style="text-align:right; padding:4px 6px;">~20</td><td style="padding:4px 12px;">InternetOpen, InternetConnect, HttpOpenRequest, HttpSendRequest, InternetReadFile</td></tr>
+        <tr><td style="padding:4px 6px;">winhttp</td><td style="text-align:right; padding:4px 6px;">7</td><td style="padding:4px 12px;">WinHttpOpen, Connect, OpenRequest, SendRequest, ReceiveResponse, ReadData, CloseHandle</td></tr>
+        <tr><td style="padding:4px 6px;">ole32</td><td style="text-align:right; padding:4px 6px;">6</td><td style="padding:4px 12px;">CoInitializeEx, CoCreateInstance, CoTaskMemAlloc/Free, CoUninitialize</td></tr>
+        <tr><td style="padding:4px 6px;">bcrypt</td><td style="text-align:right; padding:4px 6px;">3</td><td style="padding:4px 12px;">BCryptOpenAlgorithmProvider, BCryptGenRandom, BCryptCloseAlgorithmProvider</td></tr>
+        <tr style="border-bottom:1px solid #444;"><td style="padding:4px 6px;">others</td><td style="text-align:right; padding:4px 6px;">~68</td><td style="padding:4px 12px;">kernelbase, dnsapi, shell32, shlwapi, oleaut32, comctl32, gdi32, uxtheme, version, urlmon, msvcrt, wincrt</td></tr>
+      </table>
+
+      <h3>Windows 32-bit</h3>
+      <p>The 32-bit WinAPI layer covers the most common DLLs (kernel32, advapi32, user32, ws2_32, msvcrt, shell32, shlwapi, oleaut32, crypt32, dnsapi, kernelbase, urlmon) with a focus on the APIs malware and packers actually call.</p>
+
+      <h3>Windows SSDT / Syscall mode</h3>
+      <p>In addition to high-level WinAPI interception, mwemu supports <a href="#syscallmode">syscall mode</a> where it loads the real <code>ntdll.dll</code> and intercepts at the <code>syscall</code> instruction level, resolving SSNs dynamically from the loaded ntdll.</p>
+
+      <h3>Linux (105+ syscalls, 57 libc functions)</h3>
+      <p>Linux 64-bit syscalls are dispatched from the <code>syscall</code> instruction. Implemented categories:</p>
+      <ul>
+        <li><b>File system</b> &mdash; read, write, open, openat, close, lseek, ioctl, getdents64, pread64, writev, execve, chdir, chmod</li>
+        <li><b>Memory</b> &mdash; mmap, munmap, brk</li>
+        <li><b>Threads</b> &mdash; clone, futex, set_tid_address, set_robust_list, arch_prctl, gettid, exit_group and more (13 syscalls)</li>
+        <li><b>Process</b> &mdash; getpid, getppid, getuid, getgid, uname</li>
+        <li><b>Network</b> &mdash; socket</li>
+        <li><b>Time</b> &mdash; clock_gettime, nanosleep</li>
+        <li><b>Polling</b> &mdash; epoll_create, epoll_ctl, epoll_wait, poll, select</li>
+        <li><b>Misc</b> &mdash; 63 additional syscalls including getrandom, prlimit64, statx, fstat, readlink, access, fcntl and many more</li>
+      </ul>
+      <p>On top of that, 57 libc library functions are intercepted (printf, malloc, free, memcpy, strcmp, strlen, etc.) for dynamically linked ELF binaries.</p>
+
+      <h3>macOS (181 API functions, 13+ syscalls)</h3>
+      <p>macOS support covers Mach-O 64-bit binaries with interception of:</p>
+      <ul>
+        <li><b>libsystem</b> &mdash; 116 functions (libsystem_c, libsystem_kernel, libsystem_malloc, libsystem_platform)</li>
+        <li><b>libc_extra</b> &mdash; 35 additional C library functions</li>
+        <li><b>pthread</b> &mdash; 6 pthread functions</li>
+        <li><b>sync</b> &mdash; 17 synchronization primitives (dispatch semaphores, os_unfair_lock)</li>
+        <li><b>process</b> &mdash; 7 process-related functions</li>
+        <li><b>syscalls</b> &mdash; both x86_64 and AArch64 syscall dispatch</li>
+      </ul>
+
+      <h3>Linux Kernel (driver emulation)</h3>
+      <p>For <code>.ko</code> kernel modules, the emulated kernel surface includes all common allocator variants (kmalloc, kmem_cache_alloc, kvmalloc, devm_kzalloc, vmalloc), user copies, string helpers, refcounts, locking, deferred work, and device registration. See <a href="#kernel">Kernel-mode: Linux drivers</a>.</p>
     </section>
 
     <section id="internals">
@@ -192,7 +255,15 @@
         crates.io.</p>
       <p>Then it was renamed to MWEMU, because SCEMU is more specific to shellcode and because it's an italian bad word.
       </p>
-      <p>So, now it's one repo with a crates/ folder with the 3 crates.</p>
+      <p>So, now it's one repo with a crates/ folder containing:</p>
+      <ul>
+        <li><b>libmwemu</b> &mdash; the core emulation engine (Rust crate on crates.io)</li>
+        <li><b>mwemu</b> &mdash; the CLI binary</li>
+        <li><b>pymwemu</b> &mdash; Python bindings via PyO3 (published on PyPI)</li>
+        <li><b>cmwemu</b> &mdash; C FFI bindings</li>
+        <li><b>mwemu-mcp</b> &mdash; Model Context Protocol server</li>
+        <li><b>mwemu-test</b> &mdash; integration test harness</li>
+      </ul>
       <p>The tests are implemented on crates/libmwemu/src/tests/ and are described lately.</p>
       <p>Most of files were splitted in small files.</p>
       <p>
@@ -200,27 +271,24 @@
         <figcaption>Shell</figcaption>
         <pre><code>
 ~/s/mwemu ❯❯❯ ls crates/libmwemu/src/
-banzai.rs       emu/               kuser_shared.rs
-breakpoint.rs   emu_context.rs     lib.rs   
-colors.rs       engine/            macros.rs
-config.rs       err.rs             maps/    
-console.rs      exception.rs       ntapi/   
-constants.rs    exception_type.rs  pe/      
-context/        flags.rs           peb/     
-crit_state.rs   fpu/               regs64.rs    
-definitions.rs  fpu.rs             script.rs
-eflags.rs       global_locks.rs    serialization/
-elf/            hooks.rs           structures/
-syscall/        tests/             thread_context.rs
-threading.rs    tools/             tracing.rs
-utils.rs w      inapi/
+api/            engine/         loaders/
+arch/           err.rs          maps/
+config.rs       exception/      serialization/
+debug/          hooks.rs        syscall/
+emu/            kernel/         tests/
+                threading/      utils/
+                windows/        lib.rs
               </code></pre>
       </figure>
       </p>
-      <p>emu/ contains emu methods and sub-bojects that are involved in the emulation itself.</p>
-      <p>In engine/ there are the implementation of all the instructions.</p>
-      <p>winapi/ contains the WinAPI implemntations divided in winapi32/ and winapi64/</p>
-      <p>there are other thigngs like contants.rs structures/ etc.</p>
+      <p><b>emu/</b> contains the core emulator state machine, execution loop, memory, registers and context.</p>
+      <p><b>engine/</b> has the x86 instruction dispatch (mnemonic &rarr; handler for 300+ instructions).</p>
+      <p><b>api/</b> contains platform API interception, organized as api/windows/ (winapi32/ and winapi64/), api/linux/ and api/macos/.</p>
+      <p><b>syscall/</b> dispatches syscalls per platform (windows SSDT, linux, macos) at the <code>syscall</code>/<code>int 0x80</code>/<code>svc</code> instruction level.</p>
+      <p><b>kernel/</b> implements the synthetic kernel for <code>.ko</code> driver emulation (slab allocator, kernel API stubs, finding reports).</p>
+      <p><b>loaders/</b> contains the binary format parsers: PE, ELF and Mach-O.</p>
+      <p><b>arch/</b> has architecture-specific register and flag definitions for x86 and AArch64.</p>
+      <p><b>windows/</b> contains Windows internal structures: PEB, TEB, LDR, kuser_shared_data, constants.</p>
     </section>
 
     <section id="syscallmode">
