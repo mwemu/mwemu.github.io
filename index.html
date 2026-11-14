@@ -104,19 +104,19 @@
         </ul>
       </li>
       <li>
-        <a href="#kernel">5. Kernel-mode: Linux drivers</a>
+        <a href="#kernel">5. Kernel-mode drivers</a>
         <ul>
           <li><a href="#kernelwhy">5.1. why driver emulation is different</a></li>
           <li><a href="#kernelhow">5.2. how it works</a></li>
           <li><a href="#kernelspace">5.3. address space</a></li>
           <li><a href="#kernelsurface">5.4. emulated kernel surface</a></li>
           <li><a href="#kerneldetect">5.5. what it detects</a></li>
-          <li><a href="#kernelcli">5.6. loading a .ko from the CLI</a></li>
+          <li><a href="#kernelcli">5.6. loading drivers from the CLI</a></li>
           <li><a href="#kernellib">5.7. driving a driver from Rust</a></li>
           <li><a href="#kernelpy">5.8. driving a driver from Python</a></li>
           <li><a href="#kernelmcp">5.9. driving a driver over MCP</a></li>
           <li><a href="#kernelexample">5.10. worked example: a use-after-free</a></li>
-          <li><a href="#kernelother">5.10. Windows and macOS</a></li>
+          <li><a href="#kernelother">5.11. macOS</a></li>
         </ul>
       </li>
     </ul>
@@ -128,7 +128,7 @@
       <p>Welcome to official MWEMU documentation, you can do scrolling down or using the direct links that are on the
         left.</p>
       <p>Github repo: <a target="_blank"
-          href="https://github.com/sha0coder/mwemu">https://github.com/sha0coder/mwemu</a></p>
+          href="https://github.com/mwemuorg/mwemu">https://github.com/mwemuorg/mwemu</a></p>
       <p><img src="pics/mwemu_logo.png" width="60%"></p>
     </section>
 
@@ -145,12 +145,12 @@
         decryption, keygen etc. In some specific cases mwemu can do full-emulation, with simple packers, encoded
         shellcodes, etc.</p>
       <p>The emulation and simulation is implemented from scratch, but the awesome Rust library iced-x86 is used for
-        the translation from bytes to instruction objects. More than 300 x86 instructions are implemented, plus flags,
+        the translation from bytes to instruction objects. More than 850 x86 instructions are implemented, plus flags,
         exceptions, FPU, SSE/AVX, and multiple loaders.</p>
       <p>MWEMU is blazing fast and memory-safe thanks to Rust.</p>
       <p>Besides user-mode binaries and shellcode, mwemu can also load and emulate Linux
-        kernel modules (<code>.ko</code>) to hunt for driver memory-safety bugs (UAF, double-free, slab overflow, leaks) without a
-        real kernel &mdash; see <a href="#kernel">Kernel-mode: Linux drivers</a>.</p>
+        kernel modules (<code>.ko</code>) and Windows kernel drivers (<code>.sys</code>) to hunt for driver memory-safety bugs (UAF, double-free, slab overflow, leaks) without a
+        real kernel &mdash; see <a href="#kernel">Kernel-mode drivers</a>.</p>
     </section>
 
     <section id="ways">
@@ -169,7 +169,7 @@
         but over MCP: you open a session for an architecture, configure it, prepare memory (allocs, register and memory
         writes), then emulate step by step and inspect the result, all through discrete tools. This lets an AI agent
         drive the emulator to analyze a binary. More details: <a target="_blank"
-          href="https://github.com/sha0coder/mwemu/tree/main/crates/mwemu-mcp">github.com/sha0coder/mwemu/crates/mwemu-mcp</a></p>
+          href="https://github.com/mwemuorg/mwemu/tree/main/crates/mwemu-mcp">github.com/mwemuorg/mwemu/crates/mwemu-mcp</a></p>
       <p><img src="pics/mwemu_architecture_en_v3.png" width="120%"></p>
     </section>
 
@@ -188,6 +188,7 @@
         <li><b>ELF64</b> &mdash; static and dynamically linked binaries, Go static binaries, Linux syscall dispatch (105+ syscalls), libc interception (57 functions).</li>
         <li><b>Mach-O 64</b> &mdash; loader with segment/section mapping, libsystem interception (181 functions across libsystem, pthread, libc_extra, process, sync), macOS syscall dispatch.</li>
         <li><b>Linux kernel modules (.ko)</b> &mdash; <code>ET_REL</code> relocatable objects linked against a synthetic kernel. See <a href="#kernel">Kernel-mode</a>.</li>
+        <li><b>Windows kernel drivers (.sys)</b> &mdash; PE64 native subsystem images linked against an emulated ntoskrnl with <code>DriverEntry</code>, IOCTL dispatch, and security cookie support. See <a href="#kernel">Kernel-mode</a>.</li>
         <li><b>Shellcode</b> &mdash; raw position-independent code, 32-bit and 64-bit.</li>
       </ul>
     </section>
@@ -243,7 +244,10 @@
       </ul>
 
       <h3>Linux Kernel (driver emulation)</h3>
-      <p>For <code>.ko</code> kernel modules, the emulated kernel surface includes all common allocator variants (kmalloc, kmem_cache_alloc, kvmalloc, devm_kzalloc, vmalloc), user copies, string helpers, refcounts, locking, deferred work, and device registration. See <a href="#kernel">Kernel-mode: Linux drivers</a>.</p>
+      <p>For <code>.ko</code> kernel modules, the emulated kernel surface includes all common allocator variants (kmalloc, kmem_cache_alloc, kvmalloc, devm_kzalloc, vmalloc), user copies, string helpers, refcounts, locking, deferred work, and device registration. See <a href="#kernel">Kernel-mode drivers</a>.</p>
+
+      <h3>Windows Kernel (driver emulation)</h3>
+      <p>For <code>.sys</code> drivers (PE64 native subsystem), mwemu links against an emulated ntoskrnl with pool allocators (<code>ExAllocatePool2</code>/<code>ExFreePool</code>), CRT memory/string functions (<code>memcpy</code>, <code>memmove</code>, <code>RtlCopyMemory</code>, <code>strlen</code>, <code>strcmp</code>&hellip;), IOCTL dispatch, security cookie (GS) initialization, and <code>__fastfail</code> reporting. See <a href="#kernel">Kernel-mode drivers</a>.</p>
     </section>
 
     <section id="internals">
@@ -263,6 +267,7 @@
         <li><b>cmwemu</b> &mdash; C FFI bindings</li>
         <li><b>mwemu-mcp</b> &mdash; Model Context Protocol server</li>
         <li><b>mwemu-test</b> &mdash; integration test harness</li>
+        <li><b>mwemu-snapshot</b> &mdash; state snapshot / minidump serialization</li>
       </ul>
       <p>The tests are implemented on crates/libmwemu/src/tests/ and are described lately.</p>
       <p>Most of files were splitted in small files.</p>
@@ -282,10 +287,10 @@ emu/            kernel/         tests/
       </figure>
       </p>
       <p><b>emu/</b> contains the core emulator state machine, execution loop, memory, registers and context.</p>
-      <p><b>engine/</b> has the x86 instruction dispatch (mnemonic &rarr; handler for 300+ instructions).</p>
+      <p><b>engine/</b> has the x86 instruction dispatch (mnemonic &rarr; handler for 850+ instructions).</p>
       <p><b>api/</b> contains platform API interception, organized as api/windows/ (winapi32/ and winapi64/), api/linux/ and api/macos/.</p>
       <p><b>syscall/</b> dispatches syscalls per platform (windows SSDT, linux, macos) at the <code>syscall</code>/<code>int 0x80</code>/<code>svc</code> instruction level.</p>
-      <p><b>kernel/</b> implements the synthetic kernel for <code>.ko</code> driver emulation (slab allocator, kernel API stubs, finding reports).</p>
+      <p><b>kernel/</b> implements the synthetic kernel for <code>.ko</code> and <code>.sys</code> driver emulation (slab/pool allocator, kernel API stubs, finding reports).</p>
       <p><b>loaders/</b> contains the binary format parsers: PE, ELF and Mach-O.</p>
       <p><b>arch/</b> has architecture-specific register and flag definitions for x86 and AArch64.</p>
       <p><b>windows/</b> contains Windows internal structures: PEB, TEB, LDR, kuser_shared_data, constants.</p>
@@ -325,7 +330,7 @@ emu/            kernel/         tests/
       <p>I'm <a target="_blank" href="https://github.com/sha0coder">@sha0coder</a> and I created this software to
         empower my reversing engineering works, and I'm sharing this because I think it's useful for some cases.</p>
       <p>Some graphs:<a target="_blank"
-          href="https://github.com/sha0coder/mwemu/graphs/contributors">https://github.com/sha0coder/mwemu/graphs/contributors</a>
+          href="https://github.com/mwemuorg/mwemu/graphs/contributors">https://github.com/mwemuorg/mwemu/graphs/contributors</a>
     </section>
 
     <section id="Videos">
@@ -344,7 +349,7 @@ emu/            kernel/         tests/
       <p>Actually there are several licenses, the source code is GPLv3, but the crates.io rust module and pypi python
         module are MIT for having less restrictions in distributing software using libmwemu or pymwemu.</p>
       <p><a target="_blank"
-          href="https://github.com/sha0coder/mwemu/blob/main/LICENSE">https://github.com/sha0coder/mwemu/blob/main/LICENSE</a>
+          href="https://github.com/mwemuorg/mwemu/blob/main/LICENSE">https://github.com/mwemuorg/mwemu/blob/main/LICENSE</a>
       </p>
       <p>Don't hesitate in contact me for creating technologies based of this software.</p>
       <p>email: sha0 at badchecksum dot net</p>
@@ -422,7 +427,7 @@ emu/            kernel/         tests/
           <figure class="shell-block">
             <figcaption>Shell</figcaption>
             <pre><code>
-                git clone https://github.com/sha0coder/mwemu.git
+                git clone https://github.com/mwemuorg/mwemu.git
                 cargo build --release
                 make tests
               </code></pre>
@@ -573,25 +578,25 @@ Entry point pointing to .text 0x401000
 
     <section id="verbosity">
       <h2>Verbosity</h2>
-      <p>There are 4 verbosity levels:</p>
+      <p>There are 4 verbosity levels. The meaning of each level depends on whether you are in <b>syscall mode</b> (<code>--syscall-mode</code>) or normal mode:</p>
+
+      <h3>Normal mode (no --syscall-mode)</h3>
       <ul>
-        <li>
-          <p>0: Don't use any -v for minimum verbosity, only WinAPI calls and syscalls will be printed.</p>
-        </li>
-        <li>
-          <p>1: Use -v for viewing also some messages like, polymorfic code detected etc.</p>
-        </li>
-        <li>
-          <p>2: Use -vv for viewing also the assembly code, mwemu will print every assembly instruction, this makes
-            slower the emulation.2: Use -vv for viewing also the assembly code, mwemu will print every assembly
-            instruction, this makes slower the emulation.</p>
-        </li>
-        <li>
-          <p>3: Use -vvv for also viewing every "rep" interaction, in instruction with rep prefix like "rep movzx" will
-            print one line for every step of the rep loop.</p>
-        </li>
+        <li><p>0: No -v &mdash; only WinAPI calls (red) are printed.</p></li>
+        <li><p>1: -v &mdash; also messages (polymorphic code detected, etc).</p></li>
+        <li><p>2: -vv &mdash; also every assembly instruction (slower).</p></li>
+        <li><p>3: -vvv &mdash; also every "rep" iteration.</p></li>
       </ul>
-      <p>Use -V or --verbose_at for enabling verbose mode at specific point.</p>
+
+      <h3>Syscall mode (--syscall-mode)</h3>
+      <ul>
+        <li><p>0: No -v &mdash; only syscalls (yellow) are printed.</p></li>
+        <li><p>1: -v &mdash; also WinAPI (red) and messages.</p></li>
+        <li><p>2: -vv &mdash; also every assembly instruction.</p></li>
+        <li><p>3: -vvv &mdash; also every "rep" iteration.</p></li>
+      </ul>
+
+      <p>Use -V or --verbose_at for enabling verbose mode at a specific point.</p>
       <p>The verbose mode is automatically enabled 100 instructions previous to the configured -c moment to stop.</p>
     </section>
 
@@ -1820,7 +1825,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
         <pre><code>
-❯❯❯ git clone https://github.com/sha0coder/mwemu.git
+❯❯❯ git clone https://github.com/mwemuorg/mwemu.git
                 </code></pre>
       </figure>
       </p>
@@ -2413,9 +2418,9 @@ emu2.run(None)
     <section id="pyexamples">
       <h2>Real case examples.</h2>
       <p>Find some examples here:</p>
-      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
+      <p><a href="https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
       <p>And some jupyter nobebooks here:</p>
-      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
+      <p><a href="https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples">https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples</a></p>
     </section>
 
 
@@ -2427,8 +2432,8 @@ emu2.run(None)
       <h2>MWEMU for Rust apps</h2>
       <p>Core and bindings are everything implemented in Rust, and all the logic is inside libmwemu, so a rust program can have even more control of the emulator than pymwemu.</p>
       <p>So having said that, from Rust you can use all the power of MWEMU, and access to most of the objects because are public most of them, so you can have a good control of the emulator.</p>
-      <p><a href="https://docs.rs/libmwemu/0.23.5/libmwemu/"
-          target="_blank">https://docs.rs/libmwemu/0.23.5/libmwemu/</a></p>
+      <p><a href="https://docs.rs/libmwemu/latest/libmwemu/"
+          target="_blank">https://docs.rs/libmwemu/latest/libmwemu/</a></p>
       <p><a href="https://crates.io/crates/libmwemu" target="_blank">https://crates.io/crates/libmwemu</a></p>
     </section>
 
@@ -2468,7 +2473,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-libmwemu = "0.23.5"
+libmwemu = "1.0"
               </code></pre>
       </figure>
       </p>
@@ -2561,8 +2566,8 @@ let mut emu = emu32();  // or also emu64()
         </code></pre>
       </figure>
       </p>
-      <p>Find here all the configs available in<a href="https://docs.rs/libmwemu/0.23.5/libmwemu/config/struct.Config.html" about="_blank">Config</a> object.</p>
-      <p>But main configs has function wrappers in the main <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/emu/struct.Emu.html" target="_blank">Emu</a> base object.</a></p>
+      <p>Find here all the configs available in<a href="https://docs.rs/libmwemu/latest/libmwemu/config/struct.Config.html" about="_blank">Config</a> object.</p>
+      <p>But main configs has function wrappers in the main <a href="https://docs.rs/libmwemu/latest/libmwemu/emu/struct.Emu.html" target="_blank">Emu</a> base object.</a></p>
       <p>You can also create a Config object and set it to the emulator with <code>emu.set_config(cfg: Config)</code> but normaly is more convinien to access to emul.cfg as seen above.</p>
     </section>
 
@@ -2589,7 +2594,7 @@ emu.init_logger();
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
         <pre><code>
-❯❯❯ git clone https://github.com/sha0coder/mwemu.git 
+❯❯❯ git clone https://github.com/mwemuorg/mwemu.git 
                 </code></pre>
       </figure>
       </p>
@@ -2701,7 +2706,7 @@ map.load("dumped_section.bin");
         </code></pre>
       </figure>
       </p>
-      <p>map is a <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/maps/mem64/struct.Mem64.html" target="_blank">Mem64</a> object, and it has multiple methods. But for most of cases <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/emu/struct.Emu.html" target="_blank">emu</a> and <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/maps/struct.Maps.html" about="_blank">emu.maps</a> methods are enoguth.</p>
+      <p>map is a <a href="https://docs.rs/libmwemu/latest/libmwemu/maps/mem64/struct.Mem64.html" target="_blank">Mem64</a> object, and it has multiple methods. But for most of cases <a href="https://docs.rs/libmwemu/latest/libmwemu/emu/struct.Emu.html" target="_blank">emu</a> and <a href="https://docs.rs/libmwemu/latest/libmwemu/maps/struct.Maps.html" about="_blank">emu.maps</a> methods are enoguth.</p>
     </section>
 
     <section id="libregisters">
@@ -2743,7 +2748,7 @@ map.load("dumped_section.bin");
           <il><p><code>emu.regs_mut().rand();</code> randomize register values.</p></il>
           <il><p><code>emu.regs().print::&lt;u32&gt;();</code> print main registers.</p></il>
       </ul>
-      <p>And there are much more stuff, for more check the <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/regs64/struct.Regs64.html" target="_blank">Regs64</a> object.</p>
+      <p>And there are much more stuff, for more check the <a href="https://docs.rs/libmwemu/latest/libmwemu/regs64/struct.Regs64.html" target="_blank">Regs64</a> object.</p>
       <p>Note that you can change <code>emu.regs_mut().set_eip(addr);</code> but most of times what you really need is <code>emu.set_eip(addr);</code> which emulates the jmp logic triggering WinAPI if the address is a lib.</p>
     </section>
 
@@ -2878,7 +2883,7 @@ println!("eip: 0x{:x}", emu.regs().get_eip());
         <figcaption>emu.rs</figcaption>
         <pre><code>
 fn main() {
-    let mut emu = limwemu::emu64();
+    let mut emu = libmwemu::emu64();
     emu.init_logger();
     emu.load_code("/bin/ls.static");
     emu.cfg.console_enabled = true;
@@ -2913,7 +2918,7 @@ emu.call64(decoder, &amp;[&amp;vm_buff]);
         <figcaption>emu.rs</figcaption>
         <pre><code>
 fn main() {
-    let mut emu = limwemu::emu64();
+    let mut emu = libmwemu::emu64();
     emu.init_logger();
     emu.load_code("/bin/ls.static");
     emu.cfg.console_enabled = true;
@@ -2933,7 +2938,7 @@ fn main() {
       <p>But with this meethods you trigger all the stack logic, also incrementing rsp/esp.</p>
       <ul>
             <li><p><code>stack_push32(value: u32) -&gt; bool</code></p></li>
-            <li><p><code>stack_push64(value: u53) -&gt; bool</code></p></li>
+            <li><p><code>stack_push64(value: u64) -&gt; bool</code></p></li>
             <li><p><code>stack_pop32() -&gt; Option&lt;u32&gt;</code></p></li>
             <li><p><code>stack_pop64() -&gt; Option&lt;u64&gt;</code></p></li>
       </ul>
@@ -2974,7 +2979,7 @@ loop {
             <li><p><code>emu.bp.add_bp_mem_write(addr: u64)</code></p></li>
             <li><p><code>emu.bp.mem_write_addr.clone()</code></p></li>
       </ul>
-      <p>For more info check <a href="https://docs.rs/libmwemu/0.23.5/libmwemu/breakpoint/struct.Breakpoint.html" target="_blank">Breakpoint</a> object reference.</p>
+      <p>For more info check <a href="https://docs.rs/libmwemu/latest/libmwemu/breakpoint/struct.Breakpoint.html" target="_blank">Breakpoint</a> object reference.</p>
 
     </section>
 
@@ -3072,7 +3077,7 @@ let mut emu = libmwemu::emu32();
 
     <section id="libhooks">
       <h2>Hooks</h2>
-      <p>The <a href="https://docs.rs/libmwemu/0.23.6/libmwemu/hooks/struct.Hooks.html" target="_blank">Hooks</a> object allow to extend the emulator without blockign the emulation.</p>
+      <p>The <a href="https://docs.rs/libmwemu/latest/libmwemu/hooks/struct.Hooks.html" target="_blank">Hooks</a> object allow to extend the emulator without blockign the emulation.</p>
       <ul>
         <p><h3>Enable a hook</h3></p>
             <li><p><code>emu.hooks.on_memory_read(trace_memory_read);</code> the hook is triggered after every read.</p></li>
@@ -3082,6 +3087,7 @@ let mut emu = libmwemu::emu32();
             <li><p><code>emu.hooks.on_pre_instruction(trace_pre_instruction);</code> the hook is triggered before emulating the instruction.</p></li>
             <li><p><code>emu.hooks.on_post_instruction(trace_post_instruction);</code> the hook is triggered after emulating the instruction.</p></li>
             <li><p><code>emu.hooks.on_winapi_call(trace_winapi_call);</code> you can implement a Windows API.</p></li>
+            <li><p><code>emu.hooks.on_syscall(trace_syscall);</code> the hook is triggered before the syscall handler, return false to skip it.</p></li>
         <p><h3>Disable a hook</h3></p>
             <li><p><code>emu.hooks.disable_memory_read();</code></p></li>
             <li><p><code>emu.hooks.disable_memory_write();</code></p></li>
@@ -3090,6 +3096,7 @@ let mut emu = libmwemu::emu32();
             <li><p><code>emu.hooks.disable_pre_instruction();</code></p></li>
             <li><p><code>emu.hooks.disable_post_instruction();</code></p></li>
             <li><p><code>emu.hooks.disable_winapi_call();</code></p></li>
+            <li><p><code>emu.hooks.disable_syscall();</code></p></li>
       </ul>
       <p>Example</p>
       <p>
@@ -3097,60 +3104,62 @@ let mut emu = libmwemu::emu32();
         <figcaption>main.rs</figcaption>
         <pre><code>
 use libmwemu::emu32;
+use libmwemu::emu::decoded_instruction::DecodedInstruction;
+use libmwemu::exception::types::ExceptionType;
 
-//need iced_x86 crate only for instruction hooks, to get the
-//instruction object, so cargo add iced-x86
-use iced_x86::{Instruction};  
-
-fn trace_memory_read(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
-                     mem_addr:u64, sz:u8) {
-    log::info!("0x{:x}: reading {} at 0x{:x}", ip_addr, sz, mem_addr);
+fn trace_memory_read(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                     mem_addr: u64, sz: u32) {
+    log::info!("0x{:x}: reading {} bits at 0x{:x}", ip_addr, sz, mem_addr);
     if mem_addr == 0x22dff0 {
         emu.stop();
     }
 }
 
-fn trace_memory_write(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
-                      mem_addr:u64, sz:u8, value:u128) -&gt; u128 {
-    log::info!("0x{:x}: writing {} '0x{:x}' at 0x{:x}", ip_addr, sz, 
+fn trace_memory_write(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                      mem_addr: u64, sz: u32, value: u128) -&gt; u128 {
+    log::info!("0x{:x}: writing {} bits '0x{:x}' at 0x{:x}", ip_addr, sz,
              value, mem_addr);
-    value   // I could change the value to write
+    value   // return value to actually write (can be modified)
 }
 
-fn trace_interrupt(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
-                   interrupt:u64) -&gt; bool {
-    log::info!("interrupt {} triggered at eip: 0x{:x}", interrupt, 
-             ip_addr);
+fn trace_interrupt(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                   interrupt: u64) -&gt; bool {
+    log::info!("interrupt {} triggered at ip: 0x{:x}", interrupt, ip_addr);
     true  // do handle interrupts
-}   
+}
 
-fn trace_exceptions(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, ex_type: libmwemu::exception_type::ExceptionType) -&gt; bool {
-    log::info!("0x{:x} triggered an exception {}", ip_addr, ex_type);
-    if (ex_type == libmwemu::exception_type::ExceptionType::Int3) {
-        // do handle SIGTRAP for example
-    }
+fn trace_exceptions(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                    ex_type: ExceptionType) -&gt; bool {
+    log::info!("0x{:x} triggered exception {}", ip_addr, ex_type);
     true // do handle exceptions
 }
 
-fn trace_pre_instruction(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
-                         ins:&amp;Instruction, sz:usize) -&gt; bool{
-                            // return false to skip the instruction
-                            true
+fn trace_pre_instruction(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                         ins: &amp;DecodedInstruction, sz: usize) -&gt; bool {
+    // return false to skip the instruction
+    true
 }
 
-fn trace_post_instruction(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, 
-                          ins:&amp;Instruction, sz:usize, emu_ok:bool) {
+fn trace_post_instruction(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                          ins: &amp;DecodedInstruction, sz: usize, emu_ok: bool) {
 }
 
-fn trace_winapi_call(emu:&amp;mut libmwemu::emu::Emu, ip_addr:u64, api_addr:u64) -&gt; bool {
-    return true; // handle api calls
+fn trace_winapi_call(emu: &amp;mut libmwemu::emu::Emu, ip_addr: u64,
+                     api_addr: u64) -&gt; bool {
+    true // handle api calls
+}
+
+fn trace_syscall(emu: &amp;mut libmwemu::emu::Emu, syscall_nr: u64) -&gt; bool {
+    log::info!("syscall {}", syscall_nr);
+    true // return false to skip default syscall handler
 }
 
 fn main() {
     let mut emu = emu32();
-    emu.set_maps_folder("../mwemu/maps32/"); // download the maps, ideally from mwemu git.
+    emu.set_maps_folder("../mwemu/maps/windows/x86/");
+    emu.init_logger();
 
-    emu.load_code("/home/sha0/src/mwemu/shellcodes32/mars.exe"); // load_code() sets everything up
+    emu.load_code("shellcodes32/mars.exe").unwrap();
     emu.hooks.on_memory_read(trace_memory_read);
     emu.hooks.on_memory_write(trace_memory_write);
     emu.hooks.on_interrupt(trace_interrupt);
@@ -3158,6 +3167,7 @@ fn main() {
     emu.hooks.on_pre_instruction(trace_pre_instruction);
     emu.hooks.on_post_instruction(trace_post_instruction);
     emu.hooks.on_winapi_call(trace_winapi_call);
+    emu.hooks.on_syscall(trace_syscall);
     emu.run(None).unwrap();
     log::info!("end!");
 }
@@ -3170,31 +3180,34 @@ fn main() {
     <section id="libexamples">
       <h2>Real case examples.</h2>
       <p>Find some examples here:</p>
-      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
+      <p><a href="https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples/scripts">https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples/scripts</a></p>
       <p>And some jupyter nobebooks here:</p>
-      <p><a href="https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples">https://github.com/sha0coder/mwemu/tree/main/crates/pymwemu/examples</a></p>
+      <p><a href="https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples">https://github.com/mwemuorg/mwemu/tree/main/crates/pymwemu/examples</a></p>
     </section>
     -->
 
     <section id="kernel">
-      <h1>Kernel-mode: Linux drivers</h1>
+      <h1>Kernel-mode drivers</h1>
       <p>Besides user-mode PE/ELF binaries and shellcode, mwemu can load and emulate Linux
-        kernel modules (<code>.ko</code> files). It links the driver against a synthetic
-        kernel it controls and models the slab allocator explicitly, so a memory-safety bug
-        &mdash; the dominant species of kernel vulnerability &mdash; surfaces as a report
-        instead of a kernel panic. No real kernel, no root, nothing runs on the host.</p>
+        kernel modules (<code>.ko</code> files) and Windows kernel drivers (<code>.sys</code> files).
+        It links the driver against a synthetic kernel it controls and models the slab/pool
+        allocator explicitly, so a memory-safety bug &mdash; the dominant species of kernel
+        vulnerability &mdash; surfaces as a report instead of a kernel panic or BSOD. No real
+        kernel, no root, nothing runs on the host.</p>
     </section>
 
     <section id="kernelwhy">
       <h2>Why driver emulation is different</h2>
-      <p>Emulating a driver is not emulating a program with different imports. A driver has no
-        entry point, no libc, no loader and no process: a <code>.ko</code> is an
-        <code>ET_REL</code> relocatable object &mdash; no program headers, no
-        <code>.dynamic</code>, sections that have not been placed. It is the operating system
-        that places those sections into its own address space, relocates them, and then calls
-        back into the module. mwemu supplies exactly the three things that are missing:</p>
-      <p>1. <b>A linker.</b> The <code>.ko</code> sections are placed and every relocation is
-        applied at load time.</p>
+      <p>Emulating a driver is not emulating a program with different imports. A Linux
+        <code>.ko</code> is an <code>ET_REL</code> relocatable object &mdash; no program headers,
+        no <code>.dynamic</code>, sections that have not been placed. A Windows <code>.sys</code>
+        is a PE64 with <code>DriverEntry</code> as its entry point and imports from
+        <code>ntoskrnl.exe</code>. Neither has a libc nor a process. It is the operating system
+        that places them into its own address space, links them, and then calls back into them.
+        mwemu supplies exactly the three things that are missing:</p>
+      <p>1. <b>A linker/loader.</b> For <code>.ko</code>, sections are placed and every relocation
+        is applied. For <code>.sys</code>, the PE is mapped, base-relocated, and its IAT is bound
+        to the emulated ntoskrnl.</p>
       <p>2. <b>A kernel to call.</b> Each imported symbol (<code>kmalloc</code>,
         <code>mutex_lock</code>, <code>printk</code>&hellip;) is resolved to an address in a
         synthetic &ldquo;kernel text&rdquo; region; a call that lands there is intercepted and
@@ -3226,7 +3239,7 @@ fn main() {
         <code>R_X86_64_PLT32</code>, a signed 32-bit displacement, so module and stub area must
         be within &plusmn;2GB.</p>
       <figure class="shell-block">
-        <figcaption>Linux address space</figcaption>
+        <figcaption>Linux address space (.ko)</figcaption>
         <pre><code>
 kernel text (stubs)   0xffffffff81000000   one interceptable slot per imported function
 kernel data           0xffffffff82000000   storage for imported variables (jiffies, ...)
@@ -3234,6 +3247,16 @@ module image          0xffffffffc0000000   the loaded .ko
 slab                  0xffff888000000000   kmalloc / kmem_cache_alloc chunks
 vmalloc               0xffffc90000000000   vmalloc / page allocations
 kernel stack          0xffffc90000100000
+        </code></pre>
+      </figure>
+      <figure class="shell-block">
+        <figcaption>Windows address space (.sys)</figcaption>
+        <pre><code>
+kernel text (stubs)   0xfffff80000000000   ntoskrnl / HAL / FLTMGR stubs
+kernel data           0xfffff80000100000   IoDeviceObjectType, KeTickCount, ...
+module image          0xfffff80000200000   the loaded .sys (PE64, base-relocated)
+pool                  0xffff800000000000   ExAllocatePool2 / ExFreePool chunks
+kernel stack          0xfffff80001000000
         </code></pre>
       </figure>
     </section>
@@ -3265,6 +3288,15 @@ kernel stack          0xffffc90000100000
         returns 0, so a partially covered kernel still runs a driver as far as it can go. The
         full list is returned at runtime by <code>libmwemu::kernel::linux::SURFACE</code> and by
         the <code>mwemu_kernel_surface</code> MCP tool.</p>
+      <p>The <b>Windows</b> kernel surface covers pool allocators
+        (<code>ExAllocatePool2</code>/<code>ExFreePool</code>), CRT memory and string functions
+        (<code>memcpy</code>, <code>memmove</code>, <code>memset</code>, <code>strlen</code>,
+        <code>strcmp</code>, <code>strncpy</code>, <code>wcscpy</code>&hellip;), I/O helpers
+        (<code>IoCompleteRequest</code>, <code>IoCreateDevice</code>,
+        <code>IoCreateSymbolicLink</code>), security cookies (GS), ACPI logging
+        (<code>AslLogCallPrintf</code>), and ETW tracing stubs. A <code>.sys</code> is linked
+        against 25+ recognized kernel libraries (ntoskrnl, HAL, FLTMGR, NDIS, WDF,
+        StorPort&hellip;).</p>
     </section>
 
     <section id="kerneldetect">
@@ -3280,6 +3312,9 @@ double-free                   free of a chunk already in quarantine
 invalid-free                  free of something that is not a chunk base
 slab out-of-bounds            access past the requested size, inside the bucket
 memory-leak                   still live after the module's exit path ran
+invalid-address               copy to/from null, near-max, or unmapped address
+stack-cookie-check-failure    __fastfail(2) fired -- buffer overflow corrupted
+                              the stack cookie (Windows .sys with /GS)
         </code></pre>
       </figure>
       <p>Each finding carries the faulting instruction, the object, its cache, and both the
@@ -3288,23 +3323,33 @@ memory-leak                   still live after the module's exit path ran
     </section>
 
     <section id="kernelcli">
-      <h2>Loading a .ko from the CLI</h2>
-      <p>The CLI links the module and leaves PC at its init, so a plain run does what
-        <code>insmod</code> would do:</p>
+      <h2>Loading drivers from the CLI</h2>
+      <p>The CLI auto-detects the driver format and links it against the matching emulated kernel.
+        A plain run does what <code>insmod</code> or the Windows loader would do:</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
         <pre><code>
-  ❯❯❯ mwemu -f driver.ko -6 -v
+  ❯❯❯ mwemu -f driver.ko -6 -v        # Linux .ko
+  ❯❯❯ mwemu -f driver.sys -6 -v       # Windows .sys
+        </code></pre>
+      </figure>
+      <p>For Windows drivers, mwemu also supports <code>--ioctl</code> to send an IOCTL directly:</p>
+      <figure class="shell-block">
+        <figcaption>Shell</figcaption>
+        <pre><code>
+  ❯❯❯ mwemu -f driver.sys -6 --ioctl 0x80002000:aabbccdd:256 -vv
+  # format: code:input_hex:output_len
+  # use -c step to break at a specific instruction count
         </code></pre>
       </figure>
       <p>Reaching the ioctl surface (and therefore most bugs) needs argument structs in guest
-        memory, so it is driven from Rust or over MCP &mdash; see below.</p>
+        memory, so for more control it is driven from Rust, Python, or over MCP &mdash; see below.</p>
     </section>
 
     <section id="kernellib">
       <h2>Driving a driver from Rust</h2>
       <figure class="code-block">
-        <figcaption>Rust</figcaption>
+        <figcaption>Rust &mdash; Linux .ko</figcaption>
         <pre><code>
 let mut emu = libmwemu::emu64();
 emu.load_kernel_module("driver.ko")?;          // link + relocate the ET_REL object
@@ -3313,6 +3358,22 @@ emu.call_module_symbol("drv_ioctl", &amp;[0, cmd, argp])?;
 for f in emu.kernel_findings() {
     println!("{}", f.report());
 }
+        </code></pre>
+      </figure>
+      <figure class="code-block">
+        <figcaption>Rust &mdash; Windows .sys</figcaption>
+        <pre><code>
+let mut emu = libmwemu::emu64();
+emu.cfg.verbose = 0;
+emu.cfg.skip_unimplemented = true;
+emu.load_kernel_module("driver.sys")?;         // PE64 load + IAT bind to emulated ntoskrnl
+emu.run_module_init()?;                         // calls GsDriverEntry -&gt; DriverEntry
+
+// send an IOCTL
+let result = emu.kernel_ioctl(0, 0x80002000, &amp;input_bytes, 256)?;
+
+// or scan all IOCTL codes automatically
+let probes = emu.kernel_scan_ioctls(0, 0x1000);
         </code></pre>
       </figure>
     </section>
@@ -3341,6 +3402,24 @@ for f in emu.kernel_findings():               # the slab ledger's reports (list 
 
 if emu.kernel_found_uaf():                    # quick boolean check
     print("use-after-free detected")
+        </code></pre>
+      </figure>
+      <figure class="code-block">
+        <figcaption>Python &mdash; Windows .sys</figcaption>
+        <pre><code>
+import pymwemu
+
+emu = pymwemu.init64()
+emu.set_verbose(0)
+emu.enable_banzai_mode()
+emu.load_kernel_module("driver.sys")         # PE64 load + IAT bind
+emu.run_module_init()                         # GsDriverEntry -&gt; DriverEntry
+
+# send an IOCTL (code, input_bytes, output_len)
+result = emu.kernel_ioctl(0, 0x80002000, b"\x41\x41\x41\x41", 256)
+
+for f in emu.kernel_findings():
+    print(f)
         </code></pre>
       </figure>
     </section>
@@ -3407,16 +3486,13 @@ BUG: KMWEMU: use-after-free (poisoned pointer dereference) at addr 0x6b6b6b6b6b6
     </section>
 
     <section id="kernelother">
-      <h2>Windows and macOS</h2>
+      <h2>macOS</h2>
       <p>Only the symbol tables and the handlers differ between operating systems; placement,
-        interception, the ledger and the analysis are shared. Windows and macOS already have
-        their surfaces declared and their pool/zone allocators implemented
-        (<code>ExAllocatePool2</code>/<code>ExFreePool</code> for ntoskrnl,
-        <code>IOMalloc</code>/<code>IOFree</code>/<code>kalloc_external</code> for XNU). What is
-        still missing is the <b>loader</b>: a <code>.sys</code> is a PE with a
-        <code>DriverEntry</code>, so it needs the PE path with kernel-space placement rather
-        than the <code>ET_REL</code> path; a kext is a Mach-O <code>MH_KEXT_BUNDLE</code> with
-        external relocations. The day either loader lands, it inherits the whole use-after-free
+        interception, the ledger and the analysis are shared. macOS already has its surface
+        declared and its zone allocator implemented
+        (<code>IOMalloc</code>/<code>IOFree</code>/<code>kalloc_external</code> for XNU). What is
+        still missing is the <b>loader</b>: a kext is a Mach-O <code>MH_KEXT_BUNDLE</code> with
+        external relocations. The day the loader lands, it inherits the whole use-after-free
         analysis for free, because the part that finds the bug never cared which OS the driver
         was for.</p>
     </section>
