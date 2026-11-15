@@ -123,8 +123,21 @@ a:hover {
 section {
   margin-bottom: 80px;
 }
-h1, h2 {
+h1 {
   color: #00bfa5;
+  font-size: 1.8em;
+}
+h2 {
+  color: #00bfa5;
+  font-size: 1.4em;
+}
+h3 {
+  color: #ccc;
+  font-size: 1.1em;
+}
+p, li {
+  font-size: 1em;
+  line-height: 1.6;
 }
 figure {
   margin: 0;
@@ -161,8 +174,10 @@ pre[class*="language-"] {
   white-space: pre;
 }
 :not(pre) > code {
-  background-color: #000 !important;
-  padding: 1px 4px;
+  background-color: #00bfa515 !important;
+  color: #00bfa5;
+  padding: 1px 5px;
+  border-radius: 3px;
 }
 
 .shell-block figcaption {

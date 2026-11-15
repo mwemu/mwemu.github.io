@@ -117,7 +117,7 @@
           <li><a href="#kernelpy">5.8. driving a driver from Python</a></li>
           <li><a href="#kernelmcp">5.9. driving a driver over MCP</a></li>
           <li><a href="#kernelexample">5.10. worked example: a use-after-free</a></li>
-          <li><a href="#kernelother">5.11. macOS</a></li>
+          <li><a href="#kernelother">5.11. macOS (not yet)</a></li>
         </ul>
       </li>
     </ul>
@@ -1941,7 +1941,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>It could be useful for pinpoint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
       <p>Note that this read/write are inside the emulation virtual memory.</p>
       <ul>
-          <p><h3>memory write</h3></p>
+          <h3>memory write</h3>
             <li><p><code>write_qword(addr: int, value: int) -&gt; bool</code></p></li>
             <li><p><code>write_dword(addr: int, value: int) -&gt; bool</code></p></li>
             <li><p><code>write_word(addr: int, value: u16) -&gt; bool</code></p></li>
@@ -1952,7 +1952,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
             <li><p><code>write_buffer(to: int, from: bytes)</code></p></li>
             <li><p><code>write_spaced_bytes(addr: int, spaced_hex_bytes: str) -&gt; bool</code></p></li>
 
-          <p><h3>read operations</h3></p>
+          <h3>read operations</h3>
             <li><p><code>read_128bits_be(addr: int) -&gt; u128</code></p></li>
             <li><p><code>read_128bits_le(addr: int) -&gt; u128</code></p></li>
             <li><p><code>read_qword(addr: int) -&gt; int</code></p></li>
@@ -1965,11 +1965,11 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
             <li><p><code>read_string(addr: int) -&gt; str</code></p></li>
             <li><p><code>read_wide_string(addr: int) -&gt; str</code></p></li>
 
-          <p><h3>libc style memory operations:</h3></p>
+          <h3>libc style memory operations:</h3>
             <li><p><code>memset(addr: int, byte: int, amount: int)</code></p></li>
             <li><p><code>sizeof_wide(unicode_str_ptr: int) -&gt; int</code></p></li>
 
-          <p><h3>search methods:</h3></p>
+          <h3>search methods:</h3>
             <li><p><code>search_spaced_bytes_from(saddr: int, sbs: str) -&gt; int</code></p></li>
             <li><p><code>search_spaced_bytes_from_bw(saddr: int, sbs: str) -&gt; int</code></p></li>
             <li><p><code>search_spaced_bytes(sbs: str, map_name: str) -&gt; Vec<int</code></p></li>
@@ -2715,25 +2715,25 @@ map.load("dumped_section.bin");
       <p>You can view the register values and modify it in any moment.</p>
       <p>For instance to prepare the context previous to the emulation, preparing an emulation state.</p>
       <ul>
-      <p><h3>Reading a 64bits register or bigger is very direct</h3></p>
+      <h3>Reading a 64bits register or bigger is very direct</h3>
           <il><p><code>let rax = emu.regs().rax;</code></p></il>
           <il><p><code>let rip = emu.regs().rip;</code></p></il>
           <il><p><code>let xmm15 = emu.regs().xmm15;</code></p></il>
-          <p><h3>Settings a 64bits register or bigger is very direct.</h3></p> 
+          <h3>Settings a 64bits register or bigger is very direct.</h3> 
           <il><p><code>emu.regs_mut().rax = 0x123;</code></p></il>
           <il><p><code>emu.regs_mut().rip = 0x4012312;</code></p></il>
           <il><p><code>emu.regs_mut().xmm15 = 0x11223344_11223344_11223344_11223344u128;</code></p></il>
-      <p><h3>Getters for non 64bits (it return always u64 type)</h3></p>
+      <h3>Getters for non 64bits (it return always u64 type)</h3>
           <il><p><code>let eax = emu.regs().get_eax() as u32;</code></p></il>
           <il><p><code>let eip = emu.regs().get_eip() as u32;</code></p></il>
           <il><p><code>let al = emu.regs().get_al() as u8;</code></p></il>
-      <p><h3>Setters for non 64bits (provide always u64 type)</h3></p>
+      <h3>Setters for non 64bits (provide always u64 type)</h3>
           <il><p><code>emu.regs_mut().set_eax(123u64);</code></p></il>
           <il><p><code>emu.regs_mut().set_eip(0x123123);</code></p></il>
           <il><p><code>emu.regs_mut().set_al(0xff);</code></p></il>
           <il><p><code>emu.regs_mut().set_sil(0xff);</code></p></il>
           <il><p><code>emu.regs_mut().set_dil(0xff);</code></p></il>
-      <p><h3>r1 to r15</h3></p>
+      <h3>r1 to r15</h3>
           <il><p><code>let r15 = emu.regs().r15;</code></p></il>
           <il><p><code>let n = emu.regs().get_r12w();</code></p></il>
           <il><p><code>emu.regs_mut().set_r8h(0x00);</code></p></il>
@@ -2744,7 +2744,7 @@ map.load("dumped_section.bin");
       </ul>
       <p>Regs64 is fully featured, there are also some uncommon registers like ymm, cr, gs, fs, tr and msr.</p>
       <ul>
-        <p><h3>helper methods</h3></p>
+        <h3>helper methods</h3>
           <il><p><code>emu.regs_mut().clear::&lt;u8&gt;();</code> clear the lower byte of all the registers.</p></il>
           <il><p><code>emu.regs_mut().rand();</code> randomize register values.</p></il>
           <il><p><code>emu.regs().print::&lt;u32&gt;();</code> print main registers.</p></il>
@@ -2758,7 +2758,7 @@ map.load("dumped_section.bin");
       <p>It could be useful for pinpoint the emulation state before starting the emulation, but other option is checking the memory after the emulation or altering it during the emulation.</p>
       <p>Note that this read/write are inside the emulation virtual memory.</p>
       <ul>
-         <p><h3>memory read</h3></p>
+         <h3>memory read</h3>
             <li><p><code>emu.maps.read_byte(addr: u64) -&gt; Option&lt;u8&gt;</code></p></li>
             <li><p><code>emu.maps.read_f64(addr: u64) -&gt; Option&lt;f64&gt;</code></p></li>
             <li><p><code>emu.maps.read_f32(addr: u64) -&gt; Option&lt;f32&gt;</code></p></li>
@@ -2776,7 +2776,7 @@ map.load("dumped_section.bin");
             <li><p><code>emu.maps.read_wide_string(addr: u64) -&gt; String</code></p></li>
             <li><p><code>emu.maps.read_wide_string_n(addr: u64, max_chars: usize) -&gt; String</code></p></li>
 
-         <p><h3>memory write</h3></p>
+         <h3>memory write</h3>
             <li><p><code>emu.maps.write_byte(addr: u64, value: u8) -&gt; bool</code></p></li>
             <li><p><code>emu.maps.write_qword(addr: u64, value: u64) -&gt; bool</code></p></li>
             <li><p><code>emu.maps.write_dword(addr: u64, value: u32) -&gt; bool</code></p></li>
@@ -2787,12 +2787,12 @@ map.load("dumped_section.bin");
             <li><p><code>emu.maps.write_buffer(to: u64, from: &amp;[u8])</code></p></li>
             <li><p><code>emu.maps.write_spaced_bytes(addr: u64, sbs: &amp;str) -&gt; bool</code></p></li>
 
-          <p><h3>libc style memory operations:</h3></p>
+          <h3>libc style memory operations:</h3>
             <li><p><code>emu.maps.memset(addr: u64, b: u8, amount: usize)</code></p></li>
             <li><p><code>emu.maps.memcpy(to: u64, from: u64, size: usize) -&gt; bool</code></p></li>
             <li><p><code>emu.maps.sizeof_wide(unicode_str_ptr: u64) -&gt; usize</code></p></li>
 
-          <p><h3>search methods:</h3></p>
+          <h3>search methods:</h3>
             <li><p><code>emu.maps.search_string(kw: &amp;str, map_name: &amp;str) -&gt; Option&lt;Vec&lt;u64&gt;&gt;</code></p></li>
             <li><p><code>emu.maps.search_spaced_bytes_from(sbs: &amp;str, saddr: u64) -&gt; u64</code></p></li>
             <li><p><code>emu.maps.search_spaced_bytes_from_bw(spaced_bytes: &amp;str, start_address: u64) -&gt; u64</code></p></li>
@@ -2851,7 +2851,7 @@ println!("eip: 0x{:x}", emu.regs().get_eip());
       <h2>Start Emulation</h2>
       <p>Once everything is configured, you can start the emulation.</p>
       <ul>
-          <p><h3>You can start the mulation using run functions</h3></p>
+          <h3>You can start the mulation using run functions</h3>
             <li><p><code>emu.run(end_addr: Option&lt;u64&gt;) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
             <li><p><code>emu.run_until_ret() -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
             <li><p><code>emu.run_to(end_pos: u64) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
@@ -2859,12 +2859,12 @@ println!("eip: 0x{:x}", emu.regs().get_eip());
             <li><p><code>emu.run_single_threaded(end_addr: Option&lt;u64&gt;) -&gt; Result&lt;u64, MwemuError&gt;</code></p></li>
             <li><p><code>emu.stop()</code></p></li>
 
-          <p><h3>But this ways is wide more confortable because mimics calling conventions.</h3></p>
+          <h3>But this ways is wide more confortable because mimics calling conventions.</h3>
             <li><p><code>emu.call32(addr: u64, args: &amp;[u32]) -&gt; Result&lt;u32, MwemuError&gt;</code> microsoft 32bits calling convention.</p></li>
             <li><p><code>emu.call64(addr: u64, args: &amp;[u64]) -&gt; Result&lt;u64, MwemuError&gt;</code> microsoft 64bits calling convention.</p></li>
             <li><p><code>emu.linux_call64(addr: u64, args: &amp;[u64]) -&gt; Result&lt;u64, MwemuError&gt;</code> ABI SysV AMD64 calling conventionused on linux64 user space.</p></li>
 
-          <p><h3>For more control but slow way you can use step, but note that also can use hooks.</h3></p>
+          <h3>For more control but slow way you can use step, but note that also can use hooks.</h3>
             <li><p><code>emu.step() -&gt; bool</code></p></li>
             <li><p><code>emu.step_single_threaded() -&gt; bool</code></p></li>
             <li><p><code>emu.step_multi_threaded() -&gt; bool</code></p></li>
@@ -3080,7 +3080,7 @@ let mut emu = libmwemu::emu32();
       <h2>Hooks</h2>
       <p>The <a href="https://docs.rs/libmwemu/latest/libmwemu/hooks/struct.Hooks.html" target="_blank">Hooks</a> object allow to extend the emulator without blockign the emulation.</p>
       <ul>
-        <p><h3>Enable a hook</h3></p>
+        <h3>Enable a hook</h3>
             <li><p><code>emu.hooks.on_memory_read(trace_memory_read);</code> the hook is triggered after every read.</p></li>
             <li><p><code>emu.hooks.on_memory_write(trace_memory_write);</code> the hook is triggered before every write, and the hook can change the value to write by returning it.</p></li>
             <li><p><code>emu.hooks.on_interrupt(trace_interrupt);</code> the hook is triggered before handling it, the hook can decide with the return value if mwemu do the handling or not.</p></li>
@@ -3089,7 +3089,7 @@ let mut emu = libmwemu::emu32();
             <li><p><code>emu.hooks.on_post_instruction(trace_post_instruction);</code> the hook is triggered after emulating the instruction.</p></li>
             <li><p><code>emu.hooks.on_winapi_call(trace_winapi_call);</code> you can implement a Windows API.</p></li>
             <li><p><code>emu.hooks.on_syscall(trace_syscall);</code> the hook is triggered before the syscall handler, return false to skip it.</p></li>
-        <p><h3>Disable a hook</h3></p>
+        <h3>Disable a hook</h3>
             <li><p><code>emu.hooks.disable_memory_read();</code></p></li>
             <li><p><code>emu.hooks.disable_memory_write();</code></p></li>
             <li><p><code>emu.hooks.disable_interrupt();</code></p></li>
@@ -3487,15 +3487,13 @@ BUG: KMWEMU: use-after-free (poisoned pointer dereference) at addr 0x6b6b6b6b6b6
     </section>
 
     <section id="kernelother">
-      <h2>macOS</h2>
-      <p>Only the symbol tables and the handlers differ between operating systems; placement,
-        interception, the ledger and the analysis are shared. macOS already has its surface
-        declared and its zone allocator implemented
-        (<code>IOMalloc</code>/<code>IOFree</code>/<code>kalloc_external</code> for XNU). What is
-        still missing is the <b>loader</b>: a kext is a Mach-O <code>MH_KEXT_BUNDLE</code> with
-        external relocations. The day the loader lands, it inherits the whole use-after-free
-        analysis for free, because the part that finds the bug never cared which OS the driver
-        was for.</p>
+      <h2>macOS (not yet implemented)</h2>
+      <p>macOS kernel driver emulation (<code>.kext</code>) is <b>not implemented yet</b>.
+        The analysis engine (slab ledger, quarantine, findings) is OS-agnostic, and the macOS
+        zone allocator stubs (<code>IOMalloc</code>/<code>IOFree</code>/<code>kalloc_external</code>)
+        are already declared. What is missing is the <b>loader</b>: a kext is a Mach-O
+        <code>MH_KEXT_BUNDLE</code> with external relocations. Once the loader lands, it inherits
+        the whole use-after-free analysis for free.</p>
     </section>
 
   </div>
