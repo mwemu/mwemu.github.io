@@ -275,7 +275,7 @@
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ~/s/mwemu ❯❯❯ ls crates/libmwemu/src/
 api/            engine/         loaders/
 arch/           err.rs          maps/
@@ -366,7 +366,7 @@ emu/            kernel/         tests/
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f file -vv -c 100
               </code></pre>
       </figure>
@@ -375,7 +375,7 @@ emu/            kernel/         tests/
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo build --release
 ❯❯❯ target/release/mwemu -6 -f file -vv -c 100
               </code></pre>
@@ -391,7 +391,7 @@ emu/            kernel/         tests/
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
               </code></pre>
       </figure>
@@ -401,7 +401,7 @@ emu/            kernel/         tests/
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ export PATH="$PATH:/home/username/.cargo/bin/"
               </code></pre>
       </figure>
@@ -416,7 +416,7 @@ emu/            kernel/         tests/
           <p>
           <figure class="shell-block">
             <figcaption>Shell</figcaption>
-            <pre><code class="language-bash">
+            <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo install mwemu 
          </code></pre>
           </figure>
@@ -427,7 +427,7 @@ emu/            kernel/         tests/
           <p>
           <figure class="shell-block">
             <figcaption>Shell</figcaption>
-            <pre><code class="language-bash">
+            <pre class="language-bash"><code class="language-bash">
                 git clone https://github.com/mwemuorg/mwemu.git
                 cargo build --release
                 make tests
@@ -445,7 +445,7 @@ emu/            kernel/         tests/
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ~/s/mwemu ❯❯❯ cargo run --release -- --help                                                                                                        Finished `release` profile [optimized] target(s) in 0.06s
 Running `target/release/mwemu --help`
 MWEMU emulator for malware 0.7.12
@@ -538,7 +538,7 @@ OPTIONS:
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv  
               </code></pre>
       </figure>
@@ -554,7 +554,7 @@ OPTIONS:
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1
     Finished `release` profile [optimized] target(s) in 0.07s
      Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1`
@@ -607,7 +607,7 @@ Entry point pointing to .text 0x401000
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1 &gt; /tmp/log
               </code></pre>
       </figure>
@@ -618,7 +618,7 @@ Entry point pointing to .text 0x401000
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -c 1 --log /tmp/log
               </code></pre>
       </figure>
@@ -632,7 +632,7 @@ Entry point pointing to .text 0x401000
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
         --mxcsr &lt;MXCSR&gt;                           set mxcsr register
         --r10 &lt;R10&gt;                               set r10 register
         --r11 &lt;R11&gt;                               set r11 register
@@ -661,7 +661,7 @@ Entry point pointing to .text 0x401000
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337
 Finished `release` profile [optimized] target(s) in 0.08s
 Running `target/release/mwemu -6 -f test/elf64lin_cpu_arithmetics1.bin -c 1 --rax 0x123 --rbx 0x1337`
@@ -682,7 +682,7 @@ rbx: 0x1337 4919
       <p>Use option -R &lt;registers to trace&gt; to trace some registers</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/elf64lin_cpu_arithmetics1.bin -vv -R rax,rsp
 ...
 57 0x4010a2: rcr   al,1
@@ -743,7 +743,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -c 494253 -S 490000
               </code></pre>
       </figure>
@@ -752,7 +752,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/sc32win_donut.bin -vv -m -i 'qword ptr [rsp + 0x8]'
               </code></pre>
       </figure>
@@ -766,7 +766,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -vv  -s 0x329ec8
               </code></pre>
       </figure>
@@ -777,7 +777,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8 -V 191
               </code></pre>
       </figure>
@@ -786,7 +786,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/sc64lin_strgen.bin -s 0x329ec8
               </code></pre>
       </figure>
@@ -801,7 +801,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin --call
               </code></pre>
       </figure>
@@ -820,7 +820,7 @@ rbx: 0x1337 4919
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo run --release -- -6 -f test/exe64win_enigma.bin -c 102063765
 dll_path: maps/maps64//ntdll.dll dll: ntdll.dll
 PE64 header detected.
@@ -902,7 +902,7 @@ mem_trace: pos = 102063763 rip = 14072d2d2 op = read bits = 32 address = 0x14057
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;h
 --- help ---
 q ...................... quit
@@ -983,7 +983,7 @@ dump ................... dump current state to disk
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;r rsp
     rsp: 0x329f40
 =&gt;r
@@ -1010,7 +1010,7 @@ dump ................... dump current state to disk
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;rc rax
 command not found, type h
 =&gt;rc
@@ -1031,7 +1031,7 @@ value=&gt;0x1337
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;m
 --- maps ---
 oleaut32.data       0x7ff001dc7000 - 0x7ff001dca000 (12288)
@@ -1069,7 +1069,7 @@ ws2_32.rdata        0x7ff0005fd000 - 0x7ff00060a000 (53248)
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 m ...................... memory maps
 ms ..................... memory filtered by keyword string
 ma ..................... memory allocs
@@ -1098,7 +1098,7 @@ mt ..................... memory test
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;mn
 address=&gt;0x140000008
 map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
@@ -1131,7 +1131,7 @@ map: exe64win_enigma.pe 0x140000000-0x140001000 (4096)
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;ssa  (search string in all the maps)
 string=&gt;http://something.com/
 found at 0x329ec8 'http://something.com/'
@@ -1198,7 +1198,7 @@ found at 0x329fc8
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;b
 break on address: []
 break on instruction: []
@@ -1211,7 +1211,7 @@ break on memory write: []
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 b ...................... breakpoint list
 ba ..................... breakpoint on address
 bi ..................... breakpoint on instruction number
@@ -1228,7 +1228,7 @@ bc ..................... clear breakpoint
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 --- console ---
 =&gt;bi
 instruction number=&gt;100
@@ -1281,7 +1281,7 @@ instruction number=&gt;100
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ~/s/mwemu ❯❯❯ cargo run --release -- -6 -f test/sc64win_strgen.bin -c 200
 ...
 200 0x3c004e: movzx edx,byte ptr [rax]    (instruction 200 is not emulated yet, it's the next instruction to be emulated)
@@ -1318,7 +1318,7 @@ verbose level=&gt;3
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 --- console ---
 =&gt;ldr
 0x7fe000000000 loader.exe flink:7fe000004000 blink:7fe00000f000 base:7ff001b7e000 pe_hdr:f8 5045
@@ -1348,7 +1348,7 @@ verbose level=&gt;3
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;dt
 structure=&gt;peb
 address=&gt;0x7ffdf000
@@ -1386,7 +1386,7 @@ PEB {
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;dt
 structure=&gt;PEB_LDR_DATA
 address=&gt;0x77647880
@@ -1420,7 +1420,7 @@ PebLdrData {
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 =&gt;dt
 structure=&gt;LDR_DATA_TABLE_ENTRY
 address=&gt;0x2c18c0
@@ -1468,7 +1468,7 @@ LdrDataTableEntry {
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 3307726 0x4f9673: push  ebp
 3307727 0x4f9674: push  edx
 3307728 0x4f9675: push  eax
@@ -1488,7 +1488,7 @@ Reading SEH 0x0
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 --- console ---
 =&gt;r esp
         esp: 0x22de98
@@ -1526,7 +1526,7 @@ CppEhRecord {
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 mr ..................... memory read, speficy ie: dword ptr [esi]
 mw ..................... memory write, speficy ie: dword ptr [esi]  and then: 1af
 mwb .................... memory write bytes, input spaced bytes
@@ -1545,7 +1545,7 @@ mt ..................... memory test
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 --- console ---
 =&gt;md
 address=&gt;0x329ec8
@@ -1584,7 +1584,7 @@ address=&gt;0x329ec8
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ git clone https://github.com/radareorg/radare2.git
 ❯❯❯ cd radare2
 ❯❯❯ sys/install.sh
@@ -1612,7 +1612,7 @@ address=&gt;0x329ec8
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ pip3 install pymwemu --break-system-packages
               </code></pre>
       </figure>
@@ -1622,7 +1622,7 @@ address=&gt;0x329ec8
       <p>
       <figure class="shell-block">
         <figcaption>mwemu console</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ pip install --upgrade pip
 ❯❯❯ pip3 install --upgrade pip
 ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -1635,7 +1635,7 @@ address=&gt;0x329ec8
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ sudo xcode-select --switch /Library/Developer/CommandLineTools
               </code></pre>
       </figure>
@@ -1644,7 +1644,7 @@ address=&gt;0x329ec8
       <p>To verify the installation we can import the module in python console.</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ python3
 Python 3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
@@ -1665,7 +1665,7 @@ Initialized logging
       <p>
       <figure class="shell-block">
         <figcaption>shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 sudo apt install python3.13-venv
 python3 -m venv .venv
 source .venv/bin/activate.fish
@@ -1687,7 +1687,7 @@ MATURIN_PYPI_TOKEN="..." maturin publish
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; import pymwemu
 Initialized logging
 &gt;&gt;&gt; emu = pymwemu.init32()       # x86 32bits
@@ -1712,7 +1712,7 @@ Initialized logging
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
 &gt;&gt;&gt; emu.enable_console()   # by default is disabled.
 &gt;&gt;&gt; emu.spawn_console_at_pos(6) # useful for debugging the script.
@@ -1780,7 +1780,7 @@ loading memory maps
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.max_instructions = 5_000_000
 &gt;&gt;&gt; emu.timeout_secs = 30
 &gt;&gt;&gt; emu.short_circuit_sleep = True
@@ -1802,7 +1802,7 @@ loading memory maps
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
 loading memory maps
 dll_path: /home/sha0/src/mwemu/maps/maps64//ntdll.dll dll: ntdll.dll
@@ -1825,7 +1825,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ git clone https://github.com/mwemuorg/mwemu.git
                 </code></pre>
       </figure>
@@ -1837,7 +1837,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu = pymwemu.init64()
 &gt;&gt;&gt; emu.load_maps_from_winver("win11")
 &gt;&gt;&gt; emu.load_binary("sample.exe")
@@ -1863,7 +1863,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
 &gt;&gt;&gt;
               </code></pre>
@@ -1878,7 +1878,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.init_win32()
             or
 &gt;&gt;&gt; emu.init_linux64(is_dynamic)
@@ -1902,7 +1902,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
 &gt;&gt;&gt; emu.alloc_at("mybuffer", 0x1000, 1024)
 &gt;&gt;&gt; emu.load_map("mybuffer", "something.dll", 0x1000)
@@ -1928,7 +1928,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; rax = emu.get_reg('rax')
 &gt;&gt;&gt; emu.set_reg('rax', rax+1)
         </code></pre>
@@ -1983,7 +1983,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; some_data_structure_needed = open('blob.bin','rw').read()
 &gt;&gt;&gt; addr = emu.alloc("struct1", len(some_data_structure_needed))
 &gt;&gt;&gt; emu.write_bytes(addr, some_data_structure_needed)
@@ -1996,7 +1996,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>
       <figure class="shell-block">
         <figcaption>Python Script</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -2040,7 +2040,7 @@ emu.write_buffer(buffer_addr + 0x200, data)
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - basic_run.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -2060,7 +2060,7 @@ print(f"Instructions executed: {emu.get_position()}")
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - call_function.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 # Example: call a decryption function
@@ -2087,7 +2087,7 @@ print(f"Return value: {hex(result)}")
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - call32_example.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 # Example with 32-bit malware
@@ -2115,7 +2115,7 @@ for i in range(10):
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - step_by_step.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -2160,7 +2160,7 @@ print(f"Total instructions: {emu.get_position()}")
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; # Run and then spawn console for inspection
 &gt;&gt;&gt; emu.run(1000)
 &gt;&gt;&gt; emu.spawn_console()  # interactive debugging
@@ -2180,7 +2180,7 @@ print(f"Total instructions: {emu.get_position()}")
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - string_decrypt.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 #!/usr/bin/env python3
 import pymwemu
 
@@ -2240,7 +2240,7 @@ with open('decrypted_strings.txt', 'w') as f:
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.stack_push32(ret_addr)
 &gt;&gt;&gt; emu.stack_push32(param1)
 &gt;&gt;&gt; emu.stack_push32(param2)
@@ -2272,7 +2272,7 @@ with open('decrypted_strings.txt', 'w') as f:
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.bp_set_addr(0x11223344)
 &gt;&gt;&gt; emu.run(None)
         </code></pre>
@@ -2292,7 +2292,7 @@ with open('decrypted_strings.txt', 'w') as f:
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.print_maps()
 ...
 &gt;&gt;&gt; emu.save(0x40324234, 1024, "/tmp/blob.bin")
@@ -2322,7 +2322,7 @@ with open('decrypted_strings.txt', 'w') as f:
       <p>
       <figure class="shell-block">
         <figcaption>Python Script - snapshot.py</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -2376,7 +2376,7 @@ emu2.run(None)
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; name = api_addr_to_name(0x11223344)
 &gt;&gt;&gt; print( name )
         MessageBoxA
@@ -2406,7 +2406,7 @@ emu2.run(None)
       <p>
       <figure class="shell-block">
         <figcaption>Python Console</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; import pymwemu
 &gt;&gt;&gt; emu = pymwemu.init32()
 &gt;&gt;&gt; ... 
@@ -2444,7 +2444,7 @@ emu2.run(None)
       <p>
         <figure class="shell-block">
           <figcaption>Shell</figcaption>
-          <pre><code class="language-bash">
+          <pre class="language-bash"><code class="language-bash">
   ❯❯❯ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
                 </code></pre>
         </figure>
@@ -2453,7 +2453,7 @@ emu2.run(None)
         <p>
         <figure class="shell-block">
           <figcaption>Shell</figcaption>
-          <pre><code class="language-bash">
+          <pre class="language-bash"><code class="language-bash">
   ❯❯❯ cargo init --bin myproject
   ❯❯❯ cd myproject
                 </code></pre>
@@ -2464,7 +2464,7 @@ emu2.run(None)
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ cargo add libmwemu
 
 ❯❯❯ cat Cargo.toml
@@ -2488,7 +2488,7 @@ libmwemu = "1.0"
       <p>
       <figure class="shell-block">
         <figcaption>shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
   ❯❯❯ cargo run --release
         </code></pre>
       </figure>
@@ -2500,7 +2500,7 @@ libmwemu = "1.0"
       <p>
       <figure class="shell-block">
         <figcaption>shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
   ❯❯❯ cargo run --release -- samples/binary.exe
         </code></pre>
       </figure>
@@ -2514,7 +2514,7 @@ libmwemu = "1.0"
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 use libmwemu::emu32;
 use libmwemu::maps::mem64::Permission;
         </code></pre>
@@ -2525,7 +2525,7 @@ use libmwemu::maps::mem64::Permission;
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = emu32();  // or also emu64()
         </code></pre>
       </figure>
@@ -2561,7 +2561,7 @@ let mut emu = emu32();  // or also emu64()
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
             emu.cfg.arguments = "--exe_sample_some_arg".to_string();
             emu.cfg.shellcode = true;
         </code></pre>
@@ -2583,7 +2583,7 @@ let mut emu = emu32();  // or also emu64()
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = emu64();
 emu.set_maps_folder("/home/sha0/src/mwemu/maps/maps64/");
 emu.init_logger();
@@ -2594,7 +2594,7 @@ emu.init_logger();
       <p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
 ❯❯❯ git clone https://github.com/mwemuorg/mwemu.git 
                 </code></pre>
       </figure>
@@ -2626,7 +2626,7 @@ emu.init_logger();
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 emu.load_code("/samples/sample.bin");
         </code></pre>
       </figure>
@@ -2635,7 +2635,7 @@ emu.load_code("/samples/sample.bin");
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut opcodes: Vec&lt;u8&gt; = Vec::new();
 ... // fill the opcodes
 let mut emu = emu32();
@@ -2649,7 +2649,7 @@ emu.init_win32(false, false);
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = emu32();
 emu.load_code_bytes(&amp;opcodes);
 emu.init_linux64();  // load_code("sample") would trigger init_win32 or init_linux64 depending on file format. 
@@ -2681,7 +2681,7 @@ emu.init_linux64();  // load_code("sample") would trigger init_win32 or init_lin
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 use libmwemu::maps::mem64::Permission;
 use libmwemu::emu32;
 ...
@@ -2697,7 +2697,7 @@ let rax = emu.call64(decoder_func_addr, &amp;[ptr_encoded, ptr_decoded]);
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let addr = emu.maps.alloc(1024);
 let map = emu
             .maps
@@ -2806,7 +2806,7 @@ map.load("dumped_section.bin");
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut some_data_structure_needed: Vec<u8> = Vec::new();
 load_blob_from_disk("blob.bin", &amp;mut some_data_structure_needed);
 
@@ -2821,7 +2821,7 @@ let rax = emu.call32(0x40323, &amp;[addr, some_data_structure_needed.len()]);
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu32();
 let addr = emu.alloc("buff1", 100);
 emu.maps.write_string(addr, "Hello MWEMU!");
@@ -2882,7 +2882,7 @@ println!("eip: 0x{:x}", emu.regs().get_eip());
       <p>
       <figure class="shell-block">
         <figcaption>emu.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 fn main() {
     let mut emu = libmwemu::emu64();
     emu.init_logger();
@@ -2897,7 +2897,7 @@ fn main() {
       <p>
       <figure class="shell-block">
         <figcaption>emu.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
 let vm_buff = emu.alloc("buff", 1024, Permission::READ_WRITE_EXECUTE);
 let vm: Vec<u8> = vec![
@@ -2917,7 +2917,7 @@ emu.call64(decoder, &amp;[&amp;vm_buff]);
         <p>
       <figure class="shell-block">
         <figcaption>emu.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 fn main() {
     let mut emu = libmwemu::emu64();
     emu.init_logger();
@@ -2948,7 +2948,7 @@ fn main() {
       <p>
       <figure class="shell-block">
         <figcaption>emu.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 loop {
     emu.maps.memset(str_buff, 0, 1024);
     emu.maps.memset(str_decoded, 0, 1024);
@@ -2995,7 +2995,7 @@ loop {
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 emu.maps.print_maps()
 emu.maps.save(0x40324234, 1024, "/tmp/blob.bin")
         </code></pre>
@@ -3044,7 +3044,7 @@ let base = match emu.maps.get_addr_base(addr) {
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let name = emu.api_addr_to_name(0x11223344)
 println!("{}", name)
    MessageBoxA
@@ -3066,7 +3066,7 @@ println!("{}", name)
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
 ...
 let mut emu = libmwemu::emu32();
@@ -3103,7 +3103,7 @@ let mut emu = libmwemu::emu32();
       <p>
       <figure class="shell-block">
         <figcaption>main.rs</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 use libmwemu::emu32;
 use libmwemu::emu::decoded_instruction::DecodedInstruction;
 use libmwemu::exception::types::ExceptionType;
@@ -3329,7 +3329,7 @@ stack-cookie-check-failure    __fastfail(2) fired -- buffer overflow corrupted
         A plain run does what <code>insmod</code> or the Windows loader would do:</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
   ❯❯❯ mwemu -f driver.ko -6 -v        # Linux .ko
   ❯❯❯ mwemu -f driver.sys -6 -v       # Windows .sys
         </code></pre>
@@ -3337,7 +3337,7 @@ stack-cookie-check-failure    __fastfail(2) fired -- buffer overflow corrupted
       <p>For Windows drivers, mwemu also supports <code>--ioctl</code> to send an IOCTL directly:</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
   ❯❯❯ mwemu -f driver.sys -6 --ioctl 0x80002000:aabbccdd:256 -vv
   # format: code:input_hex:output_len
   # use -c step to break at a specific instruction count
@@ -3351,7 +3351,7 @@ stack-cookie-check-failure    __fastfail(2) fired -- buffer overflow corrupted
       <h2>Driving a driver from Rust</h2>
       <figure class="code-block">
         <figcaption>Rust &mdash; Linux .ko</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
 emu.load_kernel_module("driver.ko")?;          // link + relocate the ET_REL object
 emu.run_module_init()?;                         // this is what insmod does
@@ -3363,7 +3363,7 @@ for f in emu.kernel_findings() {
       </figure>
       <figure class="code-block">
         <figcaption>Rust &mdash; Windows .sys</figcaption>
-        <pre><code class="language-rust">
+        <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
 emu.cfg.verbose = 0;
 emu.cfg.skip_unimplemented = true;
@@ -3388,7 +3388,7 @@ let probes = emu.kernel_scan_ioctls(0, 0x1000);
         (or Rust, or MCP) you can reach any exported symbol with your own arguments.</p>
       <figure class="code-block">
         <figcaption>Python</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -3407,7 +3407,7 @@ if emu.kernel_found_uaf():                    # quick boolean check
       </figure>
       <figure class="code-block">
         <figcaption>Python &mdash; Windows .sys</figcaption>
-        <pre><code class="language-python">
+        <pre class="language-python"><code class="language-python">
 import pymwemu
 
 emu = pymwemu.init64()
@@ -3451,7 +3451,7 @@ for f in emu.kernel_findings():
         indirect call:</p>
       <figure class="code-block">
         <figcaption>drivers/linux/tlm/tlm.c (excerpt)</figcaption>
-        <pre><code class="language-c">
+        <pre class="language-c"><code class="language-c">
 if (dev-&gt;fast &amp;&amp; dev-&gt;fast_id == req-&gt;id)
         ch = dev-&gt;fast;                       /* freed object */
 ...
@@ -3462,7 +3462,7 @@ ret = ch-&gt;ops-&gt;encode(ch, kbuf, req-&gt;len);    /* indirect call through 
         Build the driver and run it end to end:</p>
       <figure class="shell-block">
         <figcaption>Shell</figcaption>
-        <pre><code class="language-bash">
+        <pre class="language-bash"><code class="language-bash">
   ❯❯❯ make driver
   ❯❯❯ cargo test -p libmwemu tests::kernel -- --nocapture
         </code></pre>
