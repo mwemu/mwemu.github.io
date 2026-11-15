@@ -160,8 +160,8 @@ figcaption {
   padding: 8px 10px;
 }
 
-code {
-  background-color: #000;
+pre > code {
+  background-color: transparent;
 }
 .shell-block pre[class*="language-"],
 .code-block pre[class*="language-"],
