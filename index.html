@@ -1685,7 +1685,7 @@ MATURIN_PYPI_TOKEN="..." maturin publish
       <h2>Create the emulation object</h2>
       <p>First of all, import the module and init the engine for the architecture you need: 32bits, 64bits or aarch64 (ARM64).</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; import pymwemu
@@ -1710,7 +1710,7 @@ Initialized logging
       <h2>Configure the Emulator</h2>
       <p>Then there are some initial configurations you can do.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.set_verbose(3)     # to show all the assembly, normally this is not needed. By default is 0 verbose.
@@ -1778,7 +1778,7 @@ loading memory maps
           <li><p><code>emu.ssdt_use_ldr_initialize_thunk: bool</code> use the real ntdll LdrInitializeThunk path in syscall/ssdt mode.</p></li>
       </ul>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.max_instructions = 5_000_000
@@ -1800,7 +1800,7 @@ loading memory maps
       <p>So does if you are emulating linux elf64 or shellcodes (remember, elf64 is not well suported for now)</p>
       <p>Example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.load_maps('/home/sha0/src/mwemu/maps/maps64/')
@@ -1835,7 +1835,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>Since version 0.11 you no longer need a local copy of the maps. With <code>emu.load_maps_from_winver(version: str)</code> mwemu downloads the genuine Windows system DLLs straight from Microsoft's symbol server and uses them as the maps folder.</p>
       <p>The <code>version</code> argument can be a friendly name (<code>"win11"</code>, <code>"win10"</code>, <code>"win2019"</code>) or an exact build number (<code>"26100.7920"</code>). It also pins the build, so any extra DLL the loader needs later is auto-fetched on demand. It requires network access on first use and caches everything under <code>maps/winver/</code>.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu = pymwemu.init64()
@@ -1861,7 +1861,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
       <p>Example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.load_binary('shellcodes32/shikata.bin')
@@ -1876,7 +1876,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       <p>And if you dont use load_binary() but you need the linux simulator with libc etc loaded, use init_linux64. Note that linux implementation is very basic and only for static 64bits</p>
       <p>Since version 0.11 the maps are bundled, so init_win32() works out of the box; you only need load_maps() or load_maps_from_winver() if you want a specific maps folder or a concrete Windows build.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.init_win32()
@@ -1900,7 +1900,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
       <p>Examples:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; addr = emu.alloc("mybuffer", 1024)
@@ -1926,7 +1926,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
       <p>Examples:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; rax = emu.get_reg('rax')
@@ -1981,7 +1981,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
 
       <p>Examples of preparing context previous to start emulation:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; some_data_structure_needed = open('blob.bin','rw').read()
@@ -1994,7 +1994,7 @@ dll_path: /home/sha0/src/mwemu/maps/maps64//shlwapi.dll dll: shlwapi.dll
       </p>
       <p>Another example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2038,7 +2038,7 @@ emu.write_buffer(buffer_addr + 0x200, data)
             <li><p><code>handle_winapi(addr: int)</code></p></li>
       </ul>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - basic_run.py</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2058,7 +2058,7 @@ print(f"Instructions executed: {emu.get_position()}")
       <h3>Calling Functions Directly</h3>
       <p>You can call functions at specific addresses with call32/call64:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - call_function.py</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2085,7 +2085,7 @@ print(f"Return value: {hex(result)}")
       </p>
 
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - call32_example.py</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2113,7 +2113,7 @@ for i in range(10):
       <h3>Step-by-Step Emulation</h3>
       <p>For debugging or detailed control, execute instruction by instruction:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - step_by_step.py</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2158,7 +2158,7 @@ print(f"Total instructions: {emu.get_position()}")
         </li>
       </ul>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; # Run and then spawn console for inspection
@@ -2178,7 +2178,7 @@ print(f"Total instructions: {emu.get_position()}")
       <h3>Practical Example: String Decryption</h3>
       <p>A typical use case is decrypting malware strings:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - string_decrypt.py</figcaption>
         <pre class="language-python"><code class="language-python">
 #!/usr/bin/env python3
@@ -2238,7 +2238,7 @@ with open('decrypted_strings.txt', 'w') as f:
 
       <p>This example simulates a stack based calling convention, but note that you can also use call32() and call64() and linux_call64() methods.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.stack_push32(ret_addr)
@@ -2270,7 +2270,7 @@ with open('decrypted_strings.txt', 'w') as f:
 
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.bp_set_addr(0x11223344)
@@ -2290,7 +2290,7 @@ with open('decrypted_strings.txt', 'w') as f:
 
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; emu.print_maps()
@@ -2320,7 +2320,7 @@ with open('decrypted_strings.txt', 'w') as f:
 
       <p>Example: take a snapshot, keep emulating, and resume from the snapshot later.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Script - snapshot.py</figcaption>
         <pre class="language-python"><code class="language-python">
 import pymwemu
@@ -2374,7 +2374,7 @@ emu2.run(None)
 
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; name = api_addr_to_name(0x11223344)
@@ -2404,7 +2404,7 @@ emu2.run(None)
 
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>Python Console</figcaption>
         <pre class="language-python"><code class="language-python">
 &gt;&gt;&gt; import pymwemu
@@ -2512,7 +2512,7 @@ libmwemu = "1.0"
       <p>First of all, use the emu32 or emu64 object depending what you need.</p>
       <p>If you will do memory allocations you al will need to use the Permission object.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 use libmwemu::emu32;
@@ -2523,7 +2523,7 @@ use libmwemu::maps::mem64::Permission;
       <p>Note that even in 32bits the Permission object implementation is implemented in mem64, actually internally all is 64bits</p>
       <p>Then create the emulation object for the chosen architecture.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = emu32();  // or also emu64()
@@ -2559,7 +2559,7 @@ let mut emu = emu32();  // or also emu64()
         </ul>
         <p>From rust you can also modify directly the Config structure, example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
             emu.cfg.arguments = "--exe_sample_some_arg".to_string();
@@ -2581,7 +2581,7 @@ let mut emu = emu32();  // or also emu64()
         need to load the maps.</p>
       <p>Example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = emu64();
@@ -2624,7 +2624,7 @@ emu.init_logger();
 
       <p>Example1:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 emu.load_code("/samples/sample.bin");
@@ -2633,7 +2633,7 @@ emu.load_code("/samples/sample.bin");
       </p>
       <p>Example2:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut opcodes: Vec&lt;u8&gt; = Vec::new();
@@ -2647,7 +2647,7 @@ emu.init_win32(false, false);
       </p>
       <p>Example3:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = emu32();
@@ -2679,7 +2679,7 @@ emu.init_linux64();  // load_code("sample") would trigger init_win32 or init_lin
 
       <p>Example1:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 use libmwemu::maps::mem64::Permission;
@@ -2695,7 +2695,7 @@ let rax = emu.call64(decoder_func_addr, &amp;[ptr_encoded, ptr_decoded]);
 
       <p>Example2:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let addr = emu.maps.alloc(1024);
@@ -2804,7 +2804,7 @@ map.load("dumped_section.bin");
 
       <p>Examples of preparing context previous to start emulation:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut some_data_structure_needed: Vec<u8> = Vec::new();
@@ -2819,7 +2819,7 @@ let rax = emu.call32(0x40323, &amp;[addr, some_data_structure_needed.len()]);
       </p>
       <p>Another example:</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu32();
@@ -2880,7 +2880,7 @@ println!("eip: 0x{:x}", emu.regs().get_eip());
           <li><p><code>emu.spawn_console()</code> in specific case spawn the console to inspect manually the situation.</p></li>
       </ul>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>emu.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 fn main() {
@@ -2895,7 +2895,7 @@ fn main() {
       </figure>
       </p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>emu.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
@@ -2915,7 +2915,7 @@ emu.call64(decoder, &amp;[&amp;vm_buff]);
         </p>
         <p>
         <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>emu.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 fn main() {
@@ -2946,7 +2946,7 @@ fn main() {
 
       <p>This example simulates a stack based calling convention, but note that you can also use call32() and call64() and linux_call64() methods.</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>emu.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 loop {
@@ -2993,7 +2993,7 @@ loop {
       </ul>
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 emu.maps.print_maps()
@@ -3042,7 +3042,7 @@ let base = match emu.maps.get_addr_base(addr) {
 
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let name = emu.api_addr_to_name(0x11223344)
@@ -3064,7 +3064,7 @@ println!("{}", name)
       <p>But better don't change the architecture on the fly, re-instantiate the emulation object like:</p>
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 let mut emu = libmwemu::emu64();
@@ -3101,7 +3101,7 @@ let mut emu = libmwemu::emu32();
       </ul>
       <p>Example</p>
       <p>
-      <figure class="shell-block">
+      <figure class="code-block">
         <figcaption>main.rs</figcaption>
         <pre class="language-rust"><code class="language-rust">
 use libmwemu::emu32;
