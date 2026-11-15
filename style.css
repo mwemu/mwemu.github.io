@@ -150,6 +150,14 @@ figcaption {
 code {
   background-color: #000;
 }
+pre[class*="language-"] {
+  margin: 0;
+  border-radius: 0;
+}
+:not(pre) > code {
+  background-color: #000 !important;
+  padding: 1px 4px;
+}
 
 .shell-block figcaption {
   background: #444;
