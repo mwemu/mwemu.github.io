@@ -154,7 +154,7 @@ figcaption {
 }
 
 .code-block pre {
-  background: #1e1e1e;
+  background: #00bfa50d;
   color: #c5c8c6;
   margin: 0;
   padding: 8px 10px;
@@ -166,7 +166,7 @@ code {
 .shell-block pre[class*="language-"],
 .code-block pre[class*="language-"],
 pre[class*="language-"] {
-  background: #1d1f21 !important;
+  background: #00bfa50d !important;
   color: #c5c8c6;
   margin: 0;
   padding: 8px 10px;
@@ -185,7 +185,7 @@ pre[class*="language-"] {
 }
 
 .shell-block pre {
-  background: #000;
+  background: #00bfa50d;
   color: #ddd;
   margin: 0;
   padding: 8px 10px;
